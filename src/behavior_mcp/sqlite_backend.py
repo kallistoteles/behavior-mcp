@@ -20,10 +20,12 @@ class SQLiteBackend:
         *,
         fault: Callable[[str], None] | None = None,
         operation: JSON | None = None,
+        allow_publication: bool = True,
     ) -> None:
         self.path = path
         self.fault = fault or (lambda _: None)
         self.operation = operation
+        self.allow_publication = allow_publication
         with connect(path) as db, transaction(db):
             db.execute(
                 "CREATE TABLE IF NOT EXISTS core_meta (key TEXT PRIMARY KEY, document TEXT NOT NULL)"
@@ -96,6 +98,8 @@ class SQLiteBackend:
     def create(
         self, genesis: JSON, head: JSON, seed: list[JSON], seed_refs: list[JSON]
     ) -> None:
+        if not self.allow_publication:
+            raise RuntimeError("Read-only reconciliation forbids publication")
         # Keyed storage products ignore enumeration order, as the public callback contract permits.
         product = {
             "genesis": genesis,
@@ -174,6 +178,8 @@ class SQLiteBackend:
         record: JSON,
         head: JSON,
     ) -> str:
+        if not self.allow_publication:
+            raise RuntimeError("Read-only reconciliation forbids publication")
         with connect(self.path) as db, transaction(db):
             prior = self._meta(db, "head")
             if prior is None or prior["last_record"] != expected:

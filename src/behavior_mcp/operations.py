@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from behavior import CommitRefused, StateConflict, Store, replay_data
 
 from .authoring import reconstruct, release_identity
-from .schemas import JSON, OperationError
+from .schemas import JSON, OperationError, failure
 
 if TYPE_CHECKING:
     from .systems import SystemManager
@@ -26,6 +26,8 @@ class Operations:
         m.bound(sid, opid, "transition", args)
         previous = m.operation(sid, opid)
         if previous is not None:
+            if "refusal" in previous:
+                return dict(previous["refusal"])
             if "evaluation" not in previous:
                 raise OperationError(
                     "conflict",
@@ -103,13 +105,19 @@ class Operations:
             "receipt": None,
         }
         if evaluated.bundle is None:
-            m.save_operation(sid, operation)
-            raise OperationError(
-                "semantic_refusal",
-                "CORE_" + evaluated.decision.result,
-                "Core refused the requested transition",
-                result={"core_decision": decision, "operation_id": opid},
+            refusal = failure(
+                "evaluation",
+                subject,
+                OperationError(
+                    "semantic_refusal",
+                    "CORE_" + evaluated.decision.result,
+                    "Core refused the requested transition",
+                    result={"core_decision": decision, "operation_id": opid},
+                ),
             )
+            operation["refusal"] = refusal
+            m.save_operation(sid, operation)
+            return refusal
         result = {
             "kind": "evaluation",
             "operation_id": opid,
@@ -126,49 +134,17 @@ class Operations:
             "evaluation", "evaluation_allowed", subject, result, "transition"
         )
 
-    def commit(self, args: JSON, subject: JSON, *, recovery: bool = False) -> JSON:
+    def authorize_commit(
+        self, sid: str, operation: JSON, *, recovery: bool = False
+    ) -> JSON:
+        """Check current authority for a potentially fresh publication, not historical truth."""
         m = self.manager
-        sid = args["system_id"]
-        opid = args["operation_id"]
-        subject["operation_id"] = opid
-        m.bound(sid, opid, "transition")
-        operation = m.operation(sid, opid)
-        if (
-            operation is None
-            or operation.get("evaluation", {}).get("evaluation_token")
-            != args["evaluation_token"]
-        ):
-            raise OperationError(
-                "invalid_input",
-                "EVALUATION_NOT_FOUND",
-                "Evaluation token is unavailable for this exact operation",
-            )
-        if operation["principal"] != m.context.principal_id:
-            raise OperationError(
-                "unauthorized",
-                "OPERATION_OWNER_DENIED",
-                "Operation belongs to another trusted principal",
-            )
-        definition, module, _ = reconstruct(m.artifacts, operation["definition_id"])
-        if operation["status"] == "committed":
-            m.policy.authorize(m.context, "operation_get", sid)
-            subject.update(
-                m.subject(sid, definition, operation["receipt"]["history_anchor"], opid)
-            )
-            return m.response(
-                "commit",
-                "already_committed",
-                subject,
-                {
-                    "kind": "transition_commit",
-                    "receipt": operation["receipt"],
-                    "already": True,
-                    "release": definition["release"],
-                },
-                "transition",
-            )
+        opid = operation["operation_id"]
         m.policy.authorize(m.context, "transition_commit", sid)
-        if operation["status"] in {"not_committed", "refused"}:
+        if operation["status"] == "refused" or (
+            operation["status"] == "not_committed"
+            and not (recovery and operation.get("reconciliation_ref"))
+        ):
             raise OperationError(
                 "conflict",
                 "OPERATION_FINISHED",
@@ -213,6 +189,52 @@ class Operations:
                 "POLICY_MOVED",
                 "Policy changed since evaluation; establish the original outcome before re-evaluation",
             )
+        assert active is not None
+        return active
+
+    def commit(self, args: JSON, subject: JSON, *, recovery: bool = False) -> JSON:
+        m = self.manager
+        sid = args["system_id"]
+        opid = args["operation_id"]
+        subject["operation_id"] = opid
+        m.bound(sid, opid, "transition")
+        operation = m.operation(sid, opid)
+        if (
+            operation is None
+            or operation.get("evaluation", {}).get("evaluation_token")
+            != args["evaluation_token"]
+        ):
+            raise OperationError(
+                "invalid_input",
+                "EVALUATION_NOT_FOUND",
+                "Evaluation token is unavailable for this exact operation",
+            )
+        if operation["principal"] != m.context.principal_id:
+            raise OperationError(
+                "unauthorized",
+                "OPERATION_OWNER_DENIED",
+                "Operation belongs to another trusted principal",
+            )
+        if operation["status"] == "committed":
+            definition = m.artifacts.definition(operation["definition_id"])
+            m.policy.authorize(m.context, "operation_get", sid)
+            subject.update(
+                m.subject(sid, definition, operation["receipt"]["history_anchor"], opid)
+            )
+            return m.response(
+                "commit",
+                "already_committed",
+                subject,
+                {
+                    "kind": "transition_commit",
+                    "receipt": operation["receipt"],
+                    "already": True,
+                    "release": definition["release"],
+                },
+                "transition",
+            )
+        active = self.authorize_commit(sid, operation, recovery=recovery)
+        definition, module, _ = reconstruct(m.artifacts, operation["definition_id"])
         authorization = {
             "principal_id": m.context.principal_id,
             "workspace_id": m.context.workspace_id,
@@ -232,6 +254,9 @@ class Operations:
         m.save_operation(sid, operation)
         subject.update(m.subject(sid, definition, operation["source_history"], opid))
         store = Store.open(m.backend(sid, operation=operation))
+        if recovery:
+            m.recovery_publication_attempted = True
+            m.recovery_operation_id = opid
         try:
             committed = store.commit(module, operation["bundle"])
         except StateConflict:
@@ -311,10 +336,99 @@ class Operations:
         result = self.report(args["system_id"], args["operation_id"])
         return self.manager.response("recovery", "operation_status", subject, result)
 
+    def reconcile_transition(self, sid: str, opid: str) -> JSON:
+        """Reconcile under the writer boundary without allowing domain publication.
+
+        An unchanged exact Core history establishes nonpublication. If it moved, another
+        OperationId may have committed the same transition. Ask Core about the original
+        bundle using a backend whose publication callbacks always refuse. Only Core's
+        already acknowledgment or StateConflict settles that case; other results fail
+        closed. No bundle fields or semantic hashes are interpreted here.
+        """
+        m = self.manager
+        m.policy.authorize(m.context, "operation_get", sid)
+        m.bound(sid, opid, "transition")
+        operation = m.operation(sid, opid)
+        if operation is None:
+            raise OperationError(
+                "infrastructure",
+                "OPERATION_RECORD_MISSING",
+                "Original operation record is unavailable",
+            )
+        if operation["status"] not in {"committing", "unknown"}:
+            return operation
+        if operation.get("receipt") is not None:
+            raise OperationError(
+                "infrastructure",
+                "OPERATION_RECEIPT_INCONSISTENT",
+                "Operation status and publication receipt disagree",
+            )
+        observed = Store.open(m.backend(sid)).current_history().as_dict()
+        outcome = "not_committed"
+        basis = "original exact Core history unchanged; no atomic publication receipt"
+        if observed != operation["source_history"]:
+            from .authoring import historical_module
+
+            definition, module = historical_module(
+                m.artifacts, operation["definition_id"]
+            )
+            probe = Store.open(m.backend(sid, allow_publication=False))
+            try:
+                acknowledged = probe.commit(module, operation["bundle"])
+            except StateConflict:
+                basis = "Core StateConflict with domain publication disabled"
+            except CommitRefused:
+                raise OperationError(
+                    "infrastructure",
+                    "RECONCILIATION_INCONCLUSIVE",
+                    "Core did not establish the original outcome; domain publication was disabled",
+                    uncertain=True,
+                    retryable=True,
+                ) from None
+            else:
+                if not acknowledged.already:
+                    raise OperationError(
+                        "infrastructure",
+                        "RECONCILIATION_INCONCLUSIVE",
+                        "Core did not acknowledge an existing publication",
+                        uncertain=True,
+                    )
+                history = probe.history_at(acknowledged.result_state.position).as_dict()
+                operation["receipt"] = {
+                    "operation_id": opid,
+                    "record_id": acknowledged.record_id,
+                    "result_state": acknowledged.result_state.as_dict(),
+                    "definition_id": definition["definition_id"],
+                    "behavior_hash": definition["behavior_hash"],
+                    "history_anchor": history,
+                }
+                outcome = "committed"
+                basis = "Core already acknowledgment with domain publication disabled"
+        ref = m.artifacts.put(
+            "operation_reconciliation",
+            {
+                "principal_id": m.context.principal_id,
+                "workspace_id": m.context.workspace_id,
+                "system_id": sid,
+                "operation_id": opid,
+                "outcome": outcome,
+                "basis": basis,
+                "history_anchor": observed,
+                "policy": {
+                    "policy_id": m.policy.document["policy_id"],
+                    "policy_version": m.policy.document["version"],
+                },
+            },
+        )
+        operation.update(status=outcome, reconciliation_ref=ref)
+        m.save_operation(sid, operation)
+        return operation
+
     def recover(self, args: JSON, subject: JSON) -> JSON:
         m = self.manager
         sid = args["system_id"]
         m.policy.authorize(m.context, "system_recover", sid)
+        m.policy.authorize(m.context, "operation_get", sid)
         if "operation_id" in args:
             opid = args["operation_id"]
             subject["operation_id"] = opid
@@ -331,9 +445,23 @@ class Operations:
                 and operation["status"] in {"committing", "unknown"}
                 and binding["kind"] == "transition"
             ):
-                m.recovery_publication_attempted = True
-                m.recovery_operation_id = opid
-                self.commit(operation["commit_request"], dict(subject), recovery=True)
+                operation = self.reconcile_transition(sid, opid)
+                if operation["status"] == "not_committed":
+                    try:
+                        self.authorize_commit(sid, operation, recovery=True)
+                    except OperationError as error:
+                        if error.category not in {"unauthorized", "conflict"}:
+                            raise
+                        # Original nonpublication is established even when a fresh retry
+                        # is outside current authority or deployment conditions.
+                    else:
+                        history = Store.open(m.backend(sid)).current_history().as_dict()
+                        if history == operation["source_history"]:
+                            self.commit(
+                                operation["commit_request"],
+                                dict(subject),
+                                recovery=True,
+                            )
             elif operation is None and binding["kind"] == "activation":
                 # No request receipt in the atomic publication transaction establishes no
                 # publication. Any fresh publication still requires current activation grants.

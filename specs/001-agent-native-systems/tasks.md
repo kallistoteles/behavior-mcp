@@ -434,3 +434,29 @@ The locked quality gate passes 197 tests, the clean installed wheel passes 196 t
 45 public Core backend conformance cases pass. Source-distribution reconstruction reproduces
 the wheel bytes. See `evidence/release-acceptance.json` and `evidence/constitution-check.json`;
 the four previously documented upstream limitations remain explicit.
+
+## Phase 9: PR Review
+
+**Scope**: Address the three review findings on PR #1 at `22a4531` through the existing
+MCP operation and verifier process boundaries. These are corrections to FR-012/FR-013 and host
+resource restrictions, with no new Behavior semantics or dependency update. The host's atomic
+receipt contract and exact Core history establish ordinary outcomes; if history moved, ask Core
+about the original bundle with backend publication disabled, accepting only Core's already or
+StateConflict result and preserving uncertainty otherwise. Only a separately authorized retry
+may publish through Core commit. Keep current workspace/system/read authorization, original
+bundles, historical authority and the all-writer boundary. Use deterministic refused-retry,
+real-process crash/revocation/deployment and oversized stdout/stderr tests. The public Python API
+has no dedicated read-only commit-reconciliation method; compose its supported commit/history
+interfaces with a host backend publication restriction rather than interpreting bundles or
+adding semantic logic. Test two OperationIds for one Core transition and prove the restricted
+backend refuses fresh writes while Core can acknowledge an existing commit. No new upstream
+capability is claimed.
+
+- [X] T097 Persist and reproduce the exact original refused evaluation for identical scoped requests, with failing-then-passing MCP tests for DENY/INVALID_INPUT, restart, changed state/deployment and conflicting request reuse; preserve current authorization and never re-evaluate a refused retry. Sources: PR #1 finding 1, FR-012, FR-013, Constitution VI/IX/XIV.
+- [X] T098 Separate non-publishing transition outcome reconciliation from an optionally authorized original-bundle retry. Establish committed/noncommitted status using the atomic backend/host-receipt contract under the system writer lock; do not require fresh commit/capability/actor/deployment authority to resolve an earlier outcome. Test before/after publication crashes, revoked grants/capabilities, changed actor/policy and allowed/blocked activation changes; preserve fail-closed behavior for unavailable storage and current read/scope authority. Sources: PR #1 finding 2, FR-010, FR-012, FR-013, Constitution VI/VII/VIII/XI/XIV.
+- [X] T099 Bound verifier stdout and stderr separately while draining both concurrently with input and enforcing the deadline. Kill/reap the worker process group on overflow without unbounded draining, return a structured infrastructure refusal without proof, test both streams and worker-capacity recovery, document the operational bounds, then run the full locked gate and refresh acceptance/Constitution Check evidence. Sources: PR #1 finding 3, plan: bounded verification workers, Constitution IX/XIV/XVI.
+
+**PR review completion**: T097–T099 are complete. The final locked gate passes 213 tests,
+the clean installed wheel passes 212 tests, and all 45 public Core Backend conformance cases
+pass, including additional publication-disabled Core checks. Red/green evidence and the exact
+reviewed source/artifact identities are retained in `evidence/`.

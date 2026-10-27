@@ -40,7 +40,11 @@ class SystemManager:
         self.recovery_operation_id: str | None = None
 
     def backend(
-        self, system_id: str, *, operation: JSON | None = None
+        self,
+        system_id: str,
+        *,
+        operation: JSON | None = None,
+        allow_publication: bool = True,
     ) -> SQLiteBackend:
         path = self.artifacts.system_path(system_id)
         if not path.is_file():
@@ -74,7 +78,12 @@ class SystemManager:
                 "SYSTEM_STORAGE_INVALID",
                 "Original system database schema is unavailable; no empty reinitialization is permitted",
             )
-        return SQLiteBackend(path, fault=self.fault, operation=operation)
+        return SQLiteBackend(
+            path,
+            fault=self.fault,
+            operation=operation,
+            allow_publication=allow_publication,
+        )
 
     def metadata(self, system_id: str, key: str) -> JSON | None:
         path = self.artifacts.system_path(system_id)

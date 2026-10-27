@@ -8,15 +8,15 @@
     "./scripts/check"
   ],
   "exit_code": 0,
-  "tests_passed": 197,
-  "installed_wheel_tests_passed": 196,
+  "tests_passed": 213,
+  "installed_wheel_tests_passed": 212,
   "skipped": 0,
   "public_backend_conformance_cases": 45,
   "source_distribution_rebuild_identical": true,
   "wheel_artifact": "dist/behavior_mcp-0.1.0-py3-none-any.whl",
-  "wheel_sha256": "501f54780180bcf46876402d03eedc881cac8f01107e4baeaed45c6f08868fb6",
+  "wheel_sha256": "a6c4b5cbfd43e3b4812d5a71e4a02d6c1926e6da6bc8c23e81318931d8acf285",
   "source_artifact": "dist/behavior_mcp-0.1.0.tar.gz",
-  "source_sha256": "2acdfcf4b30339f226fa2a0f6125b9fc6b3b07908457b56641b36ddba09a76b4",
+  "source_sha256": "509f929d6017b14d42ab79b2423b251199e001ecfd5d7c6667eac4eb2f5802a2",
   "uv_lock_sha256": "5ba548320de9b61e1b5daf1bccf4b9617ca12ea6c7aaf506fee765160d5db918",
   "flake_lock_sha256": "6f371850a8a9e787e19e432c09b1979fd17962a266f991c4b0f0b3adb6d22800",
   "requirements": {
@@ -94,7 +94,8 @@
         "tests/unit/test_delegated_activation.py",
         "tests/integration/test_admin_policy.py",
         "tests/contract/test_system_tools.py",
-        "tests/integration/test_host_limits.py"
+        "tests/integration/test_host_limits.py",
+        "tests/integration/test_uncertain_commit.py"
       ]
     },
     "FR-011": {
@@ -111,7 +112,10 @@
         "tests/contract/test_schema_envelopes.py",
         "tests/unit/test_diagnostics.py",
         "tests/integration/test_server_recovery.py",
-        "tests/acceptance/test_authoring.py"
+        "tests/acceptance/test_authoring.py",
+        "tests/integration/test_runtime_decisions.py",
+        "tests/integration/test_uncertain_commit.py",
+        "tests/unit/test_verification.py"
       ]
     },
     "FR-013": {
@@ -119,7 +123,8 @@
       "evidence": [
         "tests/integration/test_uncertain_commit.py",
         "tests/integration/test_uncertain_activation.py",
-        "tests/integration/test_server_recovery.py"
+        "tests/integration/test_server_recovery.py",
+        "tests/conformance/test_sqlite_backend.py"
       ]
     },
     "FR-014": {
@@ -245,7 +250,7 @@
     "no cross-system transactions",
     "SQLite filesystem/fsync assumptions"
   ],
-  "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 49 packages in 355ms\nUninstalled 1 package in 2ms\n - behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nResolved 49 packages in 2ms\n   Building behavior-mcp @ file:///home/kalle/repos/behavior-mcp\n      Built behavior-mcp @ file:///home/kalle/repos/behavior-mcp\nPrepared 1 package in 283ms\nInstalled 1 package in 4ms\n + behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nReleased dependency identities and public API boundary: PASS\n57 files already formatted\nAll checks passed!\nSuccess: no issues found in 14 source files\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 197 items\n\ntests/acceptance/test_authoring.py ....                                  [  2%]\ntests/acceptance/test_composition.py .                                   [  2%]\ntests/acceptance/test_persistent_runtime.py ....                         [  4%]\ntests/acceptance/test_revision.py .                                      [  5%]\ntests/conformance/test_sqlite_backend.py .                               [  5%]\ntests/contract/test_authoring_tools.py .......                           [  9%]\ntests/contract/test_host_policy_schema.py .......                        [ 12%]\ntests/contract/test_model_coverage.py .......                            [ 16%]\ntests/contract/test_schema_envelopes.py ...................              [ 25%]\ntests/contract/test_stdio_boundary.py .......                            [ 29%]\ntests/contract/test_system_tools.py .................                    [ 38%]\ntests/integration/test_admin_policy.py .....                             [ 40%]\ntests/integration/test_authoring_roundtrip.py ....                       [ 42%]\ntests/integration/test_backend_crashes.py ....                           [ 44%]\ntests/integration/test_composed_provenance.py .                          [ 45%]\ntests/integration/test_definition_artifacts.py ..                        [ 46%]\ntests/integration/test_definition_revision.py .                          [ 46%]\ntests/integration/test_evolution_boundaries.py ....                      [ 48%]\ntests/integration/test_historical_replay.py ..                           [ 49%]\ntests/integration/test_host_limits.py .............                      [ 56%]\ntests/integration/test_host_storage.py ...                               [ 57%]\ntests/integration/test_model_composition.py ..                           [ 58%]\ntests/integration/test_package_installation.py .                         [ 59%]\ntests/integration/test_runtime_decisions.py .                            [ 59%]\ntests/integration/test_server_recovery.py ............                   [ 65%]\ntests/integration/test_system_creation.py ..                             [ 67%]\ntests/integration/test_system_isolation.py ....                          [ 69%]\ntests/integration/test_uncertain_activation.py ...                       [ 70%]\ntests/integration/test_uncertain_commit.py ....                          [ 72%]\ntests/unit/test_delegated_activation.py ............                     [ 78%]\ntests/unit/test_dependencies.py ...............                          [ 86%]\ntests/unit/test_diagnostics.py ............                              [ 92%]\ntests/unit/test_quality_gate.py .                                        [ 92%]\ntests/unit/test_request_flow_adapter.py .......                          [ 96%]\ntests/unit/test_trusted_context.py ...                                   [ 97%]\ntests/unit/test_verification.py ....                                     [100%]\n\n======================= 197 passed in 482.10s (0:08:02) ========================\n",
+  "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 49 packages in 396ms\nUninstalled 1 package in 1ms\n - behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nResolved 49 packages in 134ms\n   Building behavior-mcp @ file:///home/kalle/repos/behavior-mcp\n      Built behavior-mcp @ file:///home/kalle/repos/behavior-mcp\nPrepared 1 package in 273ms\nInstalled 1 package in 4ms\n + behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nReleased dependency identities and public API boundary: PASS\n57 files already formatted\nAll checks passed!\nSuccess: no issues found in 14 source files\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 213 items\n\ntests/acceptance/test_authoring.py ....                                  [  1%]\ntests/acceptance/test_composition.py .                                   [  2%]\ntests/acceptance/test_persistent_runtime.py ....                         [  4%]\ntests/acceptance/test_revision.py .                                      [  4%]\ntests/conformance/test_sqlite_backend.py ..                              [  5%]\ntests/contract/test_authoring_tools.py .......                           [  8%]\ntests/contract/test_host_policy_schema.py .......                        [ 12%]\ntests/contract/test_model_coverage.py .......                            [ 15%]\ntests/contract/test_schema_envelopes.py ...................              [ 24%]\ntests/contract/test_stdio_boundary.py .......                            [ 27%]\ntests/contract/test_system_tools.py .................                    [ 35%]\ntests/integration/test_admin_policy.py .....                             [ 38%]\ntests/integration/test_authoring_roundtrip.py ....                       [ 39%]\ntests/integration/test_backend_crashes.py ....                           [ 41%]\ntests/integration/test_composed_provenance.py .                          [ 42%]\ntests/integration/test_definition_artifacts.py ..                        [ 43%]\ntests/integration/test_definition_revision.py .                          [ 43%]\ntests/integration/test_evolution_boundaries.py ....                      [ 45%]\ntests/integration/test_historical_replay.py ..                           [ 46%]\ntests/integration/test_host_limits.py .............                      [ 52%]\ntests/integration/test_host_storage.py ...                               [ 53%]\ntests/integration/test_model_composition.py ..                           [ 54%]\ntests/integration/test_package_installation.py .                         [ 55%]\ntests/integration/test_runtime_decisions.py ...                          [ 56%]\ntests/integration/test_server_recovery.py ............                   [ 62%]\ntests/integration/test_system_creation.py ..                             [ 63%]\ntests/integration/test_system_isolation.py ....                          [ 65%]\ntests/integration/test_uncertain_activation.py ...                       [ 66%]\ntests/integration/test_uncertain_commit.py ...............               [ 73%]\ntests/unit/test_delegated_activation.py ............                     [ 79%]\ntests/unit/test_dependencies.py ...............                          [ 86%]\ntests/unit/test_diagnostics.py ............                              [ 92%]\ntests/unit/test_quality_gate.py .                                        [ 92%]\ntests/unit/test_request_flow_adapter.py .......                          [ 95%]\ntests/unit/test_trusted_context.py ...                                   [ 97%]\ntests/unit/test_verification.py ......                                   [100%]\n\n======================= 213 passed in 579.57s (0:09:39) ========================\n",
   "constitution_review": "constitution-check.json",
   "installed_scenarios": "quickstart.json",
   "dependency_audit": "dependency-boundary.json",
@@ -257,9 +262,17 @@
       "wheel_sha256": "37a1626c8fa0a44d79d5522bb88158352be0df79878533a999b409d17e49ef7b",
       "source_sha256": "59492e1d9cfcb3415b362fc8fff2229b463f3f55edff4389ec03d9fee952e38b",
       "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 49 packages in 410ms\nUninstalled 1 package in 1ms\n - behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nResolved 49 packages in 147ms\n   Building behavior-mcp @ file:///home/kalle/repos/behavior-mcp\n      Built behavior-mcp @ file:///home/kalle/repos/behavior-mcp\nPrepared 1 package in 272ms\nInstalled 1 package in 4ms\n + behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nReleased dependency identities and public API boundary: PASS\n55 files already formatted\nAll checks passed!\nSuccess: no issues found in 13 source files\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 168 items\n\ntests/acceptance/test_authoring.py ....                                  [  2%]\ntests/acceptance/test_composition.py .                                   [  2%]\ntests/acceptance/test_persistent_runtime.py ....                         [  5%]\ntests/acceptance/test_revision.py .                                      [  5%]\ntests/conformance/test_sqlite_backend.py .                               [  6%]\ntests/contract/test_authoring_tools.py ...                               [  8%]\ntests/contract/test_host_policy_schema.py .......                        [ 12%]\ntests/contract/test_model_coverage.py .......                            [ 16%]\ntests/contract/test_schema_envelopes.py ...............                  [ 25%]\ntests/contract/test_stdio_boundary.py .......                            [ 29%]\ntests/contract/test_system_tools.py ..............                       [ 38%]\ntests/integration/test_admin_policy.py .....                             [ 41%]\ntests/integration/test_authoring_roundtrip.py ....                       [ 43%]\ntests/integration/test_backend_crashes.py ....                           [ 45%]\ntests/integration/test_composed_provenance.py .                          [ 46%]\ntests/integration/test_definition_artifacts.py ..                        [ 47%]\ntests/integration/test_definition_revision.py .                          [ 48%]\ntests/integration/test_evolution_boundaries.py ....                      [ 50%]\ntests/integration/test_historical_replay.py ..                           [ 51%]\ntests/integration/test_host_storage.py ...                               [ 53%]\ntests/integration/test_model_composition.py ..                           [ 54%]\ntests/integration/test_package_installation.py .                         [ 55%]\ntests/integration/test_runtime_decisions.py .                            [ 55%]\ntests/integration/test_server_recovery.py .......                        [ 60%]\ntests/integration/test_system_creation.py ..                             [ 61%]\ntests/integration/test_system_isolation.py ....                          [ 63%]\ntests/integration/test_uncertain_activation.py ...                       [ 65%]\ntests/integration/test_uncertain_commit.py ....                          [ 67%]\ntests/unit/test_delegated_activation.py ............                     [ 75%]\ntests/unit/test_dependencies.py ...............                          [ 83%]\ntests/unit/test_diagnostics.py ............                              [ 91%]\ntests/unit/test_quality_gate.py .                                        [ 91%]\ntests/unit/test_request_flow_adapter.py .......                          [ 95%]\ntests/unit/test_trusted_context.py ...                                   [ 97%]\ntests/unit/test_verification.py ....                                     [100%]\n\n======================= 168 passed in 405.77s (0:06:45) ========================\n"
+    },
+    {
+      "exit_code": 0,
+      "tests_passed": 197,
+      "installed_wheel_tests_passed": 196,
+      "wheel_sha256": "501f54780180bcf46876402d03eedc881cac8f01107e4baeaed45c6f08868fb6",
+      "source_sha256": "2acdfcf4b30339f226fa2a0f6125b9fc6b3b07908457b56641b36ddba09a76b4",
+      "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 49 packages in 355ms\nUninstalled 1 package in 2ms\n - behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nResolved 49 packages in 2ms\n   Building behavior-mcp @ file:///home/kalle/repos/behavior-mcp\n      Built behavior-mcp @ file:///home/kalle/repos/behavior-mcp\nPrepared 1 package in 283ms\nInstalled 1 package in 4ms\n + behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nReleased dependency identities and public API boundary: PASS\n57 files already formatted\nAll checks passed!\nSuccess: no issues found in 14 source files\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 197 items\n\ntests/acceptance/test_authoring.py ....                                  [  2%]\ntests/acceptance/test_composition.py .                                   [  2%]\ntests/acceptance/test_persistent_runtime.py ....                         [  4%]\ntests/acceptance/test_revision.py .                                      [  5%]\ntests/conformance/test_sqlite_backend.py .                               [  5%]\ntests/contract/test_authoring_tools.py .......                           [  9%]\ntests/contract/test_host_policy_schema.py .......                        [ 12%]\ntests/contract/test_model_coverage.py .......                            [ 16%]\ntests/contract/test_schema_envelopes.py ...................              [ 25%]\ntests/contract/test_stdio_boundary.py .......                            [ 29%]\ntests/contract/test_system_tools.py .................                    [ 38%]\ntests/integration/test_admin_policy.py .....                             [ 40%]\ntests/integration/test_authoring_roundtrip.py ....                       [ 42%]\ntests/integration/test_backend_crashes.py ....                           [ 44%]\ntests/integration/test_composed_provenance.py .                          [ 45%]\ntests/integration/test_definition_artifacts.py ..                        [ 46%]\ntests/integration/test_definition_revision.py .                          [ 46%]\ntests/integration/test_evolution_boundaries.py ....                      [ 48%]\ntests/integration/test_historical_replay.py ..                           [ 49%]\ntests/integration/test_host_limits.py .............                      [ 56%]\ntests/integration/test_host_storage.py ...                               [ 57%]\ntests/integration/test_model_composition.py ..                           [ 58%]\ntests/integration/test_package_installation.py .                         [ 59%]\ntests/integration/test_runtime_decisions.py .                            [ 59%]\ntests/integration/test_server_recovery.py ............                   [ 65%]\ntests/integration/test_system_creation.py ..                             [ 67%]\ntests/integration/test_system_isolation.py ....                          [ 69%]\ntests/integration/test_uncertain_activation.py ...                       [ 70%]\ntests/integration/test_uncertain_commit.py ....                          [ 72%]\ntests/unit/test_delegated_activation.py ............                     [ 78%]\ntests/unit/test_dependencies.py ...............                          [ 86%]\ntests/unit/test_diagnostics.py ............                              [ 92%]\ntests/unit/test_quality_gate.py .                                        [ 92%]\ntests/unit/test_request_flow_adapter.py .......                          [ 96%]\ntests/unit/test_trusted_context.py ...                                   [ 97%]\ntests/unit/test_verification.py ....                                     [100%]\n\n======================= 197 passed in 482.10s (0:08:02) ========================\n"
     }
   ],
-  "duration_seconds": 482.1,
+  "duration_seconds": 579.57,
   "convergence": {
     "date": "2026-10-27",
     "findings_closed": 6,
@@ -323,5 +336,53 @@
     ],
     "original_definition_and_history_semantics_preserved": true,
     "new_upstream_gaps": []
+  },
+  "pr_review": {
+    "reviewed_commit": "22a4531b0e316ad0eeac36b5c26274212bed4cd6",
+    "findings_addressed": 3,
+    "tasks": {
+      "T097": {
+        "status": "passed",
+        "finding": "Refused evaluations cannot be retrieved idempotently",
+        "resolution": "Persist original structured refusals; replay identical scoped requests without evaluating again",
+        "evidence": [
+          "tests/integration/test_runtime_decisions.py",
+          "tdd/T097.json"
+        ]
+      },
+      "T098": {
+        "status": "passed",
+        "finding": "Uncertain recovery coupled to current execution permission/deployment",
+        "resolution": "Reconcile before optional fresh publication; exact history and atomic receipt checks, plus public Core already/conflict with backend publication disabled when history moved",
+        "coverage": [
+          "before/after publication process crashes",
+          "revoked commit grant/capability",
+          "changed actor/policy",
+          "blocked/allowed activation changes",
+          "missing read grant prevents retries",
+          "distinct OperationIds sharing one Core transition",
+          "publication-disabled backend refuses fresh writes but permits Core already acknowledgment"
+        ],
+        "evidence": [
+          "tests/integration/test_uncertain_commit.py",
+          "tests/conformance/test_sqlite_backend.py",
+          "tdd/T098.json"
+        ]
+      },
+      "T099": {
+        "status": "passed",
+        "finding": "Verifier output unbounded",
+        "resolution": "Multiplex bounded output/input under deadline; kill/reap process group on overflow without unbounded draining",
+        "stdout_max_bytes": 8388608,
+        "stderr_max_bytes": 1048576,
+        "evidence": [
+          "tests/unit/test_verification.py",
+          "tdd/T099.json"
+        ]
+      }
+    },
+    "no_new_behavior_semantics": true,
+    "new_upstream_gaps": [],
+    "formal_safety_claim": false
   }
 }

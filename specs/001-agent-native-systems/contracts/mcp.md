@@ -15,6 +15,9 @@ Reject frames above 1 MiB before JSON decoding, nesting beyond 32, unknown tool 
 external schema references. These are initial host operational bounds. Build the bounded reader
 through public stream interfaces; the SDK's unbounded line reader alone does not establish this
 limit. Verification uses a bounded worker/deadline and reports timeout or uncertainty honestly.
+Worker stdout is capped at 8 MiB and stderr at 1 MiB, including while sending the request.
+Overflow terminates/reaps the process group, discards output and returns the distinct infrastructure
+code VERIFICATION_STDOUT_LIMIT or VERIFICATION_STDERR_LIMIT; it never establishes verification.
 
 The trusted launcher may tighten these limits through the closed `limits` configuration described
 in `docs/operations.md`. Frame/depth, page defaults/maxima, verifier workers and the two existing
@@ -162,12 +165,30 @@ OperationId is distinct from JSON-RPC request ID. A retry reuses the same Operat
 and request. Changing them under the same ID fails. A genuinely new evaluation gets a new ID
 only after the old operation's outcome is established.
 
+Evaluation stores original refusals as well as allowed evaluations. Identical refused retries
+return the original structured outcome and subject without asking Core to evaluate again, even
+after state/deployment changes. Current evaluation/workspace/system authority remains required.
+
 Before commit, persist the original public bundle. The backend publishes Core documents and its
 host receipt in the same system transaction. On an uncertain reply, inspect the receipt and
 recover through Core with the original bundle; never evaluate a replacement first. A retry that
 could newly commit must satisfy current authorization/deployment conditions. If outcome remains
 unknown, block further mutations of that system and report `outcome_unknown`; other systems
 remain independently usable. Cancellation is not evidence of rollback.
+
+Transition recovery separates outcome reconciliation from execution. Current system_recover and
+operation_get grants permit historical outcome inspection. An unchanged exact Core HistoryRef
+and no receipt establish nonpublication. If history moved, Core must distinguish a different
+operation that committed the same transition from an unpublished candidate: use the retained
+module and original bundle with domain publication disabled in both backend mutation callbacks.
+Only Core's already acknowledgment or StateConflict settles this case; callback refusal and
+other errors remain inconclusive, never fabricated semantic conflicts. Persist host reconciliation
+evidence before considering another attempt; never interpret opaque bundle fields or infer
+nonpublication from unavailable storage. A same-call retry of that original bundle separately checks current commit/capability
+authority, actor, active deployment and source history. Revoked execution authority or a changed
+deployment leaves the known not_committed outcome resolved. Subsequent recovery calls do not
+retry terminal noncommitted operations merely because authority later returns. Original committed
+receipts and their historical authorization do not depend on current execution permission.
 
 ## Activation Retries
 

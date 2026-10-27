@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 
 import pytest
@@ -45,6 +46,44 @@ def test_worker_timeout_is_distinct(proposal):
             timeout=0.1,
         )
     assert error.value.code == "VERIFICATION_TIMEOUT"
+
+
+@pytest.mark.parametrize("stream,blocks", [("stdout", 129), ("stderr", 17)])
+def test_worker_output_is_bounded_and_worker_is_reaped(
+    proposal, tmp_path, stream, blocks
+):
+    pid_path = tmp_path / "worker.pid"
+    script = """import os,sys,time
+from pathlib import Path
+Path(sys.argv[1]).write_text(str(os.getpid()))
+output=getattr(sys,sys.argv[2]).buffer
+for _ in range(int(sys.argv[3])):
+ output.write(b'x'*65536)
+ output.flush()
+time.sleep(10)
+"""
+    module = build(proposal)
+    with pytest.raises(OperationError) as error:
+        verify_module(
+            module,
+            "bounded",
+            worker_command=[
+                sys.executable,
+                "-c",
+                script,
+                str(pid_path),
+                stream,
+                str(blocks),
+            ],
+            timeout=5,
+        )
+    assert error.value.code == f"VERIFICATION_{stream.upper()}_LIMIT"
+    assert error.value.category == "infrastructure"
+    assert "x" * 100 not in str(error.value)
+    with pytest.raises(ProcessLookupError):
+        os.kill(int(pid_path.read_text()), 0)
+    # A killed worker must release capacity and leave subsequent public verification usable.
+    assert verify_module(module, "bounded")["verification_status"] == "verified"
 
 
 def test_inconclusive_report_cannot_be_projected_as_verified(proposal):

@@ -2,7 +2,7 @@
   "status": "passed",
   "scope": "implemented supported scenarios; unsupported outcomes remain explicit",
   "installed_package_evidence": "package.json",
-  "installed_suite_tests_passed": 196,
+  "installed_suite_tests_passed": 212,
   "runtime_source_bytes_equal_installed_wheel": true,
   "scenarios": {
     "discovery_propose_admit_verify": [
@@ -70,6 +70,21 @@
       "tests/integration/test_host_limits.py",
       "tests/unit/test_verification.py",
       "tests/contract/test_stdio_boundary.py"
+    ]
+  },
+  "pr_review_scenarios": {
+    "T097": [
+      "tests/integration/test_runtime_decisions.py",
+      "tdd/T097.json"
+    ],
+    "T098": [
+      "tests/integration/test_uncertain_commit.py",
+      "tests/conformance/test_sqlite_backend.py",
+      "tdd/T098.json"
+    ],
+    "T099": [
+      "tests/unit/test_verification.py",
+      "tdd/T099.json"
     ]
   }
 }

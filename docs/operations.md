@@ -87,6 +87,10 @@ declaration input. JSON object-member ordering cannot change admitted identities
 supply base ProposalId and expected revision; validation always freezes an exact source revision.
 
 Evaluation returns an opaque token only for an actual Core ALLOW bundle. It does not commit.
+Refused evaluations retain their original structured refusal as well. An identical scoped retry
+returns that same outcome, source history and definition after restart or a later activation,
+without re-evaluating against current state. Current evaluation authority is still required;
+changing a request under the same OperationId conflicts.
 Commit uses the same OperationId and token, rechecking current authority/deployment before Core
 publishes. Domain actors and time come from the trusted host, and the original evaluation context
 and bundle remain recorded. Clients cannot supply execution context, approval flags or paths.
@@ -120,6 +124,12 @@ the server checks the returned parameters against the request. The process-wide 
 remains two, with the configured per-server cap enforced as well. Each system still has one
 coordinated writer. MCP arguments cannot change any host limit.
 
+Verifier process output has separate fixed maxima of 8 MiB stdout and 1 MiB stderr. The host
+multiplexes request writes and both output streams under the worker deadline. Stderr is counted
+and discarded. Exceeding either maximum kills/reaps the worker process group and returns
+`VERIFICATION_STDOUT_LIMIT` or `VERIFICATION_STDERR_LIMIT` as an infrastructure error, without
+reporting a proof or exposing worker output. Timeout/overflow cleanup performs no unbounded drain.
+
 `definition_get` with a DefinitionId returns a `definition_inspection`: its original manifest
 and source snapshot, separately identified module/context/lowering-receipt contents, and retained
 definition-specific validation/verification evidence. Inspection checks artifact references and
@@ -147,6 +157,30 @@ After a lost acknowledgment, inspect `operation_get` and reuse the original Oper
 For transitions, the original Core bundle and atomic receipt establish whether the original
 mutation committed. Never evaluate a replacement first. An unresolved operation blocks further
 mutations of its system; other systems remain independent. Cancellation proves no rollback.
+
+Recovery first reconciles the historical outcome, independently of current permission to execute
+it. This requires current `system_recover` and `operation_get` authority for that system. Every
+supported writer publishes Core changes and its receipt atomically under the system writer lock.
+An unchanged exact Core HistoryRef and no receipt establish nonpublication. If history moved,
+another OperationId might have committed the same transition, so a missing receipt alone is
+insufficient. The host loads the retained original module and asks public Core to check the
+original bundle with domain publication disabled in both backend mutation callbacks. Core's
+`already` acknowledgment establishes commitment; Core's `StateConflict` establishes noncommitment
+under the coordinated writer boundary. Any other inconclusive/error result preserves uncertainty.
+The backend never fabricates a Core conflict: a prohibited callback raises a backend error and
+cannot write. The host records reconciliation evidence without interpreting bundle fields or
+recomputing semantic identities. Missing or unreadable original storage cannot establish
+nonpublication. This composes existing public interfaces; it does not claim a dedicated Core
+read-only reconciliation API.
+
+Only after that observation may the same recovery request retry the original bundle. Fresh
+publication still requires the current commit grant, allowed capability, original actor and
+deployment, and unchanged source history; Core still owns the actual compare-and-set commit.
+If those conditions are absent, recovery returns the established `not_committed` outcome and
+unblocks later authorized work. A later recovery of that terminal operation never silently
+retries it after permissions return. Existing committed receipts remain readable under current
+read authority even after execution permissions, actor or deployment change. Original evaluation
+and publication authority remain unchanged; reconciliation records its own current authority.
 
 Activation retries resolve their own atomic host receipt before stale revision/history CAS. The
 response returns the original receipt and separately observed current deployment, even after a
