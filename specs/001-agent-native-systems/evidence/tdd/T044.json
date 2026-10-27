@@ -1,0 +1,38 @@
+{
+  "task": "T044",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_system_isolation.py"
+    ],
+    "exit_code": 1,
+    "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n______ test_equal_genesis_stores_remain_isolated_during_simultaneous_use _______\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.EKfKOg/pytest-of-kalle/pytest-0/test_equal_genesis_stores_rema0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff2e27cb0>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_equal_genesis_stores_remain_isolated_during_simultaneous_use(trusted_setup,proposal):\n        root,ctx,_,_=trusted_setup;app=Application(root,ctx,'local-delegation')\n>       one,d,c1,a1=create_active(app,proposal,'1');two,_,c2,_=create_active(app,proposal,'2')\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_system_isolation.py:8: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\napp = <behavior_mcp.server.Application object at 0x7ffff1edc590>\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\nsuffix = '1'\n\n    def create_active(app,proposal,suffix='1'):\n        definition=authored(app,proposal)\n        created=app.execute('systems_create',{'definition_id':definition['definition_id'],'operation_id':'create-'+suffix})\n>       assert created['outcome']=='created',created\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'read', 'outcome': 'infrastructure_failure', 'subject': {'workspace_id': 'workspace-1'}, 'result': {}, 'evidence': [], 'error': {'category': 'infrastructure', 'code': 'INFRASTRUCTURE_FAILURE', 'message': 'Operation could not be completed', 'retryable': True, 'operation_may_have_committed': False}}\n\ntests/fixtures/runtime.py:17: AssertionError\n_________ test_stale_evaluation_conflicts_and_policy_updates_serialize _________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.EKfKOg/pytest-of-kalle/pytest-0/test_stale_evaluation_conflict0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1e8d810>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\npolicy_document = {'format': 'behavior-mcp.host-policy.v1', 'policy_id': 'local-delegation', 'version': 1, 'issuer_id': 'local-operator', ...}\nsubprocess_python = <function subprocess_python.<locals>.run at 0x7ffff1bf1b20>\n\n    def test_stale_evaluation_conflicts_and_policy_updates_serialize(trusted_setup,proposal,policy_document,subprocess_python):\n>       root,ctx,_,_=trusted_setup;app=Application(root,ctx,'local-delegation');sid,_,_,_=create_active(app,proposal)\n                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_system_isolation.py:23: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\napp = <behavior_mcp.server.Application object at 0x7ffff1e8d6d0>\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\nsuffix = '1'\n\n    def create_active(app,proposal,suffix='1'):\n        definition=authored(app,proposal)\n        created=app.execute('systems_create',{'definition_id':definition['definition_id'],'operation_id':'create-'+suffix})\n>       assert created['outcome']=='created',created\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'read', 'outcome': 'infrastructure_failure', 'subject': {'workspace_id': 'workspace-1'}, 'result': {}, 'evidence': [], 'error': {'category': 'infrastructure', 'code': 'INFRASTRUCTURE_FAILURE', 'message': 'Operation could not be completed', 'retryable': True, 'operation_may_have_committed': False}}\n\ntests/fixtures/runtime.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_system_isolation.py::test_equal_genesis_stores_remain_isolated_during_simultaneous_use\nFAILED tests/integration/test_system_isolation.py::test_stale_evaluation_conflicts_and_policy_updates_serialize\n2 failed in 3.17s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us2.json"
+    }
+  ]
+}

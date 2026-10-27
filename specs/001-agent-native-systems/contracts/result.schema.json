@@ -1,0 +1,2971 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:behavior-mcp:result:v1",
+  "title": "Discriminated request, outcome and evidence boundary",
+  "type": "object",
+  "properties": {
+    "format": {
+      "const": "behavior-mcp.result.v1"
+    },
+    "request_status": {
+      "enum": [
+        "completed",
+        "refused",
+        "failed",
+        "unknown"
+      ]
+    },
+    "stage": {
+      "enum": [
+        "discovery",
+        "authoring",
+        "validation",
+        "verification",
+        "system_creation",
+        "read",
+        "activation",
+        "evaluation",
+        "commit",
+        "recovery"
+      ]
+    },
+    "outcome": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "subject": {
+      "type": "object",
+      "properties": {
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "proposal_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "behavior_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "schema_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "model_hashes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "minItems": 0
+        },
+        "history_anchor": {
+          "$ref": "#/$defs/history_anchor"
+        },
+        "activation_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "release": {
+          "$ref": "#/$defs/release"
+        }
+      },
+      "required": [
+        "workspace_id"
+      ],
+      "additionalProperties": false
+    },
+    "result": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence_reference"
+      },
+      "minItems": 0
+    },
+    "error": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "category": {
+              "enum": [
+                "invalid_input",
+                "model_invalid",
+                "semantic_refusal",
+                "unauthorized",
+                "conflict",
+                "unsupported",
+                "infrastructure"
+              ]
+            },
+            "code": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1
+            },
+            "retryable": {
+              "type": "boolean"
+            },
+            "operation_may_have_committed": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "category",
+            "code",
+            "message",
+            "retryable",
+            "operation_may_have_committed"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "format",
+    "request_status",
+    "stage",
+    "outcome",
+    "subject",
+    "result",
+    "evidence",
+    "error"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "release": {
+      "type": "object",
+      "properties": {
+        "behavior_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "behavior_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "core_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "core_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "verifier_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "adapter_profile": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "adapter_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "python_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "behavior_version",
+        "behavior_commit",
+        "core_version",
+        "core_commit",
+        "verifier_version"
+      ],
+      "additionalProperties": false
+    },
+    "history_anchor": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "const": "behavior.history_ref.v1"
+        },
+        "store": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "state": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "record": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "format",
+        "store",
+        "state",
+        "position",
+        "record"
+      ],
+      "additionalProperties": false
+    },
+    "proposal_source": {
+      "type": "object",
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "proposal_revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "proposal_id",
+        "proposal_revision"
+      ],
+      "additionalProperties": false
+    },
+    "policy_ref": {
+      "type": "object",
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "policy_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "policy_id",
+        "policy_version"
+      ],
+      "additionalProperties": false
+    },
+    "activation_ref": {
+      "type": "object",
+      "properties": {
+        "activation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "activation_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "behavior_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "activation_id",
+        "activation_revision",
+        "definition_id",
+        "behavior_hash"
+      ],
+      "additionalProperties": false
+    },
+    "proposal_snapshot": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "proposal"
+        },
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "proposal_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "parent_definition_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          ]
+        },
+        "proposal": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "construction_context": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "metadata": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "kind",
+        "proposal_id",
+        "proposal_revision",
+        "parent_definition_id",
+        "proposal",
+        "construction_context",
+        "metadata"
+      ],
+      "additionalProperties": false
+    },
+    "definition_manifest": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "definition"
+        },
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "source": {
+          "$ref": "#/$defs/proposal_source"
+        },
+        "parent_definition_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          ]
+        },
+        "behavior_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "schema_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "model_kind": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "model_semantic_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "lowerer_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "model_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "canonical_document": {
+                "type": "object",
+                "minProperties": 1
+              },
+              "receipt_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              }
+            },
+            "required": [
+              "model_kind",
+              "model_semantic_version",
+              "lowerer_version",
+              "model_hash",
+              "canonical_document",
+              "receipt_ref"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "module_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "construction_context_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "release": {
+          "$ref": "#/$defs/release"
+        }
+      },
+      "required": [
+        "kind",
+        "definition_id",
+        "source",
+        "parent_definition_id",
+        "behavior_hash",
+        "schema_hash",
+        "models",
+        "module_ref",
+        "construction_context_ref",
+        "release"
+      ],
+      "additionalProperties": false
+    },
+    "activation_record": {
+      "type": "object",
+      "properties": {
+        "activation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "behavior_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "schema_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "previous_activation_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "activation_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "policy": {
+          "$ref": "#/$defs/policy_ref"
+        },
+        "authorization_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "history_anchor": {
+          "$ref": "#/$defs/history_anchor"
+        },
+        "validation_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 1
+        },
+        "verification_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0
+        },
+        "release": {
+          "$ref": "#/$defs/release"
+        },
+        "request_binding_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "activation_id",
+        "operation_id",
+        "workspace_id",
+        "system_id",
+        "definition_id",
+        "behavior_hash",
+        "schema_hash",
+        "previous_activation_revision",
+        "activation_revision",
+        "policy",
+        "authorization_ref",
+        "history_anchor",
+        "validation_evidence_refs",
+        "verification_evidence_refs",
+        "release",
+        "request_binding_ref"
+      ],
+      "additionalProperties": false
+    },
+    "transition_receipt": {
+      "type": "object",
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "record_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "result_state": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "position": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "state",
+            "position"
+          ],
+          "additionalProperties": false
+        },
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "behavior_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "history_anchor": {
+          "$ref": "#/$defs/history_anchor"
+        }
+      },
+      "required": [
+        "operation_id",
+        "record_id",
+        "result_state",
+        "definition_id",
+        "behavior_hash",
+        "history_anchor"
+      ],
+      "additionalProperties": false
+    },
+    "creation_receipt": {
+      "type": "object",
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "store_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "history_anchor": {
+          "$ref": "#/$defs/history_anchor"
+        }
+      },
+      "required": [
+        "operation_id",
+        "system_id",
+        "definition_id",
+        "store_id",
+        "history_anchor"
+      ],
+      "additionalProperties": false
+    },
+    "evidence_reference": {
+      "type": "object",
+      "properties": {
+        "evidence_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "kind": {
+          "enum": [
+            "validation",
+            "verification",
+            "activation",
+            "transition",
+            "recovery"
+          ]
+        },
+        "report_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "subject": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "release": {
+          "$ref": "#/$defs/release"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "kind",
+        "report_ref",
+        "subject",
+        "release"
+      ],
+      "additionalProperties": false
+    },
+    "verification_result": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "verification"
+        },
+        "verification_status": {
+          "enum": [
+            "verified",
+            "not_verified",
+            "inconclusive",
+            "unsupported",
+            "incomplete",
+            "timeout"
+          ]
+        },
+        "upstream_result": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "semantic_profile": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "minProperties": 1
+          },
+          "minItems": 0
+        },
+        "obligations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "minProperties": 1
+          },
+          "minItems": 0
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              {
+                "type": "object",
+                "minProperties": 1
+              }
+            ]
+          },
+          "minItems": 0
+        },
+        "report_identity": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "report": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "release": {
+          "$ref": "#/$defs/release"
+        }
+      },
+      "required": [
+        "kind",
+        "verification_status",
+        "upstream_result",
+        "profile_id",
+        "semantic_profile",
+        "checks",
+        "obligations",
+        "assumptions",
+        "report_identity",
+        "report",
+        "release"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "verification_status": {
+                "const": "verified"
+              }
+            },
+            "required": [
+              "verification_status"
+            ]
+          },
+          "then": {
+            "anyOf": [
+              {
+                "properties": {
+                  "checks": {
+                    "minItems": 1
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "obligations": {
+                    "minItems": 1
+                  }
+                }
+              }
+            ],
+            "properties": {
+              "upstream_result": {
+                "const": "verified"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "operation_report": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "operation_report"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation_kind": {
+          "enum": [
+            "transition",
+            "activation",
+            "system_creation"
+          ]
+        },
+        "status": {
+          "enum": [
+            "evaluated",
+            "committing",
+            "committed",
+            "not_committed",
+            "refused",
+            "unknown"
+          ]
+        },
+        "operation_may_have_committed": {
+          "type": "boolean"
+        },
+        "receipt": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/activation_record"
+                },
+                {
+                  "$ref": "#/$defs/transition_receipt"
+                },
+                {
+                  "$ref": "#/$defs/creation_receipt"
+                }
+              ]
+            }
+          ]
+        },
+        "observed_current_deployment": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/activation_ref"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "operation_id",
+        "operation_kind",
+        "status",
+        "operation_may_have_committed",
+        "receipt",
+        "observed_current_deployment"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "committed"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "receipt": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation_kind": {
+                "const": "activation"
+              },
+              "status": {
+                "const": "committed"
+              }
+            },
+            "required": [
+              "operation_kind",
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "receipt": {
+                "$ref": "#/$defs/activation_record"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation_kind": {
+                "const": "transition"
+              },
+              "status": {
+                "const": "committed"
+              }
+            },
+            "required": [
+              "operation_kind",
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "receipt": {
+                "$ref": "#/$defs/transition_receipt"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation_kind": {
+                "const": "system_creation"
+              },
+              "status": {
+                "const": "committed"
+              }
+            },
+            "required": [
+              "operation_kind",
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "receipt": {
+                "$ref": "#/$defs/creation_receipt"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "evaluated",
+                  "committing",
+                  "not_committed",
+                  "refused",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "receipt": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "failure_result": {
+      "type": "object",
+      "properties": {
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "minProperties": 1
+          },
+          "minItems": 0
+        },
+        "core_decision": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "resolution": {
+          "enum": [
+            "not_committed",
+            "unknown"
+          ]
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "stages": {
+          "type": "object",
+          "properties": {
+            "structural": {
+              "enum": [
+                "passed",
+                "failed",
+                "unsupported",
+                "not_run"
+              ]
+            },
+            "model": {
+              "enum": [
+                "passed",
+                "failed",
+                "unsupported",
+                "not_run"
+              ]
+            },
+            "lowering": {
+              "enum": [
+                "passed",
+                "failed",
+                "unsupported",
+                "not_run"
+              ]
+            },
+            "admission": {
+              "enum": [
+                "passed",
+                "failed",
+                "unsupported",
+                "not_run"
+              ]
+            }
+          },
+          "required": [
+            "structural",
+            "model",
+            "lowering",
+            "admission"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "system_recovery": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "system_recovery"
+        },
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "lifecycle": {
+          "enum": [
+            "inactive",
+            "active"
+          ]
+        },
+        "recovered_operations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/operation_report"
+          }
+        },
+        "active": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/activation_ref"
+            }
+          ]
+        },
+        "history_anchor": {
+          "$ref": "#/$defs/history_anchor"
+        },
+        "release": {
+          "$ref": "#/$defs/release"
+        }
+      },
+      "required": [
+        "kind",
+        "system_id",
+        "lifecycle",
+        "recovered_operations",
+        "active",
+        "history_anchor",
+        "release"
+      ],
+      "additionalProperties": false
+    },
+    "linked_artifact": {
+      "type": "object",
+      "properties": {
+        "artifact_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "kind": {
+          "enum": [
+            "module",
+            "construction_context",
+            "lowering_receipt"
+          ]
+        },
+        "document": {
+          "type": "object",
+          "minProperties": 1
+        }
+      },
+      "required": [
+        "artifact_ref",
+        "kind",
+        "document"
+      ],
+      "additionalProperties": false
+    },
+    "retained_evidence": {
+      "type": "object",
+      "properties": {
+        "artifact_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "kind": {
+          "enum": [
+            "validation_evidence",
+            "verification_evidence"
+          ]
+        },
+        "document": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "object",
+              "minProperties": 1
+            },
+            "report": {
+              "type": "object",
+              "minProperties": 1
+            },
+            "release": {
+              "$ref": "#/$defs/release"
+            }
+          },
+          "required": [
+            "subject",
+            "report",
+            "release"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "artifact_ref",
+        "kind",
+        "document"
+      ],
+      "additionalProperties": false
+    },
+    "definition_inspection": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "definition_inspection"
+        },
+        "definition": {
+          "$ref": "#/$defs/definition_manifest"
+        },
+        "source": {
+          "$ref": "#/$defs/proposal_snapshot"
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/linked_artifact"
+          },
+          "minItems": 3
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/retained_evidence"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "definition",
+        "source",
+        "artifacts",
+        "evidence"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          }
+        },
+        "required": [
+          "request_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "error": {
+            "type": "null"
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "stage": {
+                "const": "discovery"
+              },
+              "outcome": {
+                "enum": [
+                  "listed"
+                ]
+              },
+              "result": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "const": "models"
+                      },
+                      "models": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "minProperties": 1
+                        },
+                        "minItems": 0
+                      },
+                      "release": {
+                        "$ref": "#/$defs/release"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "models",
+                      "release"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "const": "systems"
+                      },
+                      "systems": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "system_id": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 256
+                            },
+                            "lifecycle": {
+                              "enum": [
+                                "creating",
+                                "inactive",
+                                "active",
+                                "recovery_required"
+                              ]
+                            },
+                            "active": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "$ref": "#/$defs/activation_ref"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "system_id",
+                            "lifecycle",
+                            "active"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 0
+                      },
+                      "next_cursor": {
+                        "oneOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 256
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "systems",
+                      "next_cursor"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "const": "capabilities"
+                      },
+                      "system_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "definition_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "behavior_hash": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      },
+                      "schema_hash": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      },
+                      "capabilities": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "minProperties": 1
+                        },
+                        "minItems": 0
+                      },
+                      "release": {
+                        "$ref": "#/$defs/release"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "system_id",
+                      "definition_id",
+                      "behavior_hash",
+                      "schema_hash",
+                      "capabilities",
+                      "release"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "const": "gaps"
+                      },
+                      "gaps": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "gap_id": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 256
+                            },
+                            "capability": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 256
+                            },
+                            "status": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 256
+                            },
+                            "evidence_refs": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 256
+                              },
+                              "minItems": 0
+                            }
+                          },
+                          "required": [
+                            "gap_id",
+                            "capability",
+                            "status",
+                            "evidence_refs"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 0
+                      },
+                      "release": {
+                        "$ref": "#/$defs/release"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "gaps",
+                      "release"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "subject": {
+                "required": [
+                  "workspace_id"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          },
+          {
+            "properties": {
+              "stage": {
+                "const": "authoring"
+              },
+              "outcome": {
+                "enum": [
+                  "proposal_stored",
+                  "proposal_loaded",
+                  "definition_loaded"
+                ]
+              },
+              "result": {
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/proposal_snapshot"
+                  },
+                  {
+                    "$ref": "#/$defs/definition_inspection"
+                  }
+                ]
+              },
+              "subject": {
+                "required": [
+                  "workspace_id"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          },
+          {
+            "properties": {
+              "stage": {
+                "const": "validation"
+              },
+              "outcome": {
+                "enum": [
+                  "admitted"
+                ]
+              },
+              "result": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "validation"
+                  },
+                  "stages": {
+                    "type": "object",
+                    "properties": {
+                      "structural": {
+                        "const": "passed"
+                      },
+                      "model": {
+                        "const": "passed"
+                      },
+                      "lowering": {
+                        "const": "passed"
+                      },
+                      "admission": {
+                        "const": "passed"
+                      }
+                    },
+                    "required": [
+                      "structural",
+                      "model",
+                      "lowering",
+                      "admission"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "definition": {
+                    "$ref": "#/$defs/definition_manifest"
+                  },
+                  "generated_capabilities": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "minProperties": 1
+                    },
+                    "minItems": 0
+                  },
+                  "diagnostics": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "minProperties": 1
+                    },
+                    "minItems": 0
+                  }
+                },
+                "required": [
+                  "kind",
+                  "stages",
+                  "definition",
+                  "generated_capabilities",
+                  "diagnostics"
+                ],
+                "additionalProperties": false
+              },
+              "subject": {
+                "required": [
+                  "workspace_id",
+                  "definition_id",
+                  "behavior_hash",
+                  "schema_hash",
+                  "release",
+                  "proposal_id",
+                  "proposal_revision"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          },
+          {
+            "properties": {
+              "stage": {
+                "const": "verification"
+              },
+              "outcome": {
+                "enum": [
+                  "verification_verified",
+                  "verification_not_verified",
+                  "verification_inconclusive",
+                  "verification_unsupported",
+                  "verification_incomplete",
+                  "verification_timeout"
+                ]
+              },
+              "result": {
+                "$ref": "#/$defs/verification_result"
+              },
+              "subject": {
+                "required": [
+                  "workspace_id",
+                  "definition_id",
+                  "behavior_hash",
+                  "schema_hash",
+                  "release"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          },
+          {
+            "properties": {
+              "stage": {
+                "const": "system_creation"
+              },
+              "outcome": {
+                "enum": [
+                  "created",
+                  "already_created"
+                ]
+              },
+              "result": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "system_creation"
+                  },
+                  "lifecycle": {
+                    "const": "inactive"
+                  },
+                  "receipt": {
+                    "$ref": "#/$defs/creation_receipt"
+                  },
+                  "release": {
+                    "$ref": "#/$defs/release"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "lifecycle",
+                  "receipt",
+                  "release"
+                ],
+                "additionalProperties": false
+              },
+              "subject": {
+                "required": [
+                  "workspace_id",
+                  "system_id",
+                  "operation_id",
+                  "definition_id",
+                  "behavior_hash",
+                  "schema_hash",
+                  "history_anchor",
+                  "release"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          },
+          {
+            "properties": {
+              "stage": {
+                "const": "activation"
+              },
+              "outcome": {
+                "enum": [
+                  "activated",
+                  "already_activated"
+                ]
+              },
+              "result": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "activation"
+                  },
+                  "receipt": {
+                    "$ref": "#/$defs/activation_record"
+                  },
+                  "observed_current_deployment": {
+                    "$ref": "#/$defs/activation_ref"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "receipt",
+                  "observed_current_deployment"
+                ],
+                "additionalProperties": false
+              },
+              "subject": {
+                "required": [
+                  "workspace_id",
+                  "system_id",
+                  "operation_id",
+                  "definition_id",
+                  "behavior_hash",
+                  "schema_hash",
+                  "history_anchor",
+                  "release"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          },
+          {
+            "properties": {
+              "stage": {
+                "const": "read"
+              },
+              "outcome": {
+                "enum": [
+                  "read"
+                ]
+              },
+              "result": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "const": "system"
+                      },
+                      "system_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "lifecycle": {
+                        "enum": [
+                          "creating",
+                          "inactive",
+                          "active",
+                          "recovery_required"
+                        ]
+                      },
+                      "initializing_definition_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "active": {
+                        "oneOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "$ref": "#/$defs/activation_ref"
+                          }
+                        ]
+                      },
+                      "history_anchor": {
+                        "oneOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "$ref": "#/$defs/history_anchor"
+                          }
+                        ]
+                      },
+                      "permitted_operations": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 256
+                        },
+                        "minItems": 0
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "system_id",
+                      "lifecycle",
+                      "initializing_definition_id",
+                      "active",
+                      "history_anchor",
+                      "permitted_operations"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "const": "state_page"
+                      },
+                      "system_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "read_definition_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 256
+                      },
+                      "behavior_hash": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      },
+                      "schema_hash": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      },
+                      "history_anchor": {
+                        "$ref": "#/$defs/history_anchor"
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "minProperties": 1
+                        },
+                        "minItems": 0
+                      },
+                      "next_cursor": {
+                        "oneOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 256
+                          }
+                        ]
+                      },
+                      "release": {
+                        "$ref": "#/$defs/release"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "system_id",
+                      "read_definition_id",
+                      "behavior_hash",
+                      "schema_hash",
+                      "history_anchor",
+                      "records",
+                      "next_cursor",
+                      "release"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "subject": {
+                "required": [
+                  "workspace_id",
+                  "system_id"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          },
+          {
+            "properties": {
+              "stage": {
+                "const": "evaluation"
+              },
+              "outcome": {
+                "enum": [
+                  "evaluation_allowed"
+                ]
+              },
+              "result": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "evaluation"
+                  },
+                  "operation_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "evaluation_token": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "decision": {
+                    "type": "object",
+                    "properties": {
+                      "result": {
+                        "const": "ALLOW"
+                      },
+                      "reasons": {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 256
+                            },
+                            {
+                              "type": "object",
+                              "minProperties": 1
+                            }
+                          ]
+                        },
+                        "minItems": 0
+                      }
+                    },
+                    "required": [
+                      "result",
+                      "reasons"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "source_history": {
+                    "$ref": "#/$defs/history_anchor"
+                  },
+                  "trusted_context": {
+                    "type": "object",
+                    "minProperties": 1
+                  },
+                  "release": {
+                    "$ref": "#/$defs/release"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "operation_id",
+                  "evaluation_token",
+                  "decision",
+                  "source_history",
+                  "trusted_context",
+                  "release"
+                ],
+                "additionalProperties": false
+              },
+              "subject": {
+                "required": [
+                  "workspace_id",
+                  "system_id",
+                  "operation_id",
+                  "definition_id",
+                  "behavior_hash",
+                  "schema_hash",
+                  "history_anchor",
+                  "release"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          },
+          {
+            "properties": {
+              "stage": {
+                "const": "commit"
+              },
+              "outcome": {
+                "enum": [
+                  "committed",
+                  "already_committed"
+                ]
+              },
+              "result": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "transition_commit"
+                  },
+                  "receipt": {
+                    "$ref": "#/$defs/transition_receipt"
+                  },
+                  "already": {
+                    "type": "boolean"
+                  },
+                  "release": {
+                    "$ref": "#/$defs/release"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "receipt",
+                  "already",
+                  "release"
+                ],
+                "additionalProperties": false
+              },
+              "subject": {
+                "required": [
+                  "workspace_id",
+                  "system_id",
+                  "operation_id",
+                  "definition_id",
+                  "behavior_hash",
+                  "schema_hash",
+                  "history_anchor",
+                  "release"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          },
+          {
+            "properties": {
+              "stage": {
+                "const": "recovery"
+              },
+              "outcome": {
+                "enum": [
+                  "operation_status",
+                  "recovered",
+                  "system_recovered"
+                ]
+              },
+              "result": {
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/operation_report"
+                  },
+                  {
+                    "$ref": "#/$defs/system_recovery"
+                  }
+                ]
+              },
+              "subject": {
+                "required": [
+                  "workspace_id",
+                  "system_id"
+                ]
+              }
+            },
+            "required": [
+              "stage",
+              "outcome",
+              "result",
+              "subject"
+            ]
+          }
+        ]
+      },
+      "else": {
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "enum": [
+                  "invalid_input",
+                  "model_invalid",
+                  "semantic_refusal",
+                  "unauthorized",
+                  "conflict",
+                  "unsupported",
+                  "infrastructure"
+                ]
+              },
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1
+              },
+              "retryable": {
+                "type": "boolean"
+              },
+              "operation_may_have_committed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "category",
+              "code",
+              "message",
+              "retryable",
+              "operation_may_have_committed"
+            ],
+            "additionalProperties": false
+          },
+          "result": {
+            "$ref": "#/$defs/failure_result"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "refused"
+          }
+        },
+        "required": [
+          "request_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "enum": [
+              "invalid_input",
+              "model_invalid",
+              "semantic_refusal",
+              "unauthorized",
+              "conflict",
+              "unsupported"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "failed"
+          }
+        },
+        "required": [
+          "request_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "enum": [
+              "infrastructure_failure",
+              "timeout"
+            ]
+          },
+          "error": {
+            "properties": {
+              "category": {
+                "const": "infrastructure"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "unknown"
+          }
+        },
+        "required": [
+          "request_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "const": "outcome_unknown"
+          },
+          "subject": {
+            "required": [
+              "system_id",
+              "operation_id"
+            ]
+          },
+          "error": {
+            "properties": {
+              "category": {
+                "const": "infrastructure"
+              },
+              "operation_may_have_committed": {
+                "const": true
+              }
+            }
+          },
+          "stage": {
+            "enum": [
+              "system_creation",
+              "activation",
+              "commit",
+              "recovery"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "refused"
+          },
+          "outcome": {
+            "const": "invalid_input"
+          }
+        },
+        "required": [
+          "request_status",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "error": {
+            "properties": {
+              "category": {
+                "const": "invalid_input"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "refused"
+          },
+          "outcome": {
+            "const": "model_invalid"
+          }
+        },
+        "required": [
+          "request_status",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "error": {
+            "properties": {
+              "category": {
+                "const": "model_invalid"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "refused"
+          },
+          "outcome": {
+            "const": "semantic_refusal"
+          }
+        },
+        "required": [
+          "request_status",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "error": {
+            "properties": {
+              "category": {
+                "const": "semantic_refusal"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "refused"
+          },
+          "outcome": {
+            "const": "unauthorized"
+          }
+        },
+        "required": [
+          "request_status",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "error": {
+            "properties": {
+              "category": {
+                "const": "unauthorized"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "refused"
+          },
+          "outcome": {
+            "const": "conflict"
+          }
+        },
+        "required": [
+          "request_status",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "error": {
+            "properties": {
+              "category": {
+                "const": "conflict"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "refused"
+          },
+          "outcome": {
+            "const": "unsupported"
+          }
+        },
+        "required": [
+          "request_status",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "error": {
+            "properties": {
+              "category": {
+                "const": "unsupported"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "verification"
+          },
+          "outcome": {
+            "const": "verification_verified"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "verification_status": {
+                "const": "verified"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "verification"
+          },
+          "outcome": {
+            "const": "verification_not_verified"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "verification_status": {
+                "const": "not_verified"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "verification"
+          },
+          "outcome": {
+            "const": "verification_inconclusive"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "verification_status": {
+                "const": "inconclusive"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "verification"
+          },
+          "outcome": {
+            "const": "verification_unsupported"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "verification_status": {
+                "const": "unsupported"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "verification"
+          },
+          "outcome": {
+            "const": "verification_incomplete"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "verification_status": {
+                "const": "incomplete"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "verification"
+          },
+          "outcome": {
+            "const": "verification_timeout"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "verification_status": {
+                "const": "timeout"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "enum": [
+              "validation",
+              "verification",
+              "system_creation",
+              "activation",
+              "evaluation",
+              "commit"
+            ]
+          }
+        },
+        "required": [
+          "request_status",
+          "stage"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "discovery"
+          },
+          "result": {
+            "properties": {
+              "kind": {
+                "const": "capabilities"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject": {
+            "required": [
+              "system_id",
+              "definition_id",
+              "behavior_hash",
+              "schema_hash",
+              "release"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "authoring"
+          },
+          "outcome": {
+            "const": "proposal_stored"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "kind": {
+                "const": "proposal"
+              }
+            }
+          },
+          "subject": {
+            "required": [
+              "proposal_id",
+              "proposal_revision"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "authoring"
+          },
+          "outcome": {
+            "const": "proposal_loaded"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "kind": {
+                "const": "proposal"
+              }
+            }
+          },
+          "subject": {
+            "required": [
+              "proposal_id",
+              "proposal_revision"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "authoring"
+          },
+          "outcome": {
+            "const": "definition_loaded"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "kind": {
+                "const": "definition_inspection"
+              }
+            }
+          },
+          "subject": {
+            "required": [
+              "definition_id",
+              "behavior_hash",
+              "schema_hash",
+              "release"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "commit"
+          },
+          "outcome": {
+            "const": "committed"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "already": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "commit"
+          },
+          "outcome": {
+            "const": "already_committed"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "already": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "recovery"
+          },
+          "result": {
+            "properties": {
+              "kind": {
+                "const": "operation_report"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject": {
+            "required": [
+              "operation_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "recovery"
+          },
+          "outcome": {
+            "const": "system_recovered"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "$ref": "#/$defs/system_recovery"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "recovery"
+          },
+          "outcome": {
+            "enum": [
+              "operation_status",
+              "recovered"
+            ]
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "$ref": "#/$defs/operation_report"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "request_status": {
+            "const": "completed"
+          },
+          "stage": {
+            "const": "recovery"
+          },
+          "outcome": {
+            "const": "recovered"
+          }
+        },
+        "required": [
+          "request_status",
+          "stage",
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "committed",
+                  "not_committed",
+                  "refused"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

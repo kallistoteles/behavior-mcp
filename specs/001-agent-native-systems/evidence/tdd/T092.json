@@ -1,0 +1,60 @@
+{
+  "task": "T092",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_server_recovery.py::test_whole_system_recovery_preserves_uncertain_operation_scope"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n________ test_whole_system_recovery_preserves_uncertain_operation_scope ________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.ht0B8n/pytest-of-kalle/pytest-0/test_whole_system_recovery_pre0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1e6c830>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_whole_system_recovery_preserves_uncertain_operation_scope(trusted_setup, proposal):\n        root, ctx, _, _ = trusted_setup\n        app = Application(root, ctx, \"local-delegation\")\n        sid, _, _, _ = create_active(app, proposal)\n        evaluated = app.execute(\"transition_evaluate\", {\"system_id\": sid, \"capability_id\": \"record__new\", \"bindings\": {}, \"input\": {\"request_id\": \"r1\", \"label\": \"Example\"}, \"expected_activation_revision\": 1, \"operation_id\": \"whole-recovery\"})\n        def before(stage):\n            if stage == \"commit_before_commit\":\n                raise OSError(\"commit interrupted\")\n        interrupted = Application(root, ctx, \"local-delegation\", fault=before).execute(\"transition_commit\", {\"system_id\": sid, \"operation_id\": \"whole-recovery\", \"evaluation_token\": evaluated[\"result\"][\"evaluation_token\"]})\n        assert interrupted[\"request_status\"] == \"unknown\", interrupted\n        def after(stage):\n            if stage == \"commit_after_commit\":\n                raise OSError(\"recovery acknowledgment lost\")\n        result = Application(root, ctx, \"local-delegation\", fault=after).execute(\"system_recover\", {\"system_id\": sid})\n>       assert result[\"request_status\"] == \"unknown\", result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'recovery', 'outcome': 'infrastructure_failure', ...}\nE       assert 'failed' == 'unknown'\nE         \nE         - unknown\nE         + failed\n\ntests/integration/test_server_recovery.py:242: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_server_recovery.py::test_whole_system_recovery_preserves_uncertain_operation_scope\n1 failed in 5.47s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_server_recovery.py",
+      "tests/unit/test_diagnostics.py"
+    ],
+    "exit_code": 0,
+    "stdout": "........................                                                 [100%]\n24 passed in 41.83s\n",
+    "stderr": ""
+  },
+  "red_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_server_recovery.py::test_creation_inspection_does_not_deny_published_core_outcome",
+        "tests/integration/test_server_recovery.py::test_activation_recovery_lost_ack_preserves_uncertainty"
+      ],
+      "exit_code": 1,
+      "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n________ test_creation_inspection_does_not_deny_published_core_outcome _________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.Tz3QVE/pytest-of-kalle/pytest-0/test_creation_inspection_does_0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1e80830>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\nsubprocess_python = <function subprocess_python.<locals>.run at 0x7ffff1ecc4a0>\n\n    def test_creation_inspection_does_not_deny_published_core_outcome(trusted_setup, proposal, subprocess_python):\n        import json\n        from tests.fixtures.runtime import authored\n    \n        root, ctx, _, artifacts = trusted_setup\n        app = Application(root, ctx, \"local-delegation\")\n        d = authored(app, proposal)\n        args = {\"definition_id\": d[\"definition_id\"], \"operation_id\": \"creation-status\"}\n        script = \"\"\"import os,sys,json\n    from pathlib import Path\n    from behavior_mcp.server import Application\n    from behavior_mcp.policy import TrustedContext\n    app=Application(Path(sys.argv[1]),TrustedContext('agent-session','workspace-1','actor-1',lambda:'2026-10-26T00:00:00Z'),'local-delegation',fault=lambda stage:os._exit(77) if stage=='create_after_commit' else None)\n    app.execute('systems_create',json.loads(sys.argv[2]))\n    \"\"\"\n        assert subprocess_python(script, root, json.dumps(args)).returncode == 77\n        sid = artifacts.system_ids()[0]\n        result = app.execute(\"operation_get\", {\"system_id\": sid, \"operation_id\": args[\"operation_id\"]})\n>       assert result[\"result\"][\"status\"] == \"unknown\", result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'completed', 'stage': 'recovery', 'outcome': 'operation_status', ...}\nE       assert 'not_committed' == 'unknown'\nE         \nE         - unknown\nE         + not_committed\n\ntests/integration/test_server_recovery.py:94: AssertionError\n___________ test_activation_recovery_lost_ack_preserves_uncertainty ____________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.Tz3QVE/pytest-of-kalle/pytest-0/test_activation_recovery_lost_0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1e1d310>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ffff1eb09d0>\n\n    def test_activation_recovery_lost_ack_preserves_uncertainty(trusted_setup, proposal, monkeypatch):\n        from tests.fixtures.runtime import authored\n        from behavior_mcp.systems import SystemManager\n    \n        root, ctx, _, artifacts = trusted_setup\n        app = Application(root, ctx, \"local-delegation\")\n        d = authored(app, proposal)\n        created = app.execute(\"systems_create\", {\"definition_id\": d[\"definition_id\"], \"operation_id\": \"create-recover\"})[\"result\"][\"receipt\"]\n        sid = created[\"system_id\"]\n        args = {\"system_id\": sid, \"definition_id\": d[\"definition_id\"], \"operation_id\": \"recover-activation\", \"expected_activation_revision\": 0, \"expected_history\": created[\"history_anchor\"]}\n        artifacts.bind_operation(args[\"operation_id\"], sid, ctx.principal_id, \"activation\", args)\n        def fault(stage):\n            if stage == \"activation_after_commit\":\n                raise OSError(\"lost acknowledgment\")\n        recovering = Application(root, ctx, \"local-delegation\", fault=fault)\n        result = recovering.execute(\"system_recover\", {\"system_id\": sid, \"operation_id\": args[\"operation_id\"]})\n>       assert result[\"request_status\"] == \"unknown\", result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'recovery', 'outcome': 'infrastructure_failure', ...}\nE       assert 'failed' == 'unknown'\nE         \nE         - unknown\nE         + failed\n\ntests/integration/test_server_recovery.py:116: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_server_recovery.py::test_creation_inspection_does_not_deny_published_core_outcome\nFAILED tests/integration/test_server_recovery.py::test_activation_recovery_lost_ack_preserves_uncertainty\n2 failed in 7.09s\n",
+      "stderr": ""
+    }
+  ],
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_diagnostics.py",
+        "tests/integration/test_server_recovery.py",
+        "tests/integration/test_uncertain_activation.py",
+        "tests/integration/test_uncertain_commit.py"
+      ],
+      "exit_code": 0,
+      "stdout": "............................                                             [100%]\n28 passed in 64.99s (0:01:04)\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "scope": "composition checkpoint; final release gate remains required",
+  "command": [
+    "nix",
+    "develop",
+    "--command",
+    "uv",
+    "run",
+    "--locked",
+    "pytest",
+    "-q",
+    "tests/integration/test_model_composition.py",
+    "tests/contract/test_model_coverage.py",
+    "tests/integration/test_composed_provenance.py",
+    "tests/acceptance/test_composition.py"
+  ],
+  "exit_code": 0,
+  "tests_passed": 10,
+  "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\n..........                                                               [100%]\n10 passed in 5.51s\n",
+  "established": [
+    "two bounded public adapters",
+    "composition identity matches independent public fixture",
+    "RF ModelHash unchanged while composed whole BehaviorHash changes",
+    "model-order independence checked through public composition",
+    "public CONFLICTING_OWNERSHIP diagnostic",
+    "stored original provenance survives Wire import/restart",
+    "canonical-only definitions and unsupported expression/state/command extensions refuse",
+    "all seven research dispositions recorded"
+  ],
+  "remaining_upstream_gaps": [
+    "GAP-001",
+    "GAP-002",
+    "GAP-004"
+  ],
+  "managed_provenance_obligation": "GAP-003",
+  "source_gate_checkpoint": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "tests_passed": 157,
+    "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 45 packages in 464ms\n   Building behavior-mcp @ file:///home/kalle/repos/behavior-mcp\n      Built behavior-mcp @ file:///home/kalle/repos/behavior-mcp\nPrepared 1 package in 690ms\nUninstalled 1 package in 1ms\nInstalled 1 package in 2ms\n ~ behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nReleased dependency identities and public API boundary: PASS\n53 files already formatted\nAll checks passed!\nSuccess: no issues found in 13 source files\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 157 items\n\ntests/acceptance/test_authoring.py ....                                  [  2%]\ntests/acceptance/test_composition.py .                                   [  3%]\ntests/acceptance/test_persistent_runtime.py ....                         [  5%]\ntests/acceptance/test_revision.py .                                      [  6%]\ntests/conformance/test_sqlite_backend.py .                               [  7%]\ntests/contract/test_authoring_tools.py ...                               [  8%]\ntests/contract/test_host_policy_schema.py .......                        [ 13%]\ntests/contract/test_model_coverage.py ......                             [ 17%]\ntests/contract/test_schema_envelopes.py ...............                  [ 26%]\ntests/contract/test_stdio_boundary.py .......                            [ 31%]\ntests/contract/test_system_tools.py ............                         [ 38%]\ntests/integration/test_admin_policy.py ...                               [ 40%]\ntests/integration/test_authoring_roundtrip.py ....                       [ 43%]\ntests/integration/test_backend_crashes.py ....                           [ 45%]\ntests/integration/test_composed_provenance.py .                          [ 46%]\ntests/integration/test_definition_artifacts.py ..                        [ 47%]\ntests/integration/test_definition_revision.py .                          [ 48%]\ntests/integration/test_evolution_boundaries.py ....                      [ 50%]\ntests/integration/test_historical_replay.py ..                           [ 52%]\ntests/integration/test_host_storage.py ...                               [ 54%]\ntests/integration/test_model_composition.py ..                           [ 55%]\ntests/integration/test_runtime_decisions.py .                            [ 56%]\ntests/integration/test_server_recovery.py .......                        [ 60%]\ntests/integration/test_system_creation.py ..                             [ 61%]\ntests/integration/test_system_isolation.py ..                            [ 63%]\ntests/integration/test_uncertain_activation.py ...                       [ 64%]\ntests/integration/test_uncertain_commit.py ...                           [ 66%]\ntests/unit/test_delegated_activation.py ............                     [ 74%]\ntests/unit/test_dependencies.py ..............                           [ 83%]\ntests/unit/test_diagnostics.py ............                              [ 91%]\ntests/unit/test_request_flow_adapter.py .......                          [ 95%]\ntests/unit/test_trusted_context.py ...                                   [ 97%]\ntests/unit/test_verification.py ....                                     [100%]\n\n======================= 157 passed in 158.15s (0:02:38) ========================\n"
+  }
+}

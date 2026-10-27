@@ -1,0 +1,38 @@
+{
+  "task": "T037",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_backend_crashes.py"
+    ],
+    "exit_code": 2,
+    "stdout": "\n==================================== ERRORS ====================================\n__________ ERROR collecting tests/integration/test_backend_crashes.py __________\nImportError while importing test module '/home/kalle/repos/behavior-mcp/tests/integration/test_backend_crashes.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/integration/test_backend_crashes.py:4: in <module>\n    from behavior_mcp.sqlite_backend import SQLiteBackend\nE   ModuleNotFoundError: No module named 'behavior_mcp.sqlite_backend'\n=========================== short test summary info ============================\nERROR tests/integration/test_backend_crashes.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.31s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us2.json"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+"""Record actual deterministic test executions; never infer red or green."""
+
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+task, phase, *command = sys.argv[1:]
+assert phase in {"red", "green"}
+run = subprocess.run(command, capture_output=True, text=True)
+print(run.stdout, end="")
+print(run.stderr, end="", file=sys.stderr)
+p = Path("specs/001-agent-native-systems/evidence/tdd") / (task + ".json")
+prior = json.loads(p.read_text()) if p.exists() else {"task": task}
+if phase in prior:
+    prior.setdefault(phase + "_history", []).append(prior[phase])
+prior[phase] = {
+    "command": command,
+    "exit_code": run.returncode,
+    "stdout": run.stdout,
+    "stderr": run.stderr,
+}
+p.parent.mkdir(parents=True, exist_ok=True)
+p.write_text(json.dumps(prior, indent=2) + "\n")
+if phase == "red":
+    sys.exit(0 if run.returncode != 0 else 1)
+sys.exit(run.returncode)

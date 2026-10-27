@@ -1,0 +1,114 @@
+{
+  "scope": "reproducible source/wheel and clean installed consumer environment",
+  "wheel": "behavior_mcp-0.1.0-py3-none-any.whl",
+  "wheel_sha256": "a6c4b5cbfd43e3b4812d5a71e4a02d6c1926e6da6bc8c23e81318931d8acf285",
+  "source_sha256": "509f929d6017b14d42ab79b2423b251199e001ecfd5d7c6667eac4eb2f5802a2",
+  "source_rebuild_identical": true,
+  "installed_tests_passed": 212,
+  "uv_lock_sha256": "5ba548320de9b61e1b5daf1bccf4b9617ca12ea6c7aaf506fee765160d5db918",
+  "flake_lock_sha256": "6f371850a8a9e787e19e432c09b1979fd17962a266f991c4b0f0b3adb6d22800",
+  "commands": [
+    {
+      "command": [
+        "uv",
+        "build",
+        "--no-build-isolation",
+        "--python",
+        "/home/kalle/repos/behavior-mcp/.venv/bin/python3",
+        "--out-dir",
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/dist"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Building source distribution...\nBuilding wheel from source distribution...\nSuccessfully built /tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/dist/behavior_mcp-0.1.0.tar.gz\nSuccessfully built /tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/dist/behavior_mcp-0.1.0-py3-none-any.whl\n"
+    },
+    {
+      "command": [
+        "uv",
+        "sync",
+        "--locked",
+        "--no-install-project"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: `VIRTUAL_ENV=.venv` does not match the project environment path `/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed` and will be ignored; use `--active` to target the active environment instead\nUsing CPython 3.13.14 interpreter at: /nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/bin/python3.13\nCreating virtual environment at: /tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed\nResolved 49 packages in 369ms\nInstalled 45 packages in 246ms\n + annotated-types==0.8.0\n + anyio==4.15.1\n + ast-serialize==0.13.1\n + attrs==26.1.0\n + behavior==0.14.0 (from https://github.com/kallistoteles/behavior-ir/releases/download/v0.14.0/behavior-0.14.0-cp313-abi3-manylinux_2_28_x86_64.whl)\n + cffi==2.1.1\n + click==8.5.0\n + cryptography==50.0.2\n + editables==0.6\n + h11==0.16.0\n + hatchling==1.32.4\n + httpcore2==2.16.0\n + httpx2==2.16.0\n + idna==3.20\n + iniconfig==2.3.1\n + jsonschema==4.26.0\n + jsonschema-specifications==2025.9.1\n + librt==0.16.0\n + mcp==2.3.0\n + mcp-types==2.3.0\n + mypy==2.4.0\n + mypy-extensions==1.1.0\n + opentelemetry-api==1.45.1\n + packaging==26.3\n + pathspec==1.1.1\n + pluggy==1.7.0\n + pycparser==3.12\n + pydantic==2.14.1\n + pydantic-core==2.50.1\n + pygments==2.21.0\n + pyjwt==2.15.1\n + pytest==9.1.1\n + pytest-asyncio==1.4.1\n + python-multipart==0.0.32\n + referencing==0.37.0\n + rpds-py==2026.9.1\n + sse-starlette==3.6.0\n + starlette==1.10.0\n + tomlkit==0.15.2\n + trove-classifiers==2026.9.21.13\n + truststore==0.10.5\n + types-jsonschema==4.26.0.20261006\n + typing-extensions==4.16.0\n + typing-inspection==0.4.4\n + uvicorn==0.54.0\n"
+    },
+    {
+      "command": [
+        "uv",
+        "pip",
+        "install",
+        "--python",
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed/bin/python",
+        "--no-deps",
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/dist/behavior_mcp-0.1.0-py3-none-any.whl"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Using Python 3.13.14 environment at: /tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed\nResolved 1 package in 3ms\nPrepared 1 package in 6ms\nInstalled 1 package in 5ms\n + behavior-mcp==0.1.0 (from file:///tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/dist/behavior_mcp-0.1.0-py3-none-any.whl)\n"
+    },
+    {
+      "command": [
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed/bin/python",
+        "-c",
+        "import json,sys\nfrom pathlib import Path\nimport behavior_mcp\nfrom behavior_mcp.dependencies import check_dependencies\nfrom behavior_mcp.schemas import load_schema\nassert Path(behavior_mcp.__file__).resolve().is_relative_to(Path(sys.argv[1]).resolve())\ncheck_dependencies()\nassert load_schema('result')['$id']=='urn:behavior-mcp:result:v1'\nprint(json.dumps({'installed_origin':str(Path(behavior_mcp.__file__).resolve()),'schemas':'validated','released_dependency_bytes':'validated'}))\n",
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"installed_origin\": \"/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed/lib/python3.13/site-packages/behavior_mcp/__init__.py\", \"schemas\": \"validated\", \"released_dependency_bytes\": \"validated\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed/bin/behavior-mcp",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: behavior-mcp [-h] --workspace WORKSPACE --host-config HOST_CONFIG\n                    {serve}\n\npositional arguments:\n  {serve}\n\noptions:\n  -h, --help            show this help message and exit\n  --workspace WORKSPACE\n  --host-config HOST_CONFIG\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed/bin/behavior-mcp-admin",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: behavior-mcp-admin [-h] --workspace WORKSPACE\n                          --trusted-config TRUSTED_CONFIG --document DOCUMENT\n                          {install-policy,install-approval}\n\npositional arguments:\n  {install-policy,install-approval}\n\noptions:\n  -h, --help            show this help message and exit\n  --workspace WORKSPACE\n  --trusted-config TRUSTED_CONFIG\n  --document DOCUMENT\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "uv",
+        "build",
+        "--no-build-isolation",
+        "--python",
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed/bin/python",
+        "--wheel",
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/source/behavior_mcp-0.1.0",
+        "--out-dir",
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/rebuilt"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Building wheel...\nSuccessfully built /tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/rebuilt/behavior_mcp-0.1.0-py3-none-any.whl\n"
+    },
+    {
+      "command": [
+        "/tmp/nix-shell.yvI4Bd/pytest-of-kalle/pytest-0/test_built_distribution_outsid0/installed/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "--import-mode=importlib",
+        "-p",
+        "no:cacheprovider",
+        "/home/kalle/repos/behavior-mcp/tests",
+        "--ignore=/home/kalle/repos/behavior-mcp/tests/integration/test_package_installation.py"
+      ],
+      "exit_code": 0,
+      "stdout": "........................................................................ [ 33%]\n........................................................................ [ 67%]\n....................................................................     [100%]\n212 passed in 283.38s (0:04:43)\n",
+      "stderr": ""
+    }
+  ],
+  "wheel_artifact": "dist/behavior_mcp-0.1.0-py3-none-any.whl",
+  "source_artifact": "dist/behavior_mcp-0.1.0.tar.gz"
+}

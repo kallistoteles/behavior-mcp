@@ -1,0 +1,38 @@
+{
+  "task": "T039",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_system_creation.py"
+    ],
+    "exit_code": 1,
+    "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n__________ test_creation_is_inactive_and_retry_does_not_reset_history __________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.W9YUX3/pytest-of-kalle/pytest-0/test_creation_is_inactive_and_0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff2e1fa10>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_creation_is_inactive_and_retry_does_not_reset_history(trusted_setup,proposal):\n        root,ctx,_,_=trusted_setup;app=Application(root,ctx,'local-delegation');d=authored(app,proposal)\n        args={'definition_id':d['definition_id'],'operation_id':'creation-1','label':'Example'}\n>       first=app.execute('systems_create',args);assert first['outcome']=='created',first\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'read', 'outcome': 'infrastructure_failure', ...}\nE       assert 'infrastructure_failure' == 'created'\nE         \nE         - created\nE         + infrastructure_failure\n\ntests/integration/test_system_creation.py:8: AssertionError\n__________ test_creation_capacity_and_scope_do_not_create_permissions __________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.W9YUX3/pytest-of-kalle/pytest-0/test_creation_capacity_and_sco0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1e79090>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\npolicy_document = {'format': 'behavior-mcp.host-policy.v1', 'policy_id': 'local-delegation', 'version': 2, 'issuer_id': 'local-operator', ...}\n\n    def test_creation_capacity_and_scope_do_not_create_permissions(trusted_setup,proposal,policy_document):\n        root,ctx,_,artifacts=trusted_setup;app=Application(root,ctx,'local-delegation');d=authored(app,proposal)\n        policy_document['system_creation']['max_systems']=1;policy_document['version']=2;artifacts.install_policy(policy_document)\n>       assert app.execute('systems_create',{'definition_id':d['definition_id'],'operation_id':'one'})['outcome']=='created'\nE       AssertionError: assert 'infrastructure_failure' == 'created'\nE         \nE         - created\nE         + infrastructure_failure\n\ntests/integration/test_system_creation.py:22: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_system_creation.py::test_creation_is_inactive_and_retry_does_not_reset_history\nFAILED tests/integration/test_system_creation.py::test_creation_capacity_and_scope_do_not_create_permissions\n2 failed in 3.18s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us2.json"
+    }
+  ]
+}

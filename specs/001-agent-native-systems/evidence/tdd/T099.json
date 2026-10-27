@@ -1,0 +1,29 @@
+{
+  "task": "T099",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_verification.py::test_worker_output_is_bounded_and_worker_is_reaped"
+    ],
+    "exit_code": 1,
+    "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n________ test_worker_output_is_bounded_and_worker_is_reaped[stdout-129] ________\n\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\ntmp_path = PosixPath('/tmp/nix-shell.vlTyIv/pytest-of-kalle/pytest-0/test_worker_output_is_bounded_0')\nstream = 'stdout', blocks = 129\n\n    @pytest.mark.parametrize(\"stream,blocks\", [(\"stdout\", 129), (\"stderr\", 17)])\n    def test_worker_output_is_bounded_and_worker_is_reaped(proposal, tmp_path, stream, blocks):\n        pid_path = tmp_path / \"worker.pid\"\n        script = \"\"\"import os,sys,time\n    from pathlib import Path\n    Path(sys.argv[1]).write_text(str(os.getpid()))\n    output=getattr(sys,sys.argv[2]).buffer\n    for _ in range(int(sys.argv[3])):\n     output.write(b'x'*65536)\n     output.flush()\n    time.sleep(10)\n    \"\"\"\n        module = build(proposal)\n        with pytest.raises(OperationError) as error:\n            verify_module(module, \"bounded\", worker_command=[sys.executable, \"-c\", script, str(pid_path), stream, str(blocks)], timeout=5)\n>       assert error.value.code == f\"VERIFICATION_{stream.upper()}_LIMIT\"\nE       AssertionError: assert 'VERIFICATION_TIMEOUT' == 'VERIFICATION_STDOUT_LIMIT'\nE         \nE         - VERIFICATION_STDOUT_LIMIT\nE         ?              - ^   ------\nE         + VERIFICATION_TIMEOUT\nE         ?               ^^^\n\ntests/unit/test_verification.py:66: AssertionError\n________ test_worker_output_is_bounded_and_worker_is_reaped[stderr-17] _________\n\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\ntmp_path = PosixPath('/tmp/nix-shell.vlTyIv/pytest-of-kalle/pytest-0/test_worker_output_is_bounded_1')\nstream = 'stderr', blocks = 17\n\n    @pytest.mark.parametrize(\"stream,blocks\", [(\"stdout\", 129), (\"stderr\", 17)])\n    def test_worker_output_is_bounded_and_worker_is_reaped(proposal, tmp_path, stream, blocks):\n        pid_path = tmp_path / \"worker.pid\"\n        script = \"\"\"import os,sys,time\n    from pathlib import Path\n    Path(sys.argv[1]).write_text(str(os.getpid()))\n    output=getattr(sys,sys.argv[2]).buffer\n    for _ in range(int(sys.argv[3])):\n     output.write(b'x'*65536)\n     output.flush()\n    time.sleep(10)\n    \"\"\"\n        module = build(proposal)\n        with pytest.raises(OperationError) as error:\n            verify_module(module, \"bounded\", worker_command=[sys.executable, \"-c\", script, str(pid_path), stream, str(blocks)], timeout=5)\n>       assert error.value.code == f\"VERIFICATION_{stream.upper()}_LIMIT\"\nE       AssertionError: assert 'VERIFICATION_TIMEOUT' == 'VERIFICATION_STDERR_LIMIT'\nE         \nE         - VERIFICATION_STDERR_LIMIT\nE         ?              - ------  ^\nE         + VERIFICATION_TIMEOUT\nE         ?                 ^^^\n\ntests/unit/test_verification.py:66: AssertionError\n=========================== short test summary info ============================\nFAILED tests/unit/test_verification.py::test_worker_output_is_bounded_and_worker_is_reaped[stdout-129]\nFAILED tests/unit/test_verification.py::test_worker_output_is_bounded_and_worker_is_reaped[stderr-17]\n2 failed in 10.44s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_verification.py",
+      "tests/integration/test_host_limits.py",
+      "tests/contract/test_authoring_tools.py"
+    ],
+    "exit_code": 0,
+    "stdout": "..........................                                               [100%]\n26 passed in 20.90s\n",
+    "stderr": ""
+  }
+}

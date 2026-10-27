@@ -1,0 +1,21 @@
+{
+  "scope": "authoring checkpoint; no persistent runtime completion claim",
+  "command": [
+    "nix",
+    "develop",
+    "--command",
+    "./scripts/check"
+  ],
+  "exit_code": 0,
+  "tests_passed": 76,
+  "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 45 packages in 182ms\nChecked 42 packages in 1ms\nReleased dependency identities and public API boundary: PASS\n27 files already formatted\nAll checks passed!\nSuccess: no issues found in 9 source files\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 76 items\n\ntests/acceptance/test_authoring.py ....                                  [  5%]\ntests/contract/test_authoring_tools.py ...                               [  9%]\ntests/contract/test_host_policy_schema.py .......                        [ 18%]\ntests/contract/test_schema_envelopes.py ..............                   [ 36%]\ntests/contract/test_stdio_boundary.py .......                            [ 46%]\ntests/integration/test_definition_artifacts.py ..                        [ 48%]\ntests/integration/test_host_storage.py ...                               [ 52%]\ntests/unit/test_dependencies.py ..............                           [ 71%]\ntests/unit/test_diagnostics.py .........                                 [ 82%]\ntests/unit/test_request_flow_adapter.py ......                           [ 90%]\ntests/unit/test_trusted_context.py ...                                   [ 94%]\ntests/unit/test_verification.py ....                                     [100%]\n\n============================= 76 passed in 25.18s ==============================\n",
+  "established": [
+    "public model lowering comparison",
+    "proposal revision CAS and exact source validation",
+    "restart artifact recovery",
+    "metadata separation",
+    "actual scoped attestation and bounded worker failures",
+    "both SDK modes with memory and subprocess stdio",
+    "no creation or activation from authoring"
+  ]
+}

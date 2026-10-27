@@ -1,0 +1,38 @@
+{
+  "task": "T064",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_historical_replay.py"
+    ],
+    "exit_code": 1,
+    "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n________ test_replay_uses_original_modules_and_does_not_relabel_policy _________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.TFIk9h/pytest-of-kalle/pytest-0/test_replay_uses_original_modu0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1eb8d70>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\npolicy_document = {'format': 'behavior-mcp.host-policy.v1', 'policy_id': 'local-delegation', 'version': 2, 'issuer_id': 'local-operator', ...}\n\n    def test_replay_uses_original_modules_and_does_not_relabel_policy(trusted_setup,proposal,policy_document):\n        root,ctx,policy,artifacts=trusted_setup;app=Application(root,ctx,'local-delegation');sid,d,_,a=create_active(app,proposal)\n        evaluate_commit(app,sid,'record__new','first',input={'request_id':'r1','label':'Example'})\n        changed=copy.deepcopy(proposal);changed['models'][0]['transitions'][0]['id']='complete';d2=authored(app,changed)\n        head=app.execute('system_inspect',{'system_id':sid})['result']['history_anchor']\n        assert app.execute('definition_activate',{'system_id':sid,'definition_id':d2['definition_id'],'expected_activation_revision':1,'expected_history':head,'operation_id':'new-version'})['outcome']=='activated'\n        evaluate_commit(app,sid,'record__complete','second',bindings={'record':'r1'},input={'outcome':'Complete'})\n        policy_document.update(version=2);artifacts.install_policy(policy_document)\n        manager=SystemManager(root,ctx,artifacts,Delegation.from_document(policy_document,'local-operator'))\n>       replay=manager.replay(sid)\n               ^^^^^^^^^^^^^^\nE       AttributeError: 'SystemManager' object has no attribute 'replay'\n\ntests/integration/test_historical_replay.py:19: AttributeError\n____________ test_missing_original_module_blocks_historical_replay _____________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.TFIk9h/pytest-of-kalle/pytest-0/test_missing_original_module_b0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1e8e710>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_missing_original_module_blocks_historical_replay(trusted_setup,proposal):\n        root,ctx,policy,artifacts=trusted_setup;app=Application(root,ctx,'local-delegation');sid,d,_,_=create_active(app,proposal)\n        evaluate_commit(app,sid,'record__new','first',input={'request_id':'r1','label':'Example'})\n        from behavior_mcp.storage import connect,transaction\n        with connect(artifacts.path) as db,transaction(db):db.execute('DELETE FROM blobs WHERE id=?',(d['module_ref'],))\n>       with pytest.raises(OperationError):SystemManager(root,ctx,artifacts,policy).replay(sid)\n                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'SystemManager' object has no attribute 'replay'\n\ntests/integration/test_historical_replay.py:34: AttributeError\n=========================== short test summary info ============================\nFAILED tests/integration/test_historical_replay.py::test_replay_uses_original_modules_and_does_not_relabel_policy\nFAILED tests/integration/test_historical_replay.py::test_missing_original_module_blocks_historical_replay\n2 failed in 6.00s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us3.json"
+    }
+  ]
+}

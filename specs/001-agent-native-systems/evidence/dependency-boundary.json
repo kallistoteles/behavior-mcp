@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "checks": [
+    "released Behavior/Core/verifier identities and every installed release file",
+    "public top-level Behavior imports",
+    "locked registry/released-wheel graph without checkout overrides",
+    "locked non-isolated build backend and editable support",
+    "portable pinned Nix input",
+    "five closed schemas",
+    "local documentation targets",
+    "unchanged public research probe identity"
+  ],
+  "versions": {
+    "behavior": "0.14.0",
+    "behavior-mcp": "0.1.0",
+    "mcp": "2.3.0",
+    "mcp-types": "2.3.0",
+    "jsonschema": "4.26.0",
+    "hatchling": "1.32.4",
+    "editables": "0.6",
+    "pytest": "9.1.1",
+    "mypy": "2.4.0"
+  },
+  "python_packages": 49,
+  "uv_lock_sha256": "5ba548320de9b61e1b5daf1bccf4b9617ca12ea6c7aaf506fee765160d5db918",
+  "flake_lock_sha256": "6f371850a8a9e787e19e432c09b1979fd17962a266f991c4b0f0b3adb6d22800",
+  "convergence_review_date": "2026-10-27",
+  "application_source_files": 14,
+  "pr_review_checks": [
+    "public Core decides transition identity and conflicts with publication disabled",
+    "Backend operational restriction introduces no private imports or dependency changes"
+  ]
+}

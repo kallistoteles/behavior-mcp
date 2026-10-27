@@ -1,0 +1,732 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:behavior-mcp:tool-request:v1",
+  "title": "Normalized tool name/arguments contract after MCP protocol handling",
+  "description": "Application syntax only. Public authoritative Behavior interfaces perform semantic checks. definition_propose additionally validates authoring.schema.json. SDK protocol metadata is outside this normalized pair and never grants authority.",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "models_list"
+        },
+        "arguments": {
+          "$ref": "#/$defs/models_list"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "definition_propose"
+        },
+        "arguments": {
+          "$ref": "#/$defs/definition_propose"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "definition_get"
+        },
+        "arguments": {
+          "$ref": "#/$defs/definition_get"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "definition_validate"
+        },
+        "arguments": {
+          "$ref": "#/$defs/definition_validate"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "definition_verify"
+        },
+        "arguments": {
+          "$ref": "#/$defs/definition_verify"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "systems_create"
+        },
+        "arguments": {
+          "$ref": "#/$defs/systems_create"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "systems_list"
+        },
+        "arguments": {
+          "$ref": "#/$defs/systems_list"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "system_inspect"
+        },
+        "arguments": {
+          "$ref": "#/$defs/system_inspect"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "definition_activate"
+        },
+        "arguments": {
+          "$ref": "#/$defs/definition_activate"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "capabilities_list"
+        },
+        "arguments": {
+          "$ref": "#/$defs/capabilities_list"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "state_read"
+        },
+        "arguments": {
+          "$ref": "#/$defs/state_read"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "transition_evaluate"
+        },
+        "arguments": {
+          "$ref": "#/$defs/transition_evaluate"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "transition_commit"
+        },
+        "arguments": {
+          "$ref": "#/$defs/transition_commit"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "operation_get"
+        },
+        "arguments": {
+          "$ref": "#/$defs/operation_get"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "system_recover"
+        },
+        "arguments": {
+          "$ref": "#/$defs/system_recover"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "gaps_list"
+        },
+        "arguments": {
+          "$ref": "#/$defs/gaps_list"
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "models_list": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "definition_propose": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "proposal": {
+          "type": "object"
+        },
+        "base_proposal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "expected_proposal_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "parent_definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "proposal"
+      ],
+      "dependentRequired": {
+        "base_proposal_id": [
+          "expected_proposal_revision"
+        ],
+        "expected_proposal_revision": [
+          "base_proposal_id"
+        ]
+      }
+    },
+    "definition_get": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "proposal_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "proposal_id"
+          ],
+          "not": {
+            "required": [
+              "definition_id"
+            ]
+          }
+        },
+        {
+          "required": [
+            "definition_id"
+          ],
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "proposal_id"
+                ]
+              },
+              {
+                "required": [
+                  "proposal_revision"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "dependentRequired": {
+        "proposal_revision": [
+          "proposal_id"
+        ]
+      }
+    },
+    "definition_validate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "proposal_revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "proposal_id",
+        "proposal_revision"
+      ]
+    },
+    "definition_verify": {
+      "type": "object",
+      "properties": {
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "definition_id",
+        "profile_id"
+      ],
+      "additionalProperties": false
+    },
+    "systems_create": {
+      "type": "object",
+      "properties": {
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "definition_id",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "systems_list": {
+      "type": "object",
+      "properties": {
+        "cursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 50
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "system_inspect": {
+      "type": "object",
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "system_id"
+      ],
+      "additionalProperties": false
+    },
+    "definition_activate": {
+      "type": "object",
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "definition_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "expected_activation_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expected_history": {
+          "type": "object",
+          "properties": {
+            "format": {
+              "const": "behavior.history_ref.v1"
+            },
+            "store": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "state": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "position": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "record": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "format",
+            "store",
+            "state",
+            "position",
+            "record"
+          ],
+          "additionalProperties": false
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "system_id",
+        "definition_id",
+        "expected_activation_revision",
+        "expected_history",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "capabilities_list": {
+      "type": "object",
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "system_id"
+      ],
+      "additionalProperties": false
+    },
+    "state_read": {
+      "type": "object",
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "entity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "history": {
+          "type": "object",
+          "properties": {
+            "format": {
+              "const": "behavior.history_ref.v1"
+            },
+            "store": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "state": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "position": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "record": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "format",
+            "store",
+            "state",
+            "position",
+            "record"
+          ],
+          "additionalProperties": false
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 50
+        }
+      },
+      "required": [
+        "system_id"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "record_id"
+            ]
+          },
+          "then": {
+            "required": [
+              "entity"
+            ]
+          }
+        }
+      ]
+    },
+    "transition_evaluate": {
+      "type": "object",
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "capability_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "bindings": {
+          "type": "object"
+        },
+        "input": {
+          "type": "object"
+        },
+        "expected_activation_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "system_id",
+        "capability_id",
+        "bindings",
+        "input",
+        "expected_activation_revision",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "transition_commit": {
+      "type": "object",
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "evaluation_token": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "system_id",
+        "evaluation_token",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "operation_get": {
+      "type": "object",
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "system_id",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "system_recover": {
+      "type": "object",
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "system_id"
+      ],
+      "additionalProperties": false
+    },
+    "gaps_list": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  }
+}

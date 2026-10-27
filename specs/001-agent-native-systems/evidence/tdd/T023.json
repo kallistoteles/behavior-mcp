@@ -1,0 +1,62 @@
+{
+  "task": "T023",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/unit/test_request_flow_adapter.py::test_json_object_member_sorting_cannot_change_enum_declaration_identity"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n___ test_json_object_member_sorting_cannot_change_enum_declaration_identity ____\n\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_json_object_member_sorting_cannot_change_enum_declaration_identity(proposal):\n        import json\n        original=build(proposal)\n        transported=build(json.loads(json.dumps(proposal,sort_keys=True)))\n>       assert original.behavior_version==transported.behavior_version\nE       AssertionError: assert 'sha256:c9f18...1d96f5a66f8aa' == 'sha256:e4c04...616bf227956a0'\nE         \nE         - sha256:e4c04df0038bdb5e12a30368d704a3c0308323eb401dff8e779616bf227956a0\nE         + sha256:c9f182aac46cd9ef9c7b00d584c696e28de3be417ce33b8bb241d96f5a66f8aa\n\ntests/unit/test_request_flow_adapter.py:73: AssertionError\n=========================== short test summary info ============================\nFAILED tests/unit/test_request_flow_adapter.py::test_json_object_member_sorting_cannot_change_enum_declaration_identity\n1 failed in 0.36s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us1.json"
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/unit/test_request_flow_adapter.py",
+        "tests/integration/test_runtime_decisions.py"
+      ],
+      "exit_code": 0,
+      "stdout": "........                                                                 [100%]\n8 passed in 4.58s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us2.json"
+    }
+  ]
+}

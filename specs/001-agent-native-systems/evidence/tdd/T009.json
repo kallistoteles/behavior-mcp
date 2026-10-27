@@ -1,0 +1,39 @@
+{
+  "task": "T009",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/unit/test_trusted_context.py",
+      "tests/contract/test_host_policy_schema.py"
+    ],
+    "exit_code": 2,
+    "stdout": "\n==================================== ERRORS ====================================\n_____________ ERROR collecting tests/unit/test_trusted_context.py ______________\nImportError while importing test module '/home/kalle/repos/behavior-mcp/tests/unit/test_trusted_context.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/unit/test_trusted_context.py:3: in <module>\n    from behavior_mcp.policy import Delegation, TrustedContext\nE   ModuleNotFoundError: No module named 'behavior_mcp.policy'\n__________ ERROR collecting tests/contract/test_host_policy_schema.py __________\nImportError while importing test module '/home/kalle/repos/behavior-mcp/tests/contract/test_host_policy_schema.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/contract/test_host_policy_schema.py:3: in <module>\n    from behavior_mcp.policy import Delegation\nE   ModuleNotFoundError: No module named 'behavior_mcp.policy'\n=========================== short test summary info ============================\nERROR tests/unit/test_trusted_context.py\nERROR tests/contract/test_host_policy_schema.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.25s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../foundation.json"
+    }
+  ]
+}

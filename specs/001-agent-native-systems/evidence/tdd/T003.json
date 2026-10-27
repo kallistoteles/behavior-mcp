@@ -1,0 +1,56 @@
+{
+  "task": "T003",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/unit/test_dependencies.py::test_embedded_server_refuses_a_different_core_release"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n____________ test_embedded_server_refuses_a_different_core_release _____________\n\ntmp_path = PosixPath('/tmp/nix-shell.0U9h4n/pytest-of-kalle/pytest-0/test_embedded_server_refuses_a0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ffff43069e0>\n\n    def test_embedded_server_refuses_a_different_core_release(tmp_path,monkeypatch):\n        from behavior_mcp.server import Application\n        from behavior_mcp.policy import TrustedContext\n        unsupported=copy.deepcopy(behavior.versions());unsupported['core']['version']='0.14.0'\n        monkeypatch.setattr(behavior,'versions',lambda:unsupported)\n>       with pytest.raises(DependencyError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE DependencyError\n\ntests/unit/test_dependencies.py:128: Failed\n=========================== short test summary info ============================\nFAILED tests/unit/test_dependencies.py::test_embedded_server_refuses_a_different_core_release\n1 failed in 1.72s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "red_history": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/unit/test_dependencies.py"
+      ],
+      "exit_code": 2,
+      "stdout": "\n==================================== ERRORS ====================================\n_______________ ERROR collecting tests/unit/test_dependencies.py _______________\nImportError while importing test module '/home/kalle/repos/behavior-mcp/tests/unit/test_dependencies.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/unit/test_dependencies.py:7: in <module>\n    from behavior_mcp.dependencies import DependencyError, audit_imports, check_dependencies, verify_versions\nE   ModuleNotFoundError: No module named 'behavior_mcp.dependencies'\n=========================== short test summary info ============================\nERROR tests/unit/test_dependencies.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.40s\n",
+      "stderr": ""
+    }
+  ],
+  "green_history": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/unit/test_dependencies.py"
+      ],
+      "exit_code": 0,
+      "stdout": "............                                                             [100%]\n12 passed in 0.32s\n",
+      "stderr": ""
+    }
+  ]
+}

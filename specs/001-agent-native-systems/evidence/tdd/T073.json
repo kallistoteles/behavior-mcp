@@ -1,0 +1,47 @@
+{
+  "task": "T073",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_model_composition.py",
+      "tests/acceptance/test_composition.py"
+    ],
+    "exit_code": 1,
+    "stdout": "FFF                                                                      [100%]\n=================================== FAILURES ===================================\n_____________ test_two_models_match_independent_public_composition _____________\n\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_two_models_match_independent_public_composition(proposal):\n>       first=build(proposal);composed=build(composed_proposal(proposal));expected=reference_module(compose=True)\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_model_composition.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...{'model_kind': 'state_machine', 'model_id': 'auxiliary', 'subject_entity': 'Auxiliary', 'state_field': 'status', ...}]}\n\n    def build(proposal: JSON) -> BehaviorModule:\n        validate(\"authoring\", proposal)\n        if any(m[\"model_kind\"] != \"request_flow\" for m in proposal[\"models\"]):\n>           raise OperationError(\n                \"unsupported\",\n                \"MODEL_SUBSET_UNAVAILABLE\",\n                \"This adapter currently supports RequestFlow only\",\n            )\nE           behavior_mcp.schemas.OperationError: This adapter currently supports RequestFlow only\n\nsrc/behavior_mcp/authoring.py:85: OperationError\n____________ test_public_models_refuse_conflicting_field_ownership _____________\n\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_public_models_refuse_conflicting_field_ownership(proposal):\n        source=composed_proposal(proposal);source['models'][1]['subject_entity']='Record';source['models'][1]['subject_param']='record'\n>       with pytest.raises(ModelBuildError) as error:build(source)\n                                                     ^^^^^^^^^^^^^\n\ntests/integration/test_model_composition.py:22: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...}, {'model_kind': 'state_machine', 'model_id': 'auxiliary', 'subject_entity': 'Record', 'state_field': 'status', ...}]}\n\n    def build(proposal: JSON) -> BehaviorModule:\n        validate(\"authoring\", proposal)\n        if any(m[\"model_kind\"] != \"request_flow\" for m in proposal[\"models\"]):\n>           raise OperationError(\n                \"unsupported\",\n                \"MODEL_SUBSET_UNAVAILABLE\",\n                \"This adapter currently supports RequestFlow only\",\n            )\nE           behavior_mcp.schemas.OperationError: This adapter currently supports RequestFlow only\n\nsrc/behavior_mcp/authoring.py:85: OperationError\n__________ test_composed_new_system_runtime_and_conflict_diagnostics ___________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.sFAHd2/pytest-of-kalle/pytest-0/test_composed_new_system_runti0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1ec9940>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_composed_new_system_runtime_and_conflict_diagnostics(trusted_setup,proposal):\n        root,ctx,_,artifacts=trusted_setup;app=Application(root,ctx,'local-delegation');source=composed_proposal(proposal)\n>       sid,definition,_,_=create_active(app,source)\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/acceptance/test_composition.py:8: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntests/fixtures/runtime.py:17: in create_active\n    definition = authored(app, proposal)\n                 ^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\napp = <behavior_mcp.server.Application object at 0x7ffff1ec9be0>\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...{'model_kind': 'state_machine', 'model_id': 'auxiliary', 'subject_entity': 'Auxiliary', 'state_field': 'status', ...}]}\n\n    def authored(app, proposal):\n        p = app.execute(\"definition_propose\", {\"proposal\": proposal})\n        assert p[\"request_status\"] == \"completed\", p\n        s = p[\"result\"]\n        d = app.execute(\n            \"definition_validate\",\n            {\"proposal_id\": s[\"proposal_id\"], \"proposal_revision\": s[\"proposal_revision\"]},\n        )\n>       assert d[\"outcome\"] == \"admitted\", d\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'refused', 'stage': 'validation', 'outcome': 'unsupported', 'subject': {'workspace_id': 'workspace-1', 'proposal_id': 'proposal-52c9d877a46d48dca9d18a2cff33d64a', 'proposal_revision': 1}, 'result': {}, 'evidence': [], 'error': {'category': 'unsupported', 'code': 'MODEL_SUBSET_UNAVAILABLE', 'message': 'This adapter currently supports RequestFlow only', 'retryable': False, 'operation_may_have_committed': False}}\n\ntests/fixtures/runtime.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_model_composition.py::test_two_models_match_independent_public_composition\nFAILED tests/integration/test_model_composition.py::test_public_models_refuse_conflicting_field_ownership\nFAILED tests/acceptance/test_composition.py::test_composed_new_system_runtime_and_conflict_diagnostics\n3 failed in 2.78s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/integration/test_model_composition.py",
+        "tests/contract/test_model_coverage.py",
+        "tests/integration/test_composed_provenance.py",
+        "tests/acceptance/test_composition.py"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us4.json"
+    }
+  ]
+}

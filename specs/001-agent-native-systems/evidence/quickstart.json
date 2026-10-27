@@ -1,0 +1,90 @@
+{
+  "status": "passed",
+  "scope": "implemented supported scenarios; unsupported outcomes remain explicit",
+  "installed_package_evidence": "package.json",
+  "installed_suite_tests_passed": 212,
+  "runtime_source_bytes_equal_installed_wheel": true,
+  "scenarios": {
+    "discovery_propose_admit_verify": [
+      "tests/acceptance/test_authoring.py",
+      "tests/contract/test_authoring_tools.py",
+      "tests/unit/test_verification.py"
+    ],
+    "create_activate_use_two_systems": [
+      "tests/acceptance/test_persistent_runtime.py",
+      "tests/integration/test_system_isolation.py"
+    ],
+    "restart_crash_original_operation_retry": [
+      "tests/integration/test_backend_crashes.py",
+      "tests/integration/test_uncertain_commit.py",
+      "tests/integration/test_uncertain_activation.py",
+      "tests/integration/test_server_recovery.py"
+    ],
+    "revision_historical_replay": [
+      "tests/acceptance/test_revision.py",
+      "tests/integration/test_historical_replay.py",
+      "tests/integration/test_authoring_roundtrip.py"
+    ],
+    "composition_and_upstream_limits": [
+      "tests/acceptance/test_composition.py",
+      "tests/integration/test_composed_provenance.py",
+      "tests/contract/test_model_coverage.py"
+    ],
+    "authority_proof_and_failure_boundaries": [
+      "tests/integration/test_admin_policy.py",
+      "tests/contract/test_system_tools.py",
+      "tests/unit/test_diagnostics.py",
+      "tests/integration/test_evolution_boundaries.py"
+    ]
+  },
+  "unsupported": [
+    "canonical-only authoring",
+    "generic complete upstream authoring registry",
+    "schema-changing activation",
+    "arbitrary expressions/commands",
+    "cross-system transactions"
+  ],
+  "no_live_ai_or_note_client": true,
+  "complete_current_suite_excluding_recursive_package_test": true,
+  "convergence_scenarios": {
+    "T091": [
+      "tests/contract/test_authoring_tools.py",
+      "tests/contract/test_schema_envelopes.py"
+    ],
+    "T092": [
+      "tests/integration/test_server_recovery.py",
+      "tests/unit/test_diagnostics.py"
+    ],
+    "T093": [
+      "tests/integration/test_server_recovery.py",
+      "tests/integration/test_evolution_boundaries.py"
+    ],
+    "T094": [
+      "tests/contract/test_system_tools.py"
+    ],
+    "T095": [
+      "tests/acceptance/test_authoring.py",
+      "tests/integration/test_composed_provenance.py"
+    ],
+    "T096": [
+      "tests/integration/test_host_limits.py",
+      "tests/unit/test_verification.py",
+      "tests/contract/test_stdio_boundary.py"
+    ]
+  },
+  "pr_review_scenarios": {
+    "T097": [
+      "tests/integration/test_runtime_decisions.py",
+      "tdd/T097.json"
+    ],
+    "T098": [
+      "tests/integration/test_uncertain_commit.py",
+      "tests/conformance/test_sqlite_backend.py",
+      "tdd/T098.json"
+    ],
+    "T099": [
+      "tests/unit/test_verification.py",
+      "tdd/T099.json"
+    ]
+  }
+}

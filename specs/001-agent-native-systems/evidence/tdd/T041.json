@@ -1,0 +1,54 @@
+{
+  "task": "T041",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_uncertain_commit.py::test_uncertain_commit_is_system_scoped_and_recovery_records_current_authority"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n_ test_uncertain_commit_is_system_scoped_and_recovery_records_current_authority _\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.Q9gKZ5/pytest-of-kalle/pytest-0/test_uncertain_commit_is_syste0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1e9c2f0>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\npolicy_document = {'format': 'behavior-mcp.host-policy.v1', 'policy_id': 'local-delegation', 'version': 2, 'issuer_id': 'local-operator', ...}\n\n    def test_uncertain_commit_is_system_scoped_and_recovery_records_current_authority(trusted_setup,proposal,policy_document):\n        root,ctx,policy,artifacts=trusted_setup\n        once={'failed':False}\n        def fault(stage):\n            if stage=='commit_before_commit' and not once['failed']:\n                once['failed']=True\n                raise OSError('uncertain acknowledgment')\n        app=Application(root,ctx,'local-delegation',fault=fault)\n        one,_,_,_=create_active(app,proposal,'1');two,_,_,_=create_active(app,proposal,'2')\n        request={'system_id':one,'capability_id':'record__new','bindings':{},'input':{'request_id':'r1','label':'Example'},'expected_activation_revision':1,'operation_id':'uncertain'}\n        e=app.execute('transition_evaluate',request)\n        unknown=app.execute('transition_commit',{'system_id':one,'evaluation_token':e['result']['evaluation_token'],'operation_id':'uncertain'})\n        assert unknown['request_status']=='unknown',unknown\n        assert app.execute('transition_evaluate',dict(request,operation_id='replacement'))['outcome']=='conflict'\n        evaluate_commit(app,two,'record__new','other-system',input={'request_id':'r1','label':'Other'})\n        from behavior_mcp.systems import SystemManager\n        manager=SystemManager(root,ctx,artifacts,policy)\n        original=manager.operation(one,'uncertain')['bundle']\n        policy_document.update(version=2);artifacts.install_policy(policy_document)\n        recovered=Application(root,ctx,'local-delegation').execute('system_recover',{'system_id':one,'operation_id':'uncertain'})\n        assert recovered['result']['status']=='committed',recovered\n        record=manager.operation(one,'uncertain')\n        assert record['bundle']==original\n        assert record['policy']['policy_version']==1\n>       assert record['commit_authorization']['policy_version']==2\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'commit_authorization'\n\ntests/integration/test_uncertain_commit.py:105: KeyError\n=========================== short test summary info ============================\nFAILED tests/integration/test_uncertain_commit.py::test_uncertain_commit_is_system_scoped_and_recovery_records_current_authority\n1 failed in 5.59s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "red_history": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/integration/test_uncertain_commit.py",
+        "tests/integration/test_uncertain_activation.py"
+      ],
+      "exit_code": 2,
+      "stdout": "\n==================================== ERRORS ====================================\n_______ ERROR collecting tests/integration/test_uncertain_activation.py ________\nImportError while importing test module '/home/kalle/repos/behavior-mcp/tests/integration/test_uncertain_activation.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/integration/test_uncertain_activation.py:4: in <module>\n    from behavior_mcp.systems import SystemManager\nE   ModuleNotFoundError: No module named 'behavior_mcp.systems'\n=========================== short test summary info ============================\nERROR tests/integration/test_uncertain_activation.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 1.79s\n",
+      "stderr": ""
+    }
+  ],
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us2.json"
+    }
+  ]
+}

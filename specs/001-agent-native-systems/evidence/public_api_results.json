@@ -1,0 +1,446 @@
+{
+  "canonical_document": {
+    "actor": {
+      "entity": "Actor",
+      "entity_hash": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+    },
+    "assignee": false,
+    "creations": [
+      {
+        "commands": [],
+        "context": [
+          {
+            "name": "actor",
+            "type": {
+              "Id": "Actor"
+            },
+            "types": {
+              "Actor": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+            }
+          }
+        ],
+        "effects": [],
+        "guards": [],
+        "id": "new",
+        "initializer": {
+          "label": "sha256:b4de7eddc59acceb9c2262e51d2a1c02412d2a7a8e573f7c0215bcf94d42f078",
+          "outcome": "sha256:a1c65e12446c2940bf77b8aa1143bf2d8e9bf2c52249fbea26f8ca014c65392e",
+          "requester": "sha256:2841ab459e90d2de1e21b3eb6d28e86e28bed178767439e814fb6e9202f27e11"
+        },
+        "inputs": [
+          {
+            "name": "label",
+            "type": "String",
+            "types": {}
+          }
+        ],
+        "postconditions": [],
+        "state": [],
+        "to": "Open"
+      }
+    ],
+    "flow_id": "record",
+    "format": "behavior.model.request_flow.v2",
+    "model_kind": "request_flow",
+    "model_semantic_version": 2,
+    "payload": [
+      {
+        "name": "label",
+        "type": "String",
+        "types": {}
+      },
+      {
+        "name": "outcome",
+        "type": "String",
+        "types": {}
+      }
+    ],
+    "state_machine": {
+      "document": {
+        "entry_states": [
+          "Open"
+        ],
+        "field": {
+          "enum": "Status",
+          "enum_hash": "sha256:71d34b2815d5d921f023330cf4970c9739561498b5ec3b6c3442e20193e33330",
+          "name": "status"
+        },
+        "format": "behavior.model.state_machine.v2",
+        "model_id": "record",
+        "model_kind": "state_machine",
+        "model_semantic_version": 2,
+        "subject": {
+          "entity": "Record",
+          "entity_hash": "sha256:b48f527bd84e40d5d48e27a1da2e0f3021b421a772a717feb35d43978805905c"
+        },
+        "subject_param": "record",
+        "transitions": [
+          {
+            "commands": [],
+            "context": [],
+            "effects": [
+              "sha256:f4198bd1ed68b908f2bfe76b9151c193378951191e3094557be6bd300c8a34a7"
+            ],
+            "from": [
+              "Open"
+            ],
+            "guards": [],
+            "id": "finish",
+            "inputs": [
+              {
+                "name": "outcome",
+                "type": "String",
+                "types": {}
+              }
+            ],
+            "postconditions": [],
+            "to": "Done"
+          }
+        ]
+      },
+      "model_hash": "sha256:2237519e80a4633c8d40b0009180d10a1bbcecbd44d9ed90023422262b54f369"
+    },
+    "status_enum": {
+      "enum_hash": "sha256:71d34b2815d5d921f023330cf4970c9739561498b5ec3b6c3442e20193e33330",
+      "name": "Status"
+    }
+  },
+  "identities": {
+    "behavior": "sha256:c9f182aac46cd9ef9c7b00d584c696e28de3be417ce33b8bb241d96f5a66f8aa",
+    "model": "sha256:5d69b35137f54a2f7d3485a578b256dc07006845953d5696610b2de10c35c32c",
+    "schema": "sha256:c84682b3bb38e4f8ae2f13e882ae9927ff8805e37e2800a5c7e080022b6ca9d2"
+  },
+  "not_established": [
+    "physical durability",
+    "MCP implementation",
+    "trusted host authorization",
+    "formal verification",
+    "arbitrary canonical-only re-authoring",
+    "schema migration"
+  ],
+  "observations": {
+    "commit_records": [
+      "sha256:6b822361a6a575dab250f8cd0f673dfd3c5995ccdb1f10debf81c63ce3b7a29b",
+      "sha256:8bc5b6f112e009a5510be90e4077fa70a37568c5aa23f472446830b681771775"
+    ],
+    "completion": "ALLOW",
+    "composition_behavior_changed": true,
+    "composition_first_model_equal": true,
+    "composition_receipts": 2,
+    "creation": "ALLOW",
+    "independent_store_position": 0,
+    "missing_input": "INVALID_INPUT",
+    "missing_input_head_unchanged": true,
+    "record": {
+      "content_hash": "sha256:42cce936b4a9104d79aff8dccbd035c83c4a61a037c250aa05c63ecfd80b9c33",
+      "created_at": 2,
+      "entity": "Record",
+      "id": "r1",
+      "revision": 2,
+      "value": {
+        "id": "r1",
+        "label": "Example",
+        "outcome": "Complete",
+        "requester": "a1",
+        "status": "Done"
+      }
+    },
+    "repeated_completion": "DENY",
+    "repeated_completion_has_bundle": false,
+    "retained_input_identity_equal": true,
+    "revision_behavior_changed": true,
+    "revision_model_changed": true,
+    "revision_schema_equal": true,
+    "same_genesis_store_ids_equal": true,
+    "same_schema_snapshot_format": "behavior.snapshot_export.v1",
+    "unsupported_extension_rejected": true,
+    "wire_behavior_equal": true,
+    "wire_import_receipts": 0,
+    "wire_schema_equal": true
+  },
+  "probe_byte_sha256": "51631033702e9ce805890bf88eaad04f3526ee73a2eef8ec180eab6267396c48",
+  "purpose": "public API feasibility only; in-memory, no host implementation",
+  "python": "3.13.14",
+  "runtime_actions": [
+    {
+      "effects": [
+        {
+          "loc": {
+            "file": "public_api_probe.py",
+            "line": 59
+          },
+          "target": {
+            "field": "status",
+            "param": "record"
+          },
+          "value": {
+            "loc": {
+              "file": "public_api_probe.py",
+              "line": 59
+            },
+            "op": "lit",
+            "type": {
+              "name": "Status",
+              "t": "enum"
+            },
+            "value": "Done"
+          }
+        },
+        {
+          "loc": {
+            "file": "public_api_probe.py",
+            "line": 64
+          },
+          "target": {
+            "field": "outcome",
+            "param": "record"
+          },
+          "value": {
+            "loc": {
+              "file": "public_api_probe.py",
+              "line": 82
+            },
+            "op": "param",
+            "param": "outcome"
+          }
+        }
+      ],
+      "loc": {
+        "file": "public_api_probe.py",
+        "line": 59
+      },
+      "name": "record__finish",
+      "params": [
+        {
+          "name": "record",
+          "role": "state",
+          "type": {
+            "name": "Record",
+            "t": "entity"
+          }
+        },
+        {
+          "name": "outcome",
+          "role": "input",
+          "type": {
+            "t": "string"
+          }
+        }
+      ],
+      "postconditions": [
+        {
+          "expr": {
+            "args": [
+              {
+                "field": "status",
+                "loc": {
+                  "file": "public_api_probe.py",
+                  "line": 59
+                },
+                "op": "field",
+                "param": "record"
+              },
+              {
+                "loc": {
+                  "file": "public_api_probe.py",
+                  "line": 59
+                },
+                "op": "lit",
+                "type": {
+                  "name": "Status",
+                  "t": "enum"
+                },
+                "value": "Done"
+              }
+            ],
+            "loc": {
+              "file": "public_api_probe.py",
+              "line": 59
+            },
+            "op": "eq"
+          },
+          "loc": {
+            "file": "public_api_probe.py",
+            "line": 59
+          }
+        }
+      ],
+      "preconditions": [
+        {
+          "expr": {
+            "args": [
+              {
+                "field": "status",
+                "loc": {
+                  "file": "public_api_probe.py",
+                  "line": 59
+                },
+                "op": "field",
+                "param": "record"
+              }
+            ],
+            "loc": {
+              "file": "public_api_probe.py",
+              "line": 59
+            },
+            "op": "in",
+            "values": [
+              "Open"
+            ]
+          },
+          "loc": {
+            "file": "public_api_probe.py",
+            "line": 59
+          }
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "create": "Record",
+          "fields": {
+            "label": {
+              "loc": {
+                "file": "public_api_probe.py",
+                "line": 82
+              },
+              "op": "param",
+              "param": "label"
+            },
+            "outcome": {
+              "loc": {
+                "file": "public_api_probe.py",
+                "line": 82
+              },
+              "op": "lit",
+              "type": {
+                "t": "string"
+              },
+              "value": ""
+            },
+            "requester": {
+              "loc": {
+                "file": "public_api_probe.py",
+                "line": 82
+              },
+              "op": "param",
+              "param": "actor"
+            },
+            "status": {
+              "loc": {
+                "file": "public_api_probe.py",
+                "line": 48
+              },
+              "op": "lit",
+              "type": {
+                "name": "Status",
+                "t": "enum"
+              },
+              "value": "Open"
+            }
+          },
+          "id": {
+            "loc": {
+              "file": "public_api_probe.py",
+              "line": 48
+            },
+            "op": "param",
+            "param": "request_id"
+          },
+          "loc": {
+            "file": "public_api_probe.py",
+            "line": 48
+          }
+        }
+      ],
+      "loc": {
+        "file": "public_api_probe.py",
+        "line": 48
+      },
+      "name": "record__new",
+      "params": [
+        {
+          "name": "request_id",
+          "role": "input",
+          "type": {
+            "entity": "Record",
+            "t": "id"
+          }
+        },
+        {
+          "name": "label",
+          "role": "input",
+          "type": {
+            "t": "string"
+          }
+        },
+        {
+          "name": "actor",
+          "role": "context",
+          "type": {
+            "entity": "Actor",
+            "t": "id"
+          }
+        }
+      ],
+      "postconditions": [],
+      "preconditions": []
+    }
+  ],
+  "versions": {
+    "accepted_wire_ir": [
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7",
+      "0.8"
+    ],
+    "binding": {
+      "python": "0.14.0"
+    },
+    "command_occurrence_domain": "behavior.command_occurrence.v1",
+    "command_stream": "behavior.command_stream_request.v1",
+    "core": {
+      "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+      "version": "0.15.0"
+    },
+    "engine": "0.15.0",
+    "read_records": [
+      "behavior.read_record.v1",
+      "behavior.read_record.v2"
+    ],
+    "records": [
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7",
+      "0.8"
+    ],
+    "store_documents": [
+      "behavior.entity_content.v1",
+      "behavior.entity_version.v1",
+      "behavior.state.v1",
+      "behavior.evidence_policy.v1",
+      "behavior.store_genesis.v1",
+      "behavior.commit_bundle.v1",
+      "behavior.transition_record.v1",
+      "behavior.replay_report.v1",
+      "behavior.migration_bundle.v1",
+      "behavior.store_genesis.v2",
+      "behavior.commit_bundle.v2",
+      "behavior.migration_bundle.v2",
+      "behavior.transition_record.v2"
+    ],
+    "verifier": "0.10.0",
+    "wire_ir": [
+      "0.1",
+      "0.2",
+      "0.3",
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7"
+    ]
+  }
+}

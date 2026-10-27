@@ -1,0 +1,38 @@
+{
+  "task": "T025",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/unit/test_verification.py"
+    ],
+    "exit_code": 2,
+    "stdout": "\n==================================== ERRORS ====================================\n_______________ ERROR collecting tests/unit/test_verification.py _______________\nImportError while importing test module '/home/kalle/repos/behavior-mcp/tests/unit/test_verification.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/unit/test_verification.py:5: in <module>\n    from behavior_mcp.authoring import build\nE   ModuleNotFoundError: No module named 'behavior_mcp.authoring'\n=========================== short test summary info ============================\nERROR tests/unit/test_verification.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.32s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us1.json"
+    }
+  ]
+}

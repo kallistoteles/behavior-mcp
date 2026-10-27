@@ -1,0 +1,419 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:behavior-mcp:authoring:v1",
+  "title": "Bounded original authoring proposal; not a canonical Behavior Model document",
+  "description": "Host-owned syntax justified by GAP-001. Public Behavior constructors define all semantics. Bounds are host operational restrictions. Fixed Actor declaration/context are supplied by the versioned trusted adapter and retained in the construction manifest.",
+  "type": "object",
+  "properties": {
+    "format": {
+      "const": "behavior-mcp.authoring.v1"
+    },
+    "adapter_profile": {
+      "const": "scalar-models.v1"
+    },
+    "declarations": {
+      "type": "object",
+      "properties": {
+        "enums": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/enum"
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entity"
+          },
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "enums",
+        "entities"
+      ],
+      "additionalProperties": false
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/request_flow"
+          },
+          {
+            "$ref": "#/$defs/state_machine"
+          }
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 2
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "format",
+    "adapter_profile",
+    "declarations",
+    "models"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+    },
+    "enum": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "cases": {
+          "type": "array",
+          "description": "Explicit public Enum declaration order; JSON object member ordering is never semantic input.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/identifier"
+              },
+              "value": {
+                "type": "string",
+                "maxLength": 128
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 64
+        }
+      },
+      "required": [
+        "name",
+        "cases"
+      ],
+      "additionalProperties": false
+    },
+    "field": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enum": {
+              "$ref": "#/$defs/identifier"
+            }
+          },
+          "required": [
+            "enum"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "fields": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/field"
+          },
+          "minProperties": 1,
+          "maxProperties": 32
+        }
+      },
+      "required": [
+        "name",
+        "fields"
+      ],
+      "additionalProperties": false
+    },
+    "value_source": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "source": {
+              "const": "input"
+            },
+            "name": {
+              "$ref": "#/$defs/identifier"
+            }
+          },
+          "required": [
+            "source",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "source": {
+              "const": "literal"
+            },
+            "value": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          },
+          "required": [
+            "source",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "transition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "from": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "to": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "inputs": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "const": "string"
+          },
+          "maxProperties": 32
+        },
+        "assignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "target_field": {
+                "$ref": "#/$defs/identifier"
+              },
+              "input": {
+                "$ref": "#/$defs/identifier"
+              }
+            },
+            "required": [
+              "target_field",
+              "input"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "id",
+        "from",
+        "to",
+        "inputs",
+        "assignments"
+      ],
+      "additionalProperties": false
+    },
+    "creation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "to": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "inputs": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "const": "string"
+          },
+          "maxProperties": 32
+        },
+        "initializer": {
+          "type": "object",
+          "properties": {
+            "requester": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "const": "host_actor"
+                }
+              },
+              "required": [
+                "source"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "requester"
+          ],
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/value_source"
+          },
+          "maxProperties": 33
+        }
+      },
+      "required": [
+        "id",
+        "to",
+        "inputs",
+        "initializer"
+      ],
+      "additionalProperties": false
+    },
+    "request_flow": {
+      "type": "object",
+      "properties": {
+        "model_kind": {
+          "const": "request_flow"
+        },
+        "model_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "status_enum": {
+          "$ref": "#/$defs/identifier"
+        },
+        "payload": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "const": "string"
+          },
+          "maxProperties": 32
+        },
+        "creations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/creation"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/transition"
+          },
+          "minItems": 1,
+          "maxItems": 128
+        }
+      },
+      "required": [
+        "model_kind",
+        "model_id",
+        "status_enum",
+        "payload",
+        "creations",
+        "transitions"
+      ],
+      "additionalProperties": false
+    },
+    "state_machine": {
+      "type": "object",
+      "properties": {
+        "model_kind": {
+          "const": "state_machine"
+        },
+        "model_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "subject_entity": {
+          "$ref": "#/$defs/identifier"
+        },
+        "state_field": {
+          "$ref": "#/$defs/identifier"
+        },
+        "subject_param": {
+          "$ref": "#/$defs/identifier"
+        },
+        "entry_states": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/transition"
+          },
+          "minItems": 1,
+          "maxItems": 128
+        }
+      },
+      "required": [
+        "model_kind",
+        "model_id",
+        "subject_entity",
+        "state_field",
+        "subject_param",
+        "entry_states",
+        "transitions"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

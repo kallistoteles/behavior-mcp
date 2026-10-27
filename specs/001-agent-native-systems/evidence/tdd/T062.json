@@ -1,0 +1,38 @@
+{
+  "task": "T062",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_authoring_roundtrip.py"
+    ],
+    "exit_code": 1,
+    "stdout": ".FFF                                                                     [100%]\n=================================== FAILURES ===================================\n_ test_manifest_model_identity_metadata_must_match_authoritative_receipt[model_kind-state_machine] _\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.Ul1DMn/pytest-of-kalle/pytest-0/test_manifest_model_identity_m0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1dd4770>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\nfield = 'model_kind', value = 'state_machine'\n\n    @pytest.mark.parametrize('field,value',[('model_kind','state_machine'),('model_semantic_version',3),('lowerer_version',2)])\n    def test_manifest_model_identity_metadata_must_match_authoritative_receipt(trusted_setup,proposal,field,value):\n        root,ctx,_,artifacts=trusted_setup;d=authored(Application(root,ctx,'local-delegation'),proposal)\n        tampered=copy.deepcopy(d);tampered['models'][0][field]=value\n        from behavior_mcp.storage import connect,transaction\n        with connect(artifacts.path) as db,transaction(db):db.execute('UPDATE blobs SET document=? WHERE id=?',(encode(tampered),d['definition_id']))\n>       with pytest.raises(OperationError):reconstruct(artifacts,d['definition_id'])\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE OperationError\n\ntests/integration/test_authoring_roundtrip.py:41: Failed\n_ test_manifest_model_identity_metadata_must_match_authoritative_receipt[model_semantic_version-3] _\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.Ul1DMn/pytest-of-kalle/pytest-0/test_manifest_model_identity_m1'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff53d8f30>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\nfield = 'model_semantic_version', value = 3\n\n    @pytest.mark.parametrize('field,value',[('model_kind','state_machine'),('model_semantic_version',3),('lowerer_version',2)])\n    def test_manifest_model_identity_metadata_must_match_authoritative_receipt(trusted_setup,proposal,field,value):\n        root,ctx,_,artifacts=trusted_setup;d=authored(Application(root,ctx,'local-delegation'),proposal)\n        tampered=copy.deepcopy(d);tampered['models'][0][field]=value\n        from behavior_mcp.storage import connect,transaction\n        with connect(artifacts.path) as db,transaction(db):db.execute('UPDATE blobs SET document=? WHERE id=?',(encode(tampered),d['definition_id']))\n>       with pytest.raises(OperationError):reconstruct(artifacts,d['definition_id'])\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE OperationError\n\ntests/integration/test_authoring_roundtrip.py:41: Failed\n_ test_manifest_model_identity_metadata_must_match_authoritative_receipt[lowerer_version-2] _\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.Ul1DMn/pytest-of-kalle/pytest-0/test_manifest_model_identity_m2'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1d2bc50>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\nfield = 'lowerer_version', value = 2\n\n    @pytest.mark.parametrize('field,value',[('model_kind','state_machine'),('model_semantic_version',3),('lowerer_version',2)])\n    def test_manifest_model_identity_metadata_must_match_authoritative_receipt(trusted_setup,proposal,field,value):\n        root,ctx,_,artifacts=trusted_setup;d=authored(Application(root,ctx,'local-delegation'),proposal)\n        tampered=copy.deepcopy(d);tampered['models'][0][field]=value\n        from behavior_mcp.storage import connect,transaction\n        with connect(artifacts.path) as db,transaction(db):db.execute('UPDATE blobs SET document=? WHERE id=?',(encode(tampered),d['definition_id']))\n>       with pytest.raises(OperationError):reconstruct(artifacts,d['definition_id'])\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE OperationError\n\ntests/integration/test_authoring_roundtrip.py:41: Failed\n=========================== short test summary info ============================\nFAILED tests/integration/test_authoring_roundtrip.py::test_manifest_model_identity_metadata_must_match_authoritative_receipt[model_kind-state_machine]\nFAILED tests/integration/test_authoring_roundtrip.py::test_manifest_model_identity_metadata_must_match_authoritative_receipt[model_semantic_version-3]\nFAILED tests/integration/test_authoring_roundtrip.py::test_manifest_model_identity_metadata_must_match_authoritative_receipt[lowerer_version-2]\n3 failed, 1 passed in 4.06s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us3.json"
+    }
+  ]
+}

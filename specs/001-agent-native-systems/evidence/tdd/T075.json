@@ -1,0 +1,46 @@
+{
+  "task": "T075",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_composed_provenance.py"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n_____ test_imported_wire_has_no_receipts_but_original_provenance_survives ______\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.2RILnh/pytest-of-kalle/pytest-0/test_imported_wire_has_no_rece0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1efc830>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_imported_wire_has_no_receipts_but_original_provenance_survives(trusted_setup,proposal):\n>       root,ctx,_,artifacts=trusted_setup;app=Application(root,ctx,'local-delegation');source=composed_proposal(proposal);manifest=authored(app,source)\n                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_composed_provenance.py:8: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\napp = <behavior_mcp.server.Application object at 0x7ffff1efcad0>\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...{'model_kind': 'state_machine', 'model_id': 'auxiliary', 'subject_entity': 'Auxiliary', 'state_field': 'status', ...}]}\n\n    def authored(app, proposal):\n        p = app.execute(\"definition_propose\", {\"proposal\": proposal})\n        assert p[\"request_status\"] == \"completed\", p\n        s = p[\"result\"]\n        d = app.execute(\n            \"definition_validate\",\n            {\"proposal_id\": s[\"proposal_id\"], \"proposal_revision\": s[\"proposal_revision\"]},\n        )\n>       assert d[\"outcome\"] == \"admitted\", d\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'refused', 'stage': 'validation', 'outcome': 'unsupported', 'subject': {'workspace_id': 'workspace-1', 'proposal_id': 'proposal-514393d923d64bb798aaa20c95a0bdd2', 'proposal_revision': 1}, 'result': {}, 'evidence': [], 'error': {'category': 'unsupported', 'code': 'MODEL_SUBSET_UNAVAILABLE', 'message': 'This adapter currently supports RequestFlow only', 'retryable': False, 'operation_may_have_committed': False}}\n\ntests/fixtures/runtime.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_composed_provenance.py::test_imported_wire_has_no_receipts_but_original_provenance_survives\n1 failed in 2.65s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/integration/test_model_composition.py",
+        "tests/contract/test_model_coverage.py",
+        "tests/integration/test_composed_provenance.py",
+        "tests/acceptance/test_composition.py"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us4.json"
+    }
+  ]
+}
