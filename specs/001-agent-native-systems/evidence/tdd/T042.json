@@ -1,0 +1,66 @@
+{
+  "task": "T042",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/contract/test_system_tools.py::test_state_pagination_cursor_fits_contract_and_binds_original_snapshot"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n____ test_state_pagination_cursor_fits_contract_and_binds_original_snapshot ____\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.bPcCWA/pytest-of-kalle/pytest-0/test_state_pagination_cursor_f0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1ea8830>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_state_pagination_cursor_fits_contract_and_binds_original_snapshot(trusted_setup,proposal):\n        root,ctx,_,_=trusted_setup;app=Application(root,ctx,'local-delegation');sid,_,_,_=create_active(app,proposal,'1')\n        from tests.fixtures.runtime import evaluate_commit\n        for number in [1,2]:evaluate_commit(app,sid,'record__new',f'page-{number}',input={'request_id':f'r{number}','label':'Example'})\n        first=app.execute('state_read',{'system_id':sid,'entity':'Record','limit':1})\n>       cursor=first['result']['next_cursor'];assert cursor and len(cursor)<=256\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'next_cursor'\n\ntests/contract/test_system_tools.py:153: KeyError\n=========================== short test summary info ============================\nFAILED tests/contract/test_system_tools.py::test_state_pagination_cursor_fits_contract_and_binds_original_snapshot\n1 failed in 4.21s\n",
+    "stderr": ""
+  },
+  "red_history": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/contract/test_system_tools.py"
+      ],
+      "exit_code": 1,
+      "stdout": "F..........                                                              [100%]\n=================================== FAILURES ===================================\n_____________ test_all_fixed_runtime_tools_and_wrong_scope_tokens ______________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.BRP38q/pytest-of-kalle/pytest-0/test_all_fixed_runtime_tools_a0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff2e23cb0>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_all_fixed_runtime_tools_and_wrong_scope_tokens(trusted_setup,proposal):\n        root,ctx,_,_=trusted_setup;app=Application(root,ctx,'local-delegation')\n>       one,_,_,_=create_active(app,proposal,'1');two,_,_,_=create_active(app,proposal,'2')\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/contract/test_system_tools.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\napp = <behavior_mcp.server.Application object at 0x7ffff1ed46e0>\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\nsuffix = '1'\n\n    def create_active(app,proposal,suffix='1'):\n        definition=authored(app,proposal)\n        created=app.execute('systems_create',{'definition_id':definition['definition_id'],'operation_id':'create-'+suffix})\n>       assert created['outcome']=='created',created\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'read', 'outcome': 'infrastructure_failure', 'subject': {'workspace_id': 'workspace-1'}, 'result': {}, 'evidence': [], 'error': {'category': 'infrastructure', 'code': 'INFRASTRUCTURE_FAILURE', 'message': 'Operation could not be completed', 'retryable': True, 'operation_may_have_committed': False}}\n\ntests/fixtures/runtime.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED tests/contract/test_system_tools.py::test_all_fixed_runtime_tools_and_wrong_scope_tokens\n1 failed, 10 passed in 4.15s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/contract/test_system_tools.py::test_fresh_commit_uses_commit_grant_without_receipt_read_grant"
+      ],
+      "exit_code": 1,
+      "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n________ test_fresh_commit_uses_commit_grant_without_receipt_read_grant ________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.XbVl5W/pytest-of-kalle/pytest-0/test_fresh_commit_uses_commit_0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1ed0440>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\npolicy_document = {'format': 'behavior-mcp.host-policy.v1', 'policy_id': 'local-delegation', 'version': 2, 'issuer_id': 'local-operator', ...}\n\n    def test_fresh_commit_uses_commit_grant_without_receipt_read_grant(trusted_setup,proposal,policy_document):\n        root,ctx,_,artifacts=trusted_setup\n        policy_document.update(version=2,operations=[o for o in policy_document['operations'] if o!='operation_get'])\n        artifacts.install_policy(policy_document)\n        app=Application(root,ctx,'local-delegation')\n        sid,_,_,_=create_active(app,proposal)\n        from tests.fixtures.runtime import evaluate_commit\n>       evaluate_commit(app,sid,'record__new','fresh-no-read',input={'request_id':'r1','label':'Example'})\n\ntests/contract/test_system_tools.py:133: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\napp = <behavior_mcp.server.Application object at 0x7ffff1ed0590>\nsystem_id = 'system-2c133366e87e45978d64a9587c7d562f'\ncapability = 'record__new', operation_id = 'fresh-no-read', bindings = None\ninput = {'request_id': 'r1', 'label': 'Example'}\n\n    def evaluate_commit(\n        app, system_id, capability, operation_id, *, bindings=None, input=None\n    ):\n        inspected = app.execute(\"system_inspect\", {\"system_id\": system_id})\n        assert inspected[\"request_status\"] == \"completed\", inspected\n        e = app.execute(\n            \"transition_evaluate\",\n            {\n                \"system_id\": system_id,\n                \"capability_id\": capability,\n                \"bindings\": bindings or {},\n                \"input\": input or {},\n                \"expected_activation_revision\": inspected[\"result\"][\"active\"][\n                    \"activation_revision\"\n                ],\n                \"operation_id\": operation_id,\n            },\n        )\n        assert e[\"outcome\"] == \"evaluation_allowed\", e\n        r = app.execute(\n            \"transition_commit\",\n            {\n                \"system_id\": system_id,\n                \"evaluation_token\": e[\"result\"][\"evaluation_token\"],\n                \"operation_id\": operation_id,\n            },\n        )\n>       assert r[\"outcome\"] == \"committed\", r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'refused', 'stage': 'commit', 'outcome': 'unauthorized', 'subject': {'workspace_id': 'workspace-1', 'system_id': 'system-2c133366e87e45978d64a9587c7d562f'}, 'result': {}, 'evidence': [], 'error': {'category': 'unauthorized', 'code': 'OPERATION_DENIED', 'message': 'Operation is outside trusted delegation', 'retryable': False, 'operation_may_have_committed': False}}\n\ntests/fixtures/runtime.py:68: AssertionError\n=========================== short test summary info ============================\nFAILED tests/contract/test_system_tools.py::test_fresh_commit_uses_commit_grant_without_receipt_read_grant\n1 failed in 3.47s\n",
+      "stderr": ""
+    }
+  ],
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us2.json"
+    }
+  ]
+}

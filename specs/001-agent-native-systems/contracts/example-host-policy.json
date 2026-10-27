@@ -1,0 +1,95 @@
+{
+  "format": "behavior-mcp.host-policy.v1",
+  "policy_id": "local-delegation",
+  "version": 1,
+  "issuer_id": "local-operator",
+  "principal_id": "agent-session",
+  "workspace_id": "workspace-1",
+  "system_scope": {
+    "kind": "workspace"
+  },
+  "operations": [
+    "models_list",
+    "definition_propose",
+    "definition_get",
+    "definition_validate",
+    "definition_verify",
+    "systems_create",
+    "systems_list",
+    "system_inspect",
+    "definition_activate",
+    "capabilities_list",
+    "state_read",
+    "transition_evaluate",
+    "transition_commit",
+    "operation_get",
+    "system_recover",
+    "gaps_list"
+  ],
+  "construction": {
+    "adapter_profile": "scalar-models.v1",
+    "adapter_version": "1",
+    "behavior_version": "0.14.0",
+    "core_version": "0.15.0",
+    "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+    "verifier_version": "0.10.0",
+    "allowed_model_kinds": [
+      "request_flow",
+      "state_machine"
+    ],
+    "allowed_model_ids": [
+      "record",
+      "auxiliary"
+    ],
+    "allowed_capability_names": [
+      "record__new",
+      "record__finish",
+      "record__complete",
+      "auxiliary__finish"
+    ]
+  },
+  "effects": {
+    "allowed_forms": [
+      "literal_initializer",
+      "input_initializer",
+      "trusted_actor_initializer",
+      "input_to_field_assignment"
+    ],
+    "initializer_fields": [
+      "requester",
+      "label",
+      "outcome"
+    ],
+    "assignment_fields": [
+      "outcome"
+    ],
+    "allow_external_commands": false,
+    "allow_permission_expansion": false
+  },
+  "state": {
+    "allow_new_records": true,
+    "allow_existing_record_changes": true,
+    "allowed_status_values": [
+      "Open",
+      "Done"
+    ],
+    "allowed_status_edges": [
+      {
+        "from": "Open",
+        "to": "Done"
+      }
+    ],
+    "allow_schema_migration": false
+  },
+  "system_creation": {
+    "allowed": true,
+    "max_systems": 8,
+    "core_policy_profile": "structural-none",
+    "bootstrap_actor": {
+      "entity": "Actor",
+      "id": "actor-1",
+      "name": "local"
+    }
+  },
+  "required_verification": []
+}

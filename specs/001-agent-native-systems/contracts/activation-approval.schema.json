@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:behavior-mcp:activation-approval:v1",
+  "title": "Exact-version trusted activation exception; issuer text alone is not authority",
+  "type": "object",
+  "properties": {
+    "format": {
+      "const": "behavior-mcp.activation-approval.v1"
+    },
+    "approval_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "issuer_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "grantee_principal_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "system_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "definition_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "behavior_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "schema_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "policy_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "expected_activation_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "history_anchor": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "const": "behavior.history_ref.v1"
+        },
+        "store": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "state": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "record": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "format",
+        "store",
+        "state",
+        "position",
+        "record"
+      ],
+      "additionalProperties": false
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "adapter_version",
+          "model_kind",
+          "model_id",
+          "capability_set",
+          "typed_effect",
+          "state_change"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "format",
+    "approval_id",
+    "issuer_id",
+    "grantee_principal_id",
+    "workspace_id",
+    "system_id",
+    "definition_id",
+    "behavior_hash",
+    "schema_hash",
+    "policy_id",
+    "policy_version",
+    "expected_activation_revision",
+    "history_anchor",
+    "exceptions"
+  ],
+  "additionalProperties": false
+}

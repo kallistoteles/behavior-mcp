@@ -1,0 +1,459 @@
+{
+  "description": "Synthetic JSON Schema fixtures, not executed Behavior verification or activation evidence.",
+  "valid": {
+    "verified": {
+      "format": "behavior-mcp.result.v1",
+      "request_status": "completed",
+      "stage": "verification",
+      "outcome": "verification_verified",
+      "subject": {
+        "workspace_id": "workspace-1",
+        "definition_id": "definition-1",
+        "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "schema_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "result": {
+        "kind": "verification",
+        "verification_status": "verified",
+        "upstream_result": "verified",
+        "profile_id": "fixture-profile",
+        "semantic_profile": {
+          "fixture": true
+        },
+        "checks": [
+          {
+            "id": "fixture-check",
+            "result": "verified"
+          }
+        ],
+        "obligations": [],
+        "assumptions": [],
+        "report_identity": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+        "report": {
+          "fixture": "schema shape only",
+          "result": "verified",
+          "behavior_version": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+          "checks": [
+            {
+              "id": "fixture-check",
+              "result": "verified"
+            }
+          ],
+          "obligations": [],
+          "assumptions": []
+        },
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "evidence": [
+        {
+          "evidence_id": "schema-fixture-evidence",
+          "kind": "verification",
+          "report_ref": "schema-fixture-report",
+          "subject": {
+            "definition_id": "definition-1",
+            "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+          },
+          "release": {
+            "behavior_version": "0.14.0",
+            "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+            "core_version": "0.15.0",
+            "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+            "verifier_version": "0.10.0"
+          }
+        }
+      ],
+      "error": null
+    },
+    "activated": {
+      "format": "behavior-mcp.result.v1",
+      "request_status": "completed",
+      "stage": "activation",
+      "outcome": "activated",
+      "subject": {
+        "workspace_id": "workspace-1",
+        "system_id": "system-1",
+        "definition_id": "definition-1",
+        "operation_id": "activate-1",
+        "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "schema_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "history_anchor": {
+          "format": "behavior.history_ref.v1",
+          "store": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "state": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "position": 0,
+          "record": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "result": {
+        "kind": "activation",
+        "receipt": {
+          "activation_id": "activation-1",
+          "operation_id": "activate-1",
+          "workspace_id": "workspace-1",
+          "system_id": "system-1",
+          "definition_id": "definition-1",
+          "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "schema_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+          "previous_activation_revision": 0,
+          "activation_revision": 1,
+          "policy": {
+            "policy_id": "local-delegation",
+            "policy_version": 1
+          },
+          "authorization_ref": "schema-fixture-authorization",
+          "history_anchor": {
+            "format": "behavior.history_ref.v1",
+            "store": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "state": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "position": 0,
+            "record": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          "validation_evidence_refs": [
+            "schema-fixture-validation"
+          ],
+          "verification_evidence_refs": [],
+          "release": {
+            "behavior_version": "0.14.0",
+            "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+            "core_version": "0.15.0",
+            "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+            "verifier_version": "0.10.0"
+          },
+          "request_binding_ref": "activation-request-1"
+        },
+        "observed_current_deployment": {
+          "activation_id": "activation-1",
+          "activation_revision": 1,
+          "definition_id": "definition-1",
+          "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        }
+      },
+      "evidence": [
+        {
+          "evidence_id": "schema-fixture-evidence",
+          "kind": "activation",
+          "report_ref": "schema-fixture-report",
+          "subject": {
+            "definition_id": "definition-1",
+            "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+          },
+          "release": {
+            "behavior_version": "0.14.0",
+            "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+            "core_version": "0.15.0",
+            "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+            "verifier_version": "0.10.0"
+          }
+        }
+      ],
+      "error": null
+    },
+    "already_activated_after_newer_activation": {
+      "format": "behavior-mcp.result.v1",
+      "request_status": "completed",
+      "stage": "activation",
+      "outcome": "already_activated",
+      "subject": {
+        "workspace_id": "workspace-1",
+        "system_id": "system-1",
+        "definition_id": "definition-1",
+        "operation_id": "activate-1",
+        "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "schema_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "history_anchor": {
+          "format": "behavior.history_ref.v1",
+          "store": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "state": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "position": 0,
+          "record": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "result": {
+        "kind": "activation",
+        "receipt": {
+          "activation_id": "activation-1",
+          "operation_id": "activate-1",
+          "workspace_id": "workspace-1",
+          "system_id": "system-1",
+          "definition_id": "definition-1",
+          "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "schema_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+          "previous_activation_revision": 0,
+          "activation_revision": 1,
+          "policy": {
+            "policy_id": "local-delegation",
+            "policy_version": 1
+          },
+          "authorization_ref": "schema-fixture-authorization",
+          "history_anchor": {
+            "format": "behavior.history_ref.v1",
+            "store": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "state": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "position": 0,
+            "record": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          "validation_evidence_refs": [
+            "schema-fixture-validation"
+          ],
+          "verification_evidence_refs": [],
+          "release": {
+            "behavior_version": "0.14.0",
+            "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+            "core_version": "0.15.0",
+            "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+            "verifier_version": "0.10.0"
+          },
+          "request_binding_ref": "activation-request-1"
+        },
+        "observed_current_deployment": {
+          "activation_id": "activation-2",
+          "activation_revision": 2,
+          "definition_id": "definition-2",
+          "behavior_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+        }
+      },
+      "evidence": [
+        {
+          "evidence_id": "schema-fixture-evidence",
+          "kind": "activation",
+          "report_ref": "schema-fixture-report",
+          "subject": {
+            "definition_id": "definition-1",
+            "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+          },
+          "release": {
+            "behavior_version": "0.14.0",
+            "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+            "core_version": "0.15.0",
+            "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+            "verifier_version": "0.10.0"
+          }
+        }
+      ],
+      "error": null
+    }
+  },
+  "invalid": {
+    "empty_verified": {
+      "format": "behavior-mcp.result.v1",
+      "request_status": "completed",
+      "stage": "verification",
+      "outcome": "verification_verified",
+      "subject": {
+        "workspace_id": "workspace-1",
+        "definition_id": "definition-1",
+        "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "schema_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "result": {},
+      "evidence": [],
+      "error": null
+    },
+    "empty_activation": {
+      "format": "behavior-mcp.result.v1",
+      "request_status": "completed",
+      "stage": "activation",
+      "outcome": "activated",
+      "subject": {
+        "workspace_id": "workspace-1",
+        "system_id": "system-1",
+        "definition_id": "definition-1",
+        "operation_id": "activate-1",
+        "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "schema_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "history_anchor": {
+          "format": "behavior.history_ref.v1",
+          "store": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "state": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "position": 0,
+          "record": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "result": {},
+      "evidence": [],
+      "error": null
+    },
+    "verified_from_inconclusive": {
+      "format": "behavior-mcp.result.v1",
+      "request_status": "completed",
+      "stage": "verification",
+      "outcome": "verification_verified",
+      "subject": {
+        "workspace_id": "workspace-1",
+        "definition_id": "definition-1",
+        "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "schema_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "result": {
+        "kind": "verification",
+        "verification_status": "verified",
+        "upstream_result": "inconclusive",
+        "profile_id": "fixture-profile",
+        "semantic_profile": {
+          "fixture": true
+        },
+        "checks": [
+          {
+            "id": "fixture-check",
+            "result": "verified"
+          }
+        ],
+        "obligations": [],
+        "assumptions": [],
+        "report_identity": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+        "report": {
+          "fixture": "schema shape only",
+          "result": "verified"
+        },
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "evidence": [
+        {
+          "evidence_id": "schema-fixture-evidence",
+          "kind": "verification",
+          "report_ref": "schema-fixture-report",
+          "subject": {
+            "definition_id": "definition-1",
+            "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+          },
+          "release": {
+            "behavior_version": "0.14.0",
+            "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+            "core_version": "0.15.0",
+            "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+            "verifier_version": "0.10.0"
+          }
+        }
+      ],
+      "error": null
+    },
+    "completed_with_error": {
+      "format": "behavior-mcp.result.v1",
+      "request_status": "completed",
+      "stage": "verification",
+      "outcome": "verification_verified",
+      "subject": {
+        "workspace_id": "workspace-1",
+        "definition_id": "definition-1",
+        "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "schema_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "result": {
+        "kind": "verification",
+        "verification_status": "verified",
+        "upstream_result": "verified",
+        "profile_id": "fixture-profile",
+        "semantic_profile": {
+          "fixture": true
+        },
+        "checks": [
+          {
+            "id": "fixture-check",
+            "result": "verified"
+          }
+        ],
+        "obligations": [],
+        "assumptions": [],
+        "report_identity": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+        "report": {
+          "fixture": "schema shape only",
+          "result": "verified"
+        },
+        "release": {
+          "behavior_version": "0.14.0",
+          "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+          "core_version": "0.15.0",
+          "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "verifier_version": "0.10.0"
+        }
+      },
+      "evidence": [
+        {
+          "evidence_id": "schema-fixture-evidence",
+          "kind": "verification",
+          "report_ref": "schema-fixture-report",
+          "subject": {
+            "definition_id": "definition-1",
+            "behavior_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+          },
+          "release": {
+            "behavior_version": "0.14.0",
+            "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+            "core_version": "0.15.0",
+            "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+            "verifier_version": "0.10.0"
+          }
+        }
+      ],
+      "error": {
+        "category": "unauthorized",
+        "code": "DENIED",
+        "message": "denied",
+        "retryable": false,
+        "operation_may_have_committed": false
+      }
+    }
+  }
+}

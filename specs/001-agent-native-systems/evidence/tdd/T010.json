@@ -1,0 +1,63 @@
+{
+  "task": "T010",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/contract/test_schema_envelopes.py::test_invalid_server_output_is_an_infrastructure_error"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n____________ test_invalid_server_output_is_an_infrastructure_error _____________\n\n    def test_invalid_server_output_is_an_infrastructure_error():\n        with pytest.raises(OperationError) as error:\n            validate_output(fixtures()['invalid']['empty_verified'])\n>       assert error.value.category=='infrastructure'\nE       AssertionError: assert 'invalid_input' == 'infrastructure'\nE         \nE         - infrastructure\nE         + invalid_input\n\ntests/contract/test_schema_envelopes.py:87: AssertionError\n=========================== short test summary info ============================\nFAILED tests/contract/test_schema_envelopes.py::test_invalid_server_output_is_an_infrastructure_error\n1 failed in 0.80s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "red_history": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/contract/test_schema_envelopes.py"
+      ],
+      "exit_code": 2,
+      "stdout": "\n==================================== ERRORS ====================================\n___________ ERROR collecting tests/contract/test_schema_envelopes.py ___________\nImportError while importing test module '/home/kalle/repos/behavior-mcp/tests/contract/test_schema_envelopes.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/contract/test_schema_envelopes.py:6: in <module>\n    from behavior_mcp.schemas import OperationError, load_schema, validate_input, validate_output\nE   ModuleNotFoundError: No module named 'behavior_mcp.schemas'\n=========================== short test summary info ============================\nERROR tests/contract/test_schema_envelopes.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.21s\n",
+      "stderr": ""
+    }
+  ],
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../foundation.json"
+    },
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us2.json"
+    }
+  ]
+}

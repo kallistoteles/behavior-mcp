@@ -1,0 +1,41 @@
+{
+  "task": "T005",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/unit/test_quality_gate.py"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______________ test_skipped_tests_fail_the_required_quality_gate _______________\n\ntmp_path = PosixPath('/tmp/nix-shell.z9XUOc/pytest-of-kalle/pytest-0/test_skipped_tests_fail_the_re0')\n\n    def test_skipped_tests_fail_the_required_quality_gate(tmp_path):\n        root=Path(__file__).resolve().parents[2]\n        sample=tmp_path/'test_skipped.py';sample.write_text('import pytest\\n@pytest.mark.skip(reason=\"not built\")\\ndef test_required_behavior(): pass\\n')\n        result=subprocess.run([sys.executable,'-m','pytest','-q','-p','tests.conftest',str(sample)],cwd=tmp_path,env=dict(os.environ,PYTHONPATH=str(root)),capture_output=True,text=True,timeout=20)\n        assert '1 skipped' in result.stdout\n>       assert result.returncode!=0,'Required quality checks cannot succeed through skipped tests'\nE       AssertionError: Required quality checks cannot succeed through skipped tests\nE       assert 0 != 0\nE        +  where 0 = CompletedProcess(args=['/home/kalle/repos/behavior-mcp/.venv/bin/python3', '-m', 'pytest', '-q', '-p', 'tests.conftest...out='s                                                                        [100%]\\n1 skipped in 0.01s\\n', stderr='').returncode\n\ntests/unit/test_quality_gate.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED tests/unit/test_quality_gate.py::test_skipped_tests_fail_the_required_quality_gate\n1 failed in 0.66s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/unit/test_quality_gate.py"
+      ],
+      "exit_code": 0,
+      "stdout": ".                                                                        [100%]\n1 passed in 0.66s\n",
+      "stderr": ""
+    }
+  ]
+}

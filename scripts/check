@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+uv sync --locked --no-install-project
+uv sync --locked --no-build-isolation --reinstall-package behavior-mcp
+uv run --locked python -m behavior_mcp.dependencies
+ruff format --check src tests specs/001-agent-native-systems/evidence/public_api_probe.py scripts/record-test
+ruff check src tests specs/001-agent-native-systems/evidence/public_api_probe.py scripts/record-test
+uv run --locked mypy
+uv run --locked pytest

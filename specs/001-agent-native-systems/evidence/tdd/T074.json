@@ -1,0 +1,61 @@
+{
+  "task": "T074",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/contract/test_model_coverage.py::test_model_problem_descriptions_come_from_public_upstream_classes"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______ test_model_problem_descriptions_come_from_public_upstream_classes _______\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.UwKySl/pytest-of-kalle/pytest-0/test_model_problem_description0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1ec42f0>)\n\n    def test_model_problem_descriptions_come_from_public_upstream_classes(trusted_setup):\n        import inspect\n        from behavior import RequestFlow,StateMachine,Approval,WorkQueue\n        root,ctx,_,_=trusted_setup\n        models=Application(root,ctx,'local-delegation').execute('models_list',{})['result']['models']\n        classes={'request_flow':RequestFlow,'state_machine':StateMachine,'approval':Approval,'work_queue':WorkQueue}\n        for model in models:\n>           assert model['description']==inspect.getdoc(classes[model['model_kind']])\n                   ^^^^^^^^^^^^^^^^^^^^\nE           KeyError: 'description'\n\ntests/contract/test_model_coverage.py:69: KeyError\n=========================== short test summary info ============================\nFAILED tests/contract/test_model_coverage.py::test_model_problem_descriptions_come_from_public_upstream_classes\n1 failed in 2.60s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "red_history": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/contract/test_model_coverage.py"
+      ],
+      "exit_code": 1,
+      "stdout": "F....F                                                                   [100%]\n=================================== FAILURES ===================================\n_______________ test_discovery_labels_two_bounded_host_adapters ________________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.obON7K/pytest-of-kalle/pytest-0/test_discovery_labels_two_boun0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1ed8440>)\n\n    def test_discovery_labels_two_bounded_host_adapters(trusted_setup):\n        root,ctx,_,_=trusted_setup;models=Application(root,ctx,'local-delegation').execute('models_list',{})['result']['models']\n        by_kind={m['model_kind']:m for m in models}\n>       assert {k for k,m in by_kind.items() if m['authoring_supported']}=={'request_flow','state_machine'}\nE       AssertionError: assert {'request_flow'} == {'request_flo...tate_machine'}\nE         \nE         Extra items in the right set:\nE         'state_machine'\nE         Use -v to get more diff\n\ntests/contract/test_model_coverage.py:10: AssertionError\n__________ test_invalid_enum_is_a_model_diagnostic_not_infrastructure __________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.obON7K/pytest-of-kalle/pytest-0/test_invalid_enum_is_a_model_d0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1e3bc50>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_invalid_enum_is_a_model_diagnostic_not_infrastructure(trusted_setup,proposal):\n        root,ctx,_,_=trusted_setup;app=Application(root,ctx,'local-delegation')\n        proposal['declarations']['enums'][0]['cases'][1]['name']='OPEN'\n        p=app.execute('definition_propose',{'proposal':proposal})['result']\n        result=app.execute('definition_validate',{'proposal_id':p['proposal_id'],'proposal_revision':1})\n>       assert result['outcome']=='model_invalid',result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'validation', 'outcome': 'infrastructure_failure', ...}\nE       assert 'infrastructure_failure' == 'model_invalid'\nE         \nE         - model_invalid\nE         + infrastructure_failure\n\ntests/contract/test_model_coverage.py:29: AssertionError\n=========================== short test summary info ============================\nFAILED tests/contract/test_model_coverage.py::test_discovery_labels_two_bounded_host_adapters\nFAILED tests/contract/test_model_coverage.py::test_invalid_enum_is_a_model_diagnostic_not_infrastructure\n2 failed, 4 passed in 3.20s\n",
+      "stderr": ""
+    }
+  ],
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/integration/test_model_composition.py",
+        "tests/contract/test_model_coverage.py",
+        "tests/integration/test_composed_provenance.py",
+        "tests/acceptance/test_composition.py"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us4.json"
+    }
+  ]
+}

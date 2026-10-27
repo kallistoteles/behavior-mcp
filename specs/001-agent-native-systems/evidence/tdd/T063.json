@@ -1,0 +1,39 @@
+{
+  "task": "T063",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_definition_revision.py",
+      "tests/acceptance/test_revision.py"
+    ],
+    "exit_code": 1,
+    "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n___ test_explicit_parent_revision_after_restart_preserves_system_and_history ___\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.P8fsoV/pytest-of-kalle/pytest-0/test_explicit_parent_revision_0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1ee02f0>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_explicit_parent_revision_after_restart_preserves_system_and_history(trusted_setup,proposal):\n        root,ctx,_,artifacts=trusted_setup;app=Application(root,ctx,'local-delegation')\n        one,original,_,a1=create_active(app,proposal,'1');two,_,_,_=create_active(app,proposal,'2')\n        evaluate_commit(app,one,'record__new','initial-record',input={'request_id':'r1','label':'Example'})\n        old=app.execute('system_inspect',{'system_id':one})['result'];other=app.execute('system_inspect',{'system_id':two})['result']\n        app=Application(root,ctx,'local-delegation')\n        changed=copy.deepcopy(proposal);changed['models'][0]['transitions'][0]['id']='complete'\n        p=app.execute('definition_propose',{'proposal':changed,'parent_definition_id':original['definition_id']})['result']\n        revised=app.execute('definition_validate',{'proposal_id':p['proposal_id'],'proposal_revision':1})['result']['definition']\n        assert revised['parent_definition_id']==original['definition_id']\n        assert revised['behavior_hash']!=original['behavior_hash'] and revised['schema_hash']==original['schema_hash']\n        assert revised['models'][0]['model_hash']!=original['models'][0]['model_hash']\n        assert app.execute('system_inspect',{'system_id':one})['result']==old\n        activated=app.execute('definition_activate',{'system_id':one,'definition_id':revised['definition_id'],'expected_activation_revision':1,'expected_history':old['history_anchor'],'operation_id':'revision-activation'})\n        assert activated['outcome']=='activated',activated\n        assert app.execute('system_inspect',{'system_id':two})['result']==other\n        evaluate_commit(app,one,'record__complete','revised-finish',bindings={'record':'r1'},input={'outcome':'Complete'})\n        recovery=app.execute('system_recover',{'system_id':one})\n        report=artifacts.get(recovery['evidence'][0]['report_ref'])['report']\n>       assert report['replay']['data']['ok'] and report['replay']['behavior']['ok']\n               ^^^^^^^^^^^^^^^^\nE       KeyError: 'replay'\n\ntests/integration/test_definition_revision.py:25: KeyError\n____________ test_persistent_revision_and_original_history_evidence ____________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.P8fsoV/pytest-of-kalle/pytest-0/test_persistent_revision_and_o0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff2ede780>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def test_persistent_revision_and_original_history_evidence(trusted_setup,proposal):\n        root,ctx,_,artifacts=trusted_setup;app=Application(root,ctx,'local-delegation');sid,d,_,_=create_active(app,proposal,'1');other,_,_,_=create_active(app,proposal,'2')\n        evaluate_commit(app,sid,'record__new','create-record',input={'request_id':'r1','label':'Example'})\n        original_head=app.execute('system_inspect',{'system_id':sid})['result']['history_anchor']\n        changed=copy.deepcopy(proposal);changed['models'][0]['transitions'][0]['id']='complete'\n        d2=authored(Application(root,ctx,'local-delegation'),changed)\n        assert app.execute('definition_activate',{'system_id':sid,'definition_id':d2['definition_id'],'expected_activation_revision':1,'expected_history':original_head,'operation_id':'revision'})['outcome']=='activated'\n        evaluate_commit(app,sid,'record__complete','finish-record',bindings={'record':'r1'},input={'outcome':'Complete'})\n        restarted=Application(root,ctx,'local-delegation');recovery=restarted.execute('system_recover',{'system_id':sid})\n>       evidence=artifacts.get(recovery['evidence'][0]['report_ref'])['report']['replay']\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'replay'\n\ntests/acceptance/test_revision.py:15: KeyError\n=========================== short test summary info ============================\nFAILED tests/integration/test_definition_revision.py::test_explicit_parent_revision_after_restart_preserves_system_and_history\nFAILED tests/acceptance/test_revision.py::test_persistent_revision_and_original_history_evidence\n2 failed in 8.47s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us3.json"
+    }
+  ]
+}

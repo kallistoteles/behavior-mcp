@@ -1,0 +1,78 @@
+{
+  "task": "T013",
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/unit/test_diagnostics.py::test_read_backend_failure_does_not_claim_a_domain_commit"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n___________ test_read_backend_failure_does_not_claim_a_domain_commit ___________\n\n    def test_read_backend_failure_does_not_claim_a_domain_commit():\n>       result=failure('read',{'workspace_id':'w','system_id':'s'},CommitRefused('BACKEND_ERROR','unsafe-secret'))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/unit/test_diagnostics.py:76: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/behavior_mcp/schemas.py:261: in failure\n    validate_output(envelope)\nsrc/behavior_mcp/schemas.py:98: in validate_output\n    validate(\"result\", value)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nname = 'result'\nvalue = {'format': 'behavior-mcp.result.v1', 'request_status': 'unknown', 'stage': 'read', 'outcome': 'outcome_unknown', ...}\n\n    def validate(name: str, value: Any) -> None:\n        errors = list(Draft202012Validator(_schema(name)).iter_errors(value))\n        if errors:\n            # Do not echo untrusted input values or schema-validator reprs.\n>           raise OperationError(\n                \"invalid_input\",\n                \"SCHEMA_INVALID\",\n                \"Input does not match the declared schema\",\n            )\nE           behavior_mcp.schemas.OperationError: Input does not match the declared schema\n\nsrc/behavior_mcp/schemas.py:84: OperationError\n=========================== short test summary info ============================\nFAILED tests/unit/test_diagnostics.py::test_read_backend_failure_does_not_claim_a_domain_commit\n1 failed in 0.81s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "red_history": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/unit/test_diagnostics.py"
+      ],
+      "exit_code": 2,
+      "stdout": "\n==================================== ERRORS ====================================\n_______________ ERROR collecting tests/unit/test_diagnostics.py ________________\nImportError while importing test module '/home/kalle/repos/behavior-mcp/tests/unit/test_diagnostics.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/unit/test_diagnostics.py:3: in <module>\n    from behavior_mcp.schemas import OperationError, failure, redact\nE   ModuleNotFoundError: No module named 'behavior_mcp.schemas'\n=========================== short test summary info ============================\nERROR tests/unit/test_diagnostics.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.29s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/unit/test_diagnostics.py",
+        "-k",
+        "unexpected_publication or timeout_outcome"
+      ],
+      "exit_code": 1,
+      "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n__________ test_unexpected_publication_failure_preserves_uncertainty ___________\n\n    def test_unexpected_publication_failure_preserves_uncertainty():\n        result=failure('activation',{'workspace_id':'w','system_id':'s','operation_id':'o'},OSError('lost acknowledgment; token=private'))\n>       assert result['request_status']=='unknown'\nE       AssertionError: assert 'failed' == 'unknown'\nE         \nE         - unknown\nE         + failed\n\ntests/unit/test_diagnostics.py:56: AssertionError\n_____________ test_verification_worker_timeout_has_timeout_outcome _____________\n\n    def test_verification_worker_timeout_has_timeout_outcome():\n        result=failure('verification',{'workspace_id':'w'},OperationError('infrastructure','VERIFICATION_TIMEOUT','deadline'))\n>       assert result['outcome']=='timeout'\nE       AssertionError: assert 'infrastructure_failure' == 'timeout'\nE         \nE         - timeout\nE         + infrastructure_failure\n\ntests/unit/test_diagnostics.py:63: AssertionError\n=========================== short test summary info ============================\nFAILED tests/unit/test_diagnostics.py::test_unexpected_publication_failure_preserves_uncertainty\nFAILED tests/unit/test_diagnostics.py::test_verification_worker_timeout_has_timeout_outcome\n2 failed, 9 deselected in 0.82s\n",
+      "stderr": ""
+    }
+  ],
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../foundation.json"
+    },
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us2.json"
+    }
+  ]
+}

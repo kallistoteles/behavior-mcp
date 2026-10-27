@@ -1,0 +1,73 @@
+{
+  "format": "behavior-mcp.authoring.v1",
+  "adapter_profile": "scalar-models.v1",
+  "declarations": {
+    "enums": [
+      {
+        "name": "Status",
+        "cases": [
+          {
+            "name": "OPEN",
+            "value": "Open"
+          },
+          {
+            "name": "DONE",
+            "value": "Done"
+          }
+        ]
+      }
+    ],
+    "entities": []
+  },
+  "models": [
+    {
+      "model_kind": "request_flow",
+      "model_id": "record",
+      "status_enum": "Status",
+      "payload": {
+        "label": "string",
+        "outcome": "string"
+      },
+      "creations": [
+        {
+          "id": "new",
+          "to": "Open",
+          "inputs": {
+            "label": "string"
+          },
+          "initializer": {
+            "requester": {
+              "source": "host_actor"
+            },
+            "label": {
+              "source": "input",
+              "name": "label"
+            },
+            "outcome": {
+              "source": "literal",
+              "value": ""
+            }
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "finish",
+          "from": [
+            "Open"
+          ],
+          "to": "Done",
+          "inputs": {
+            "outcome": "string"
+          },
+          "assignments": [
+            {
+              "target_field": "outcome",
+              "input": "outcome"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

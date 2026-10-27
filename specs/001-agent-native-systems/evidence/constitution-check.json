@@ -1,0 +1,153 @@
+{
+  "status": "reviewed_conformant_for_bounded_scope",
+  "reviewer": "Codex implementation review",
+  "questions": [
+    {
+      "question": 1,
+      "status": "conforms",
+      "finding": "Public top-level BehaviorModule, RequestFlow, StateMachine, entity/field/Enum/Id/set_, receipts, Wire import/export, verify/Profile, Store, HistoryRef, conformance and replay. Installed released bytes and public imports are checked.",
+      "evidence": [
+        "dependency-boundary.json",
+        "package.json"
+      ]
+    },
+    {
+      "question": 2,
+      "status": "conforms",
+      "finding": "No copied behavior semantics or lowerer. The bounded original format is justified by GAP-001. Typed transfers call public constructors. Host policy, request framing, byte digests, activation references and receipts are operational controls. Closed trusted resource overrides and linked artifact inspection remain host integration controls; no Behavior semantics are added.",
+      "evidence": [
+        "us4.json",
+        "../contracts/host-policy.md",
+        "../../../SEMANTIC_GAPS.md"
+      ]
+    },
+    {
+      "question": 3,
+      "status": "conforms",
+      "finding": "Workspace artifacts/policies and independent SystemId stores are isolated. Trusted host context, candidate bounds, exact approvals and current operation/capability grants govern each boundary.",
+      "evidence": [
+        "us2.json",
+        "package.json"
+      ]
+    },
+    {
+      "question": 4,
+      "status": "conforms_with_stated_limits",
+      "finding": "Core evaluates/commits/replays; SQL publishes Core documents atomically with host receipts. Same-schema activation validates the exact current snapshot under policy/system locks. SQLite filesystem assumptions and local single-user trust are explicit. No general safety, power-loss hardware certification, cross-system atomicity or external exactly-once claim. Backend preparation precedes reservation publication; recovery retains operation scope and uncertainty, and one unavailable system cannot prevent discovery of healthy authorized systems.",
+      "evidence": [
+        "us2.json",
+        "us3.json",
+        "quickstart.json",
+        "../../../docs/operations.md"
+      ]
+    },
+    {
+      "question": 5,
+      "status": "conforms",
+      "finding": "Observed behavioral red-before-green evidence, independent public model comparisons, all 45 backend cases, process crashes, lost acknowledgments, cancellation, source round trips, revision replay, exact authority and concurrent writers/policy updates. Skipped tests fail the gate.",
+      "evidence": [
+        "tdd/",
+        "package.json",
+        "quickstart.json",
+        "tdd/T091.json",
+        "tdd/T092.json",
+        "tdd/T093.json",
+        "tdd/T094.json",
+        "tdd/T095.json",
+        "tdd/T096.json"
+      ]
+    },
+    {
+      "question": 6,
+      "status": "conforms_with_visible_gaps",
+      "finding": "GAP-001/002 remain upstream limitations; GAP-003 is managed through retained provenance; conditional GAP-004 and all schema migration are unsupported here. These do not block the explicitly bounded first experiment and are not marked implemented.",
+      "evidence": [
+        "../../../SEMANTIC_GAPS.md",
+        "us4.json"
+      ]
+    },
+    {
+      "question": 7,
+      "status": "conforms",
+      "finding": "Use two bounded public adapters, one local stdio host, per-system SQLite and fixed tools. No second rule engine, model compiler, scheduler, plugin framework, private bridge or direct domain ORM path.",
+      "evidence": [
+        "../plan.md",
+        "dependency-boundary.json"
+      ]
+    }
+  ],
+  "exceptions_requested": [],
+  "source_byte_sha256": {
+    "src/behavior_mcp/__init__.py": "3ddfe0c38615fffdb29d15238f1e9912c02c0429d7d6001dad25686c244eac5b",
+    "src/behavior_mcp/admin.py": "67bd278eb5bf2a8074240543cc2cad673db78dd9074d2b52c80cd582eb9c209f",
+    "src/behavior_mcp/artifacts.py": "53244f3aca1d94d585e585010254ffd63597f09e41d924b481ea432d9e1c58cf",
+    "src/behavior_mcp/authoring.py": "32289a08c99625eb489f67ac0c50bcf8f5692cd80e12a2660ce5837c19533b7c",
+    "src/behavior_mcp/dependencies.py": "06c7ad42f0c32a9ed739bae3cf846276f819f4f2ef4a22c8b15d87434f29456b",
+    "src/behavior_mcp/limits.py": "3019742b8c5b16b075c1d017434ebab58543161777732f9fab1b24111c89fbd5",
+    "src/behavior_mcp/operations.py": "d83fc665663bcf84a1c5aa76e8b177ec10d5854b6a9a0abe7c419171aa9b9d74",
+    "src/behavior_mcp/policy.py": "7f59c144d7239d68a44f5ddd6c2f15b6b7a3e9c7ac19f3393971f32e0099e9b3",
+    "src/behavior_mcp/schemas.py": "fc169d9d0894a83f834a0a52b3277c2055c838c9e53a2e76810dddcbb5359a3f",
+    "src/behavior_mcp/server.py": "710b8642e4a6a3650af0e21d1d61377b12c74f040bf577ed19b2e69cc1bc267b",
+    "src/behavior_mcp/sqlite_backend.py": "ae73e9874a8d5e85357108251b042e0b66795fc80b08e136476032543698891c",
+    "src/behavior_mcp/storage.py": "b8016a8044a4a1981b472989a3ed932f2008a0028fe1794abd50caea3b600c7f",
+    "src/behavior_mcp/systems.py": "1500fa0fd4812253b67cf9cb262b5bef4ab365c07b0fdfea80499dfd9c8d5444",
+    "src/behavior_mcp/verification.py": "04bcf8bbf70cd3a93afc994d4368ab35e692d28a3e5d015e2d75ccb7e82ec1d6",
+    "pyproject.toml": "6f358d2efc4baa815a8f68225b33b6e672a4f11b7ba4b5775c3fb33d0fb124de",
+    "uv.lock": "5ba548320de9b61e1b5daf1bccf4b9617ca12ea6c7aaf506fee765160d5db918",
+    "flake.nix": "1098569a577ecb328d9b848e0aff92f739f1f2704d9a3f75fa370a312fd2d83d",
+    "flake.lock": "6f371850a8a9e787e19e432c09b1979fd17962a266f991c4b0f0b3adb6d22800",
+    "scripts/check": "891214151dbf1842ab2e3c44317f7b8087a14f57e0f8f708d1a8af92c914bde7",
+    "specs/001-agent-native-systems/contracts/activation-approval.schema.json": "11efa8a7dcf6c187fad47b21518e778dc780e17f010506ccb48ca110c546deb6",
+    "specs/001-agent-native-systems/contracts/authoring.schema.json": "8c39ef2d53485955909ffb236c003ebc21ae35273b8788cb9840794b2b9dea5c",
+    "specs/001-agent-native-systems/contracts/host-policy.schema.json": "9d57348db57e0dd8705a6c9b9b5447d64a739b63ad3fa4d90a757a9568343ae5",
+    "specs/001-agent-native-systems/contracts/result.schema.json": "895762a468892d7768593742e919932095feb9df0e4ed8893f3bfa16b125835d",
+    "specs/001-agent-native-systems/contracts/tool-request.schema.json": "0a2daf249d1705659db3a3e208f1b7ba49ced5bbb0bc92cabe39c4572d5175b8"
+  },
+  "final_gate_required": "nix develop --command ./scripts/check",
+  "formal_safety_claim": false,
+  "previous_source_byte_sha256": {
+    "src/behavior_mcp/dependencies.py": "06c7ad42f0c32a9ed739bae3cf846276f819f4f2ef4a22c8b15d87434f29456b",
+    "src/behavior_mcp/sqlite_backend.py": "ae73e9874a8d5e85357108251b042e0b66795fc80b08e136476032543698891c",
+    "src/behavior_mcp/systems.py": "cef5966e6fdc1d9a9b15626c58f9e72a12e5ec07248592c37aac5ec333fcb8f2",
+    "src/behavior_mcp/policy.py": "7f59c144d7239d68a44f5ddd6c2f15b6b7a3e9c7ac19f3393971f32e0099e9b3",
+    "src/behavior_mcp/server.py": "1a21deb39b1eab277aeda48c3a3f4dfbff5b9f75db7871248ee0ca4ca2c1bc7c",
+    "src/behavior_mcp/schemas.py": "a83851c73a5b99ff0582edb8d1eedc9a13f772d13adba54dd322f41cdf22d971",
+    "src/behavior_mcp/storage.py": "b8016a8044a4a1981b472989a3ed932f2008a0028fe1794abd50caea3b600c7f",
+    "src/behavior_mcp/artifacts.py": "0ad0b634d4a5bc9ad8460ba5605a3fb72a0f306e64e5d3b478efab75a37d5d16",
+    "src/behavior_mcp/operations.py": "6f3286f43539fd24d1a33757ddada04c0cfedd5a67d4e27f58dc7c296d345900",
+    "src/behavior_mcp/authoring.py": "32289a08c99625eb489f67ac0c50bcf8f5692cd80e12a2660ce5837c19533b7c",
+    "src/behavior_mcp/__init__.py": "3ddfe0c38615fffdb29d15238f1e9912c02c0429d7d6001dad25686c244eac5b",
+    "src/behavior_mcp/verification.py": "d9fe4c225cc5846c79364dda362c83cfe473be5051fd371e3d127d9d6178e9fb",
+    "src/behavior_mcp/admin.py": "67bd278eb5bf2a8074240543cc2cad673db78dd9074d2b52c80cd582eb9c209f",
+    "pyproject.toml": "6f358d2efc4baa815a8f68225b33b6e672a4f11b7ba4b5775c3fb33d0fb124de",
+    "uv.lock": "5ba548320de9b61e1b5daf1bccf4b9617ca12ea6c7aaf506fee765160d5db918",
+    "flake.nix": "1098569a577ecb328d9b848e0aff92f739f1f2704d9a3f75fa370a312fd2d83d",
+    "flake.lock": "6f371850a8a9e787e19e432c09b1979fd17962a266f991c4b0f0b3adb6d22800",
+    "scripts/check": "891214151dbf1842ab2e3c44317f7b8087a14f57e0f8f708d1a8af92c914bde7"
+  },
+  "convergence_review": {
+    "date": "2026-10-27",
+    "status": "conforms_after_T091_T096",
+    "critical_findings_closed": [
+      "verification_subject_mismatch",
+      "recovery_outcome_misclassification"
+    ],
+    "host_guarantees": [
+      "durable empty backend precedes visible reservation",
+      "independent discovery of unavailable systems",
+      "authorized definition-linked contents without deployment evidence disclosure",
+      "trusted limits only restrict host resources and never change Behavior meaning"
+    ],
+    "quality_gate": "release-acceptance.json",
+    "evidence": [
+      "tdd/T091.json",
+      "tdd/T092.json",
+      "tdd/T093.json",
+      "tdd/T094.json",
+      "tdd/T095.json",
+      "tdd/T096.json"
+    ],
+    "unsupported_upstream_capabilities": "unchanged; see SEMANTIC_GAPS.md",
+    "formal_safety_claim": false
+  }
+}

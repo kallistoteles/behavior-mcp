@@ -1,0 +1,12 @@
+{
+  "scope": "foundation only",
+  "command": [
+    "nix",
+    "develop",
+    "--command",
+    "./scripts/check"
+  ],
+  "exit_code": 0,
+  "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 45 packages in 5ms\nChecked 42 packages in 1ms\nReleased dependency identities and public API boundary: PASS\n20 files already formatted\nAll checks passed!\nSuccess: no issues found in 7 source files\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 57 items\n\ntests/contract/test_host_policy_schema.py .......                        [ 12%]\ntests/contract/test_schema_envelopes.py ..............                   [ 36%]\ntests/contract/test_stdio_boundary.py .......                            [ 49%]\ntests/integration/test_host_storage.py ...                               [ 54%]\ntests/unit/test_dependencies.py ..............                           [ 78%]\ntests/unit/test_diagnostics.py .........                                 [ 94%]\ntests/unit/test_trusted_context.py ...                                   [100%]\n\n============================= 57 passed in 11.30s ==============================\n",
+  "tests_passed": 57
+}

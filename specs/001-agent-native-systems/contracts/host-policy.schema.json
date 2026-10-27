@@ -1,0 +1,392 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:behavior-mcp:host-policy:v1",
+  "title": "Closed trusted host delegation; operational authority, not Behavior semantics",
+  "type": "object",
+  "properties": {
+    "format": {
+      "const": "behavior-mcp.host-policy.v1"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "issuer_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "principal_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "system_scope": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "ids"
+            },
+            "system_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "kind",
+            "system_ids"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "workspace"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "models_list",
+          "definition_propose",
+          "definition_get",
+          "definition_validate",
+          "definition_verify",
+          "systems_create",
+          "systems_list",
+          "system_inspect",
+          "definition_activate",
+          "capabilities_list",
+          "state_read",
+          "transition_evaluate",
+          "transition_commit",
+          "operation_get",
+          "system_recover",
+          "gaps_list"
+        ]
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "construction": {
+      "type": "object",
+      "properties": {
+        "adapter_profile": {
+          "const": "scalar-models.v1"
+        },
+        "adapter_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "behavior_version": {
+          "const": "0.14.0"
+        },
+        "core_version": {
+          "const": "0.15.0"
+        },
+        "core_commit": {
+          "const": "6b93898a9375113f7a8946f23ab5535319b6f5d6"
+        },
+        "verifier_version": {
+          "const": "0.10.0"
+        },
+        "allowed_model_kinds": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "request_flow",
+              "state_machine"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "allowed_model_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "allowed_capability_names": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "adapter_profile",
+        "adapter_version",
+        "behavior_version",
+        "core_version",
+        "core_commit",
+        "verifier_version",
+        "allowed_model_kinds",
+        "allowed_model_ids",
+        "allowed_capability_names"
+      ],
+      "additionalProperties": false
+    },
+    "effects": {
+      "type": "object",
+      "properties": {
+        "allowed_forms": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "literal_initializer",
+              "input_initializer",
+              "trusted_actor_initializer",
+              "input_to_field_assignment"
+            ]
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "initializer_fields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "assignment_fields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "allow_external_commands": {
+          "const": false
+        },
+        "allow_permission_expansion": {
+          "const": false
+        }
+      },
+      "required": [
+        "allowed_forms",
+        "initializer_fields",
+        "assignment_fields",
+        "allow_external_commands",
+        "allow_permission_expansion"
+      ],
+      "additionalProperties": false
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "allow_new_records": {
+          "type": "boolean"
+        },
+        "allow_existing_record_changes": {
+          "type": "boolean"
+        },
+        "allowed_status_values": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "allowed_status_edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "minLength": 1
+              },
+              "to": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "allow_schema_migration": {
+          "const": false
+        }
+      },
+      "required": [
+        "allow_new_records",
+        "allow_existing_record_changes",
+        "allowed_status_values",
+        "allowed_status_edges",
+        "allow_schema_migration"
+      ],
+      "additionalProperties": false
+    },
+    "system_creation": {
+      "type": "object",
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "max_systems": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "core_policy_profile": {
+          "const": "structural-none"
+        },
+        "bootstrap_actor": {
+          "type": "object",
+          "properties": {
+            "entity": {
+              "const": "Actor"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "entity",
+            "id",
+            "name"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "allowed",
+        "max_systems",
+        "core_policy_profile",
+        "bootstrap_actor"
+      ],
+      "additionalProperties": false
+    },
+    "required_verification": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "semantic_profile_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "required_check_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "required_obligation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "permitted_assumption_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "profile_id",
+          "semantic_profile_id",
+          "required_check_ids",
+          "required_obligation_ids",
+          "permitted_assumption_ids"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "format",
+    "policy_id",
+    "version",
+    "issuer_id",
+    "principal_id",
+    "workspace_id",
+    "system_scope",
+    "operations",
+    "construction",
+    "effects",
+    "state",
+    "system_creation",
+    "required_verification"
+  ],
+  "additionalProperties": false
+}

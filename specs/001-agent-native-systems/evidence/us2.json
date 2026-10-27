@@ -1,0 +1,94 @@
+{
+  "scope": "persistent runtime checkpoint",
+  "command": [
+    "nix",
+    "develop",
+    "--command",
+    "./scripts/check"
+  ],
+  "exit_code": 0,
+  "tests_passed": 135,
+  "versions": {
+    "accepted_wire_ir": [
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7",
+      "0.8"
+    ],
+    "command_occurrence_domain": "behavior.command_occurrence.v1",
+    "command_stream": "behavior.command_stream_request.v1",
+    "engine": "0.15.0",
+    "read_records": [
+      "behavior.read_record.v1",
+      "behavior.read_record.v2"
+    ],
+    "records": [
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7",
+      "0.8"
+    ],
+    "store_documents": [
+      "behavior.entity_content.v1",
+      "behavior.entity_version.v1",
+      "behavior.state.v1",
+      "behavior.evidence_policy.v1",
+      "behavior.store_genesis.v1",
+      "behavior.commit_bundle.v1",
+      "behavior.transition_record.v1",
+      "behavior.replay_report.v1",
+      "behavior.migration_bundle.v1",
+      "behavior.store_genesis.v2",
+      "behavior.commit_bundle.v2",
+      "behavior.migration_bundle.v2",
+      "behavior.transition_record.v2"
+    ],
+    "verifier": "0.10.0",
+    "wire_ir": [
+      "0.1",
+      "0.2",
+      "0.3",
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7"
+    ],
+    "core": {
+      "version": "0.15.0",
+      "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6"
+    },
+    "binding": {
+      "python": "0.14.0"
+    }
+  },
+  "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 45 packages in 149ms\n   Building behavior-mcp @ file:///home/kalle/repos/behavior-mcp\n      Built behavior-mcp @ file:///home/kalle/repos/behavior-mcp\nPrepared 1 package in 657ms\nUninstalled 1 package in 1ms\nInstalled 1 package in 2ms\n ~ behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nReleased dependency identities and public API boundary: PASS\n44 files already formatted\nAll checks passed!\nSuccess: no issues found in 13 source files\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 135 items\n\ntests/acceptance/test_authoring.py ....                                  [  2%]\ntests/acceptance/test_persistent_runtime.py ....                         [  5%]\ntests/conformance/test_sqlite_backend.py .                               [  6%]\ntests/contract/test_authoring_tools.py ...                               [  8%]\ntests/contract/test_host_policy_schema.py .......                        [ 14%]\ntests/contract/test_schema_envelopes.py ...............                  [ 25%]\ntests/contract/test_stdio_boundary.py .......                            [ 30%]\ntests/contract/test_system_tools.py ............                         [ 39%]\ntests/integration/test_admin_policy.py ...                               [ 41%]\ntests/integration/test_backend_crashes.py ....                           [ 44%]\ntests/integration/test_definition_artifacts.py ..                        [ 45%]\ntests/integration/test_host_storage.py ...                               [ 48%]\ntests/integration/test_runtime_decisions.py .                            [ 48%]\ntests/integration/test_server_recovery.py .......                        [ 54%]\ntests/integration/test_system_creation.py ..                             [ 55%]\ntests/integration/test_system_isolation.py ..                            [ 57%]\ntests/integration/test_uncertain_activation.py ...                       [ 59%]\ntests/integration/test_uncertain_commit.py ...                           [ 61%]\ntests/unit/test_delegated_activation.py ............                     [ 70%]\ntests/unit/test_dependencies.py ..............                           [ 80%]\ntests/unit/test_diagnostics.py ............                              [ 89%]\ntests/unit/test_request_flow_adapter.py .......                          [ 94%]\ntests/unit/test_trusted_context.py ...                                   [ 97%]\ntests/unit/test_verification.py ....                                     [100%]\n\n======================= 135 passed in 134.35s (0:02:14) ========================\n",
+  "public_backend_conformance": {
+    "cases": 45,
+    "test": "tests/conformance/test_sqlite_backend.py::test_all_public_backend_conformance_cases"
+  },
+  "physical_recovery_suites": [
+    "test_backend_crashes.py",
+    "test_uncertain_activation.py",
+    "test_uncertain_commit.py",
+    "test_server_recovery.py"
+  ],
+  "established": [
+    "two independent equal-genesis systems",
+    "runtime results and state identities match independent public Core definitions",
+    "bounded host delegation and exact approval",
+    "atomic activation receipt before retry CAS",
+    "original Core bundle retry",
+    "creation reservation recovery",
+    "client cancellation cannot imply rollback",
+    "startup recovery under workspace owner lock",
+    "both protocol modes through memory and subprocess transports"
+  ],
+  "not_claimed": [
+    "formal system safety",
+    "cross-system transactions",
+    "schema migration",
+    "external side-effect execution"
+  ]
+}

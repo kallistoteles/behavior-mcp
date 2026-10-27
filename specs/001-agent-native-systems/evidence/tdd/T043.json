@@ -1,0 +1,75 @@
+{
+  "task": "T043",
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "./scripts/check"
+    ],
+    "exit_code": 0,
+    "evidence_ref": "../release-acceptance.json"
+  },
+  "red_history": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/integration/test_admin_policy.py"
+      ],
+      "exit_code": 2,
+      "stdout": "\n==================================== ERRORS ====================================\n___________ ERROR collecting tests/integration/test_admin_policy.py ____________\nImportError while importing test module '/home/kalle/repos/behavior-mcp/tests/integration/test_admin_policy.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/nix/store/v9xb07wmdqxmb4qnjxjcckzs4ixviyvf-python3-3.13.14/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/integration/test_admin_policy.py:3: in <module>\n    from behavior_mcp.admin import AdminAuthority, install_policy, install_approval\nE   ModuleNotFoundError: No module named 'behavior_mcp.admin'\n=========================== short test summary info ============================\nERROR tests/integration/test_admin_policy.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.25s\n",
+      "stderr": ""
+    }
+  ],
+  "discarded_runs": [
+    {
+      "reason": "Test fixture assumed Wire 0.7; public Core export is 0.5. This is not product-red evidence.",
+      "run": {
+        "command": [
+          "uv",
+          "run",
+          "--locked",
+          "pytest",
+          "-q",
+          "tests/integration/test_admin_policy.py",
+          "-k",
+          "required_proof_accepts or inconclusive_required"
+        ],
+        "exit_code": 1,
+        "stdout": "F.                                                                       [100%]\n=================================== FAILURES ===================================\n_______________ test_required_proof_accepts_actual_proven_check ________________\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.YqRcDl/pytest-of-kalle/pytest-0/test_required_proof_accepts_ac0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1dcc440>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\npolicy_document = {'format': 'behavior-mcp.host-policy.v1', 'policy_id': 'local-delegation', 'version': 2, 'issuer_id': 'local-operator', ...}\n\n    def test_required_proof_accepts_actual_proven_check(trusted_setup,proposal,policy_document):\n        root,ctx,_,artifacts=trusted_setup;app=Application(root,ctx,'local-delegation');sid,d,_,a=create_active(app,proposal)\n        result=app.execute('definition_verify',{'definition_id':d['definition_id'],'profile_id':'bounded'})\n        assert result['outcome']=='verification_verified',result\n        check=next(c for c in result['result']['checks'] if c['outcome']=='proven')\n        policy_document.update(version=2,required_verification=[{'profile_id':'bounded','semantic_profile_id':'wire_ir:0.7','required_check_ids':[check['key']],'required_obligation_ids':[],'permitted_assumption_ids':[]}]);artifacts.install_policy(policy_document)\n        activated=app.execute('definition_activate',{'system_id':sid,'definition_id':d['definition_id'],'operation_id':'proof-required','expected_activation_revision':1,'expected_history':a['result']['receipt']['history_anchor']})\n>       assert activated['outcome']=='activated',activated\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'refused', 'stage': 'activation', 'outcome': 'unauthorized', ...}\nE       assert 'unauthorized' == 'activated'\nE         \nE         - activated\nE         + unauthorized\n\ntests/integration/test_admin_policy.py:135: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_admin_policy.py::test_required_proof_accepts_actual_proven_check\n1 failed, 1 passed, 3 deselected in 5.64s\n",
+        "stderr": ""
+      }
+    }
+  ],
+  "red": {
+    "command": [
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_admin_policy.py",
+      "-k",
+      "required_proof_accepts or inconclusive_required"
+    ],
+    "exit_code": 1,
+    "stdout": ".F                                                                       [100%]\n=================================== FAILURES ===================================\n_____ test_overall_verified_cannot_satisfy_an_inconclusive_required_check ______\n\ntrusted_setup = (PosixPath('/tmp/nix-shell.f4riEF/pytest-of-kalle/pytest-0/test_overall_verified_cannot_s0'), TrustedContext(principal...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7ffff1d99310>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\npolicy_document = {'format': 'behavior-mcp.host-policy.v1', 'policy_id': 'local-delegation', 'version': 2, 'issuer_id': 'local-operator', ...}\nsemantic_profile_id = 'wire_ir:0.5'\n\n    def test_overall_verified_cannot_satisfy_an_inconclusive_required_check(trusted_setup,proposal,policy_document,semantic_profile_id):\n        root,ctx,_,artifacts=trusted_setup;app=Application(root,ctx,'local-delegation');sid,d,_,a=create_active(app,proposal)\n        result=app.execute('definition_verify',{'definition_id':d['definition_id'],'profile_id':'bounded'})\n        reference=result['evidence'][0]['report_ref'];evidence=artifacts.get(reference)\n        check=next(c for c in evidence['report']['checks'] if c['outcome']=='proven');key=check['key']\n        # Adversarial synthetic coverage fixture. This is not genuine replacement proof evidence.\n        check['outcome']='inconclusive'\n        for item in evidence['report']['report']['checks']:\n            if item['key']==key:item['outcome']='inconclusive'\n        from behavior_mcp.storage import connect,transaction\n        with connect(artifacts.path) as db,transaction(db):db.execute('DELETE FROM blobs WHERE id=?',(reference,))\n        artifacts.put('verification_evidence',evidence)\n        policy_document.update(version=2,required_verification=[{'profile_id':'bounded','semantic_profile_id':semantic_profile_id,'required_check_ids':[key],'required_obligation_ids':[],'permitted_assumption_ids':[]}]);artifacts.install_policy(policy_document)\n        activated=app.execute('definition_activate',{'system_id':sid,'definition_id':d['definition_id'],'operation_id':'inconclusive-check','expected_activation_revision':1,'expected_history':a['result']['receipt']['history_anchor']})\n>       assert activated['outcome']=='unauthorized',activated\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'completed', 'stage': 'activation', 'outcome': 'activated', ...}\nE       assert 'activated' == 'unauthorized'\nE         \nE         - unauthorized\nE         + activated\n\ntests/integration/test_admin_policy.py:153: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_admin_policy.py::test_overall_verified_cannot_satisfy_an_inconclusive_required_check\n1 failed, 1 passed, 3 deselected in 6.08s\n",
+    "stderr": ""
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "./scripts/check"
+      ],
+      "exit_code": 0,
+      "evidence_ref": "../us2.json"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "same-schema revision and historical interpretation",
+  "command": [
+    "nix",
+    "develop",
+    "--command",
+    "./scripts/check"
+  ],
+  "exit_code": 0,
+  "tests_passed": 147,
+  "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 45 packages in 378ms\n   Building behavior-mcp @ file:///home/kalle/repos/behavior-mcp\n      Built behavior-mcp @ file:///home/kalle/repos/behavior-mcp\nPrepared 1 package in 714ms\nUninstalled 1 package in 1ms\nInstalled 1 package in 2ms\n ~ behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nReleased dependency identities and public API boundary: PASS\n49 files already formatted\nAll checks passed!\nSuccess: no issues found in 13 source files\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 147 items\n\ntests/acceptance/test_authoring.py ....                                  [  2%]\ntests/acceptance/test_persistent_runtime.py ....                         [  5%]\ntests/acceptance/test_revision.py .                                      [  6%]\ntests/conformance/test_sqlite_backend.py .                               [  6%]\ntests/contract/test_authoring_tools.py ...                               [  8%]\ntests/contract/test_host_policy_schema.py .......                        [ 13%]\ntests/contract/test_schema_envelopes.py ...............                  [ 23%]\ntests/contract/test_stdio_boundary.py .......                            [ 28%]\ntests/contract/test_system_tools.py ............                         [ 36%]\ntests/integration/test_admin_policy.py ...                               [ 38%]\ntests/integration/test_authoring_roundtrip.py ....                       [ 41%]\ntests/integration/test_backend_crashes.py ....                           [ 44%]\ntests/integration/test_definition_artifacts.py ..                        [ 45%]\ntests/integration/test_definition_revision.py .                          [ 46%]\ntests/integration/test_evolution_boundaries.py ....                      [ 48%]\ntests/integration/test_historical_replay.py ..                           [ 50%]\ntests/integration/test_host_storage.py ...                               [ 52%]\ntests/integration/test_runtime_decisions.py .                            [ 53%]\ntests/integration/test_server_recovery.py .......                        [ 57%]\ntests/integration/test_system_creation.py ..                             [ 59%]\ntests/integration/test_system_isolation.py ..                            [ 60%]\ntests/integration/test_uncertain_activation.py ...                       [ 62%]\ntests/integration/test_uncertain_commit.py ...                           [ 64%]\ntests/unit/test_delegated_activation.py ............                     [ 72%]\ntests/unit/test_dependencies.py ..............                           [ 82%]\ntests/unit/test_diagnostics.py ............                              [ 90%]\ntests/unit/test_request_flow_adapter.py .......                          [ 95%]\ntests/unit/test_trusted_context.py ...                                   [ 97%]\ntests/unit/test_verification.py ....                                     [100%]\n\n======================= 147 passed in 147.61s (0:02:27) ========================\n",
+  "established": [
+    "two exact source/context round trips",
+    "frozen validation under a concurrent proposal edit",
+    "manifest kind/semantic/lowerer identity checked against authoritative receipt",
+    "distinct revised ModelHash/BehaviorHash and unchanged SchemaHash/SystemId",
+    "independent activation of one system",
+    "public Core data and behavior replay using original modules",
+    "original policy/authorization evidence remains unchanged",
+    "historical reads name the original committed definition",
+    "intervening writers and schema changes refuse activation",
+    "corrupt state or missing initialized database cannot trigger best-effort conversion or empty-history recreation"
+  ]
+}
