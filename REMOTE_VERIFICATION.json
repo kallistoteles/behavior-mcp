@@ -1,0 +1,15 @@
+{
+  "verified_at": "2026-10-29T09:34:48.174041+00:00",
+  "method": "Fresh network clone from GitHub, checksum verification, concatenation and extraction of all five archive parts into an empty directory, full restored entry verification, git fsck --full and git bundle verify.",
+  "verified_artifact_commit": "cb31409bbcd7bf36ccece739a17fbdec1f7636d2",
+  "source_commit": "249e2407bfecfa5f0198d7ce3e32607e63ee1cf4",
+  "archive_sha256": "1cddc751abc8b1b7936b7c928da28b5059b50b4960e8df159a4670e4a5ebb347",
+  "regular_files_verified": 4500,
+  "all_archive_parts_verified": true,
+  "all_restored_entry_names_verified": true,
+  "every_file_sha256_verified": true,
+  "permissions_and_modification_times_verified": true,
+  "symlink_targets_verified": true,
+  "git_history_and_bundle_verified": true,
+  "local_only_exclusions": []
+}
