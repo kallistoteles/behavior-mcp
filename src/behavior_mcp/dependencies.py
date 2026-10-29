@@ -4,6 +4,9 @@ import ast
 import hashlib
 import importlib.metadata
 import json
+import os
+import re
+import subprocess
 from importlib.resources import files
 from pathlib import Path
 from typing import Any
@@ -79,6 +82,39 @@ def check_dependencies() -> None:
         if importlib.metadata.version(name) != "2.3.0":
             raise DependencyError(f"{name} differs from the declared release")
     audit_imports(Path(__file__).parent)
+
+
+def check_proof_dependencies() -> dict[str, str]:
+    """Require the released proof package only when certification is requested."""
+    expected = release_manifest()["proof_toolchain"]
+    if any(
+        k in os.environ for k in ("BEHAVIOR_LEAN_BINARY", "BEHAVIOR_LEANCHECKER_BINARY")
+    ):
+        raise DependencyError("Proof binary overrides are forbidden")
+    path = os.environ.get("BEHAVIOR_SAFETY_TOOLCHAIN")
+    derivation = os.environ.get("BEHAVIOR_SAFETY_TOOLCHAIN_DRV")
+    if path is None or path != expected["outPath"] or derivation != expected["drvPath"]:
+        raise DependencyError("Proof package differs from the declared release")
+    try:
+        version = subprocess.run(
+            [str(Path(path) / "bin/lean"), "--version"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=True,
+        ).stdout
+    except (OSError, subprocess.SubprocessError) as error:
+        raise DependencyError("Declared proof tooling is unavailable") from error
+    if (
+        re.search(
+            r"\bversion " + re.escape(expected["version"]) + r"(?:[ ,)]|$)", version
+        )
+        is None
+    ):
+        raise DependencyError("Lean version differs from the declared release")
+    if not (Path(path) / "bin/leanchecker").is_file():
+        raise DependencyError("Declared proof checker is unavailable")
+    return dict(expected)
 
 
 if __name__ == "__main__":

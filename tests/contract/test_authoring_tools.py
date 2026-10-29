@@ -77,7 +77,13 @@ def test_all_authoring_tool_boundaries(trusted_setup, proposal):
         {"definition_id": definition["definition_id"], "profile_id": "bounded"},
     )
     assert proof["result"]["verification_status"] == "verified"
-    assert len(app.execute("gaps_list", {})["result"]["gaps"]) == 4
+    assert {g["gap_id"] for g in app.execute("gaps_list", {})["result"]["gaps"]} == {
+        "GAP-001",
+        "GAP-002",
+        "GAP-003",
+        "GAP-004",
+        "GAP-005",
+    }
     assert not list((root / "systems").glob("*.sqlite"))
     for result in [found, original, admitted, proof]:
         validate_output(result)

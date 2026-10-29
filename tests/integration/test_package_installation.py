@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def test_built_distribution_outside_checkout(tmp_path):
     commands = []
 
-    def run(command, *, cwd=ROOT, env=None, timeout=300):
+    def run(command, *, cwd=ROOT, env=None, timeout=900):
         result = subprocess.run(
             command, cwd=cwd, env=env, capture_output=True, text=True, timeout=timeout
         )
@@ -67,6 +67,23 @@ def test_built_distribution_outside_checkout(tmp_path):
                     / f"specs/001-agent-native-systems/contracts/{name}.schema.json"
                 ).read_bytes()
             )
+        # Every historical translation closure and its exact public schema ships in the wheel.
+        from tests.fixtures.expanded import ROOT as fixture_root
+
+        for checkpoint in (fixture_root / "tests/fixtures/adapter_versions").glob(
+            "*/manifest.json"
+        ):
+            manifest = json.loads(checkpoint.read_text())
+            for relative, digest in manifest["closure"].items():
+                content = archive.read("behavior_mcp/" + relative)
+                assert hashlib.sha256(content).hexdigest() == digest
+        for schema in (ROOT / "specs/002-remaining-behavior-models/contracts").glob(
+            "*.schema.json"
+        ):
+            assert (
+                archive.read("behavior_mcp/contracts/" + schema.name)
+                == schema.read_bytes()
+            )
     clean = tmp_path / "installed"
     environment = dict(os.environ, UV_PROJECT_ENVIRONMENT=str(clean))
     environment.pop("PYTHONPATH", None)
@@ -96,6 +113,21 @@ print(json.dumps({'installed_origin':str(Path(behavior_mcp.__file__).resolve()),
     with tarfile.open(source) as archive:
         archive.extractall(extracted, filter="data")
     source_root = next(extracted.iterdir())
+    for relative in [
+        "specs/002-remaining-behavior-models/evidence/validate_remediation.py",
+        "specs/002-remaining-behavior-models/tasks.md",
+        "specs/002-remaining-behavior-models/quickstart.md",
+    ]:
+        assert (source_root / relative).read_bytes() == (ROOT / relative).read_bytes()
+
+    for fixture in (ROOT / "tests/fixtures").glob("**/manifest.json"):
+        relative = fixture.relative_to(ROOT)
+        assert (source_root / relative).read_bytes() == fixture.read_bytes()
+        manifest = json.loads(fixture.read_text())
+        for name, digest in manifest.get("workspace_files", {}).items():
+            content = (source_root / relative.parent / "workspace" / name).read_bytes()
+            assert hashlib.sha256(content).hexdigest() == digest
+
     rebuilt = tmp_path / "rebuilt"
     run(
         [
@@ -158,6 +190,6 @@ print(json.dumps({'installed_origin':str(Path(behavior_mcp.__file__).resolve()),
     shutil.copy2(source, artifacts / source.name)
     evidence["wheel_artifact"] = "dist/" + wheel.name
     evidence["source_artifact"] = "dist/" + source.name
-    p = ROOT / "specs/001-agent-native-systems/evidence/package.json"
+    p = ROOT / "specs/002-remaining-behavior-models/evidence/package.json"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(evidence, indent=2) + "\n")

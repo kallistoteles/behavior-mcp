@@ -135,10 +135,9 @@ class ArtifactStore:
         import copy
         import uuid
 
-        from .authoring import construction_context
-        from .schemas import validate
+        from .adapters import construction_context, validate_proposal
 
-        validate("authoring", proposal)
+        validate_proposal(proposal)
         if (base_proposal_id is None) != (expected_proposal_revision is None):
             raise OperationError(
                 "invalid_input",
@@ -272,7 +271,7 @@ class ArtifactStore:
         return definition
 
     def inspect_definition(self, definition_id: str, workspace_id: str) -> JSON:
-        from .authoring import historical_module
+        from .adapters import historical_module
         from .schemas import validate_verification
 
         definition, _ = historical_module(self, definition_id)
@@ -294,12 +293,20 @@ class ArtifactStore:
         linked.extend(
             (m["receipt_ref"], "lowering_receipt") for m in definition["models"]
         )
+        if definition.get("inventory_ref"):
+            linked.append((definition["inventory_ref"], "capability_inventory"))
+        if definition.get("safety_analysis_ref"):
+            linked.append((definition["safety_analysis_ref"], "safety_analysis"))
         artifacts = [
             {"artifact_ref": ref, "kind": kind, "document": self.get(ref)}
             for ref, kind in linked
         ]
         evidence = []
-        for kind in ("validation_evidence", "verification_evidence"):
+        for kind in (
+            "validation_evidence",
+            "verification_evidence",
+            "safety_assessment_evidence",
+        ):
             for ref, document in self.find(kind):
                 subject = document["subject"]
                 # System-specific deployment evidence is not exposed through a shared definition.

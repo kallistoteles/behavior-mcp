@@ -1,0 +1,21 @@
+{
+  "task": "T057",
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/contract/test_field_ownership_authoring.py",
+      "tests/integration/test_field_ownership.py",
+      "tests/unit/test_safety_delegation.py",
+      "tests/integration/test_expanded_artifacts.py",
+      "tests/integration/test_incremental_adapter_retention.py",
+      "tests/acceptance/test_remaining_models.py::test_field_ownership",
+      "tests/acceptance/test_remaining_models.py::test_field_ownership_persists_and_recovers"
+    ],
+    "exit_code": 0,
+    "stdout": ".............                                                            [100%]\n13 passed in 10.96s\n",
+    "stderr": ""
+  }
+}

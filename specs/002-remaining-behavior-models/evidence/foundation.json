@@ -1,0 +1,24 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/contract/test_expanded_authoring.py",
+    "tests/contract/test_host_policy_v2.py",
+    "tests/unit/test_fragments_v2.py",
+    "tests/unit/test_semantic_time.py",
+    "tests/unit/test_worker_limits.py",
+    "tests/integration/test_core_reads.py",
+    "tests/integration/test_expanded_compatibility.py",
+    "tests/integration/test_expanded_artifacts.py",
+    "tests/integration/test_incremental_adapter_retention.py"
+  ],
+  "exit_code": 0,
+  "stdout": ".............................................                            [100%]\n45 passed in 14.56s\n",
+  "stderr": "",
+  "published_versions": [
+    "2.0.0"
+  ],
+  "scope": "Shared host foundations; later family-specific obligations remain in their story tasks"
+}

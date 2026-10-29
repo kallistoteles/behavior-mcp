@@ -1,0 +1,70 @@
+{
+  "checkpoint": "Approval 2.0.0",
+  "manifest": {
+    "format": "behavior-mcp.adapter-checkpoint.v1",
+    "version": "2.0.0",
+    "system_id": "system-c7dc288562084c029dca827a56fab9f5",
+    "definition_id": "definition-59bdd3c47a3943a0962c233b1e6d9cb2",
+    "behavior_hash": "sha256:aa53fd4dce7247a0b9ac632fe0aae400ab17d8eae11cb5f94b4e8ea3989eefd2",
+    "schema_hash": "sha256:44735a3eb4d938228353dfa6fb9b1035e67e74bfe68286e6faa5585c3ebeeccc",
+    "policy_id": "local-expanded",
+    "construction_context": {
+      "adapter_profile": "structured-models.v2",
+      "adapter_version": "2.0.0",
+      "adapter_code_identity": "bytes-sha256:323620fa607bc24186dbf33ba4b225a3737f343e101877975080fa84a8199a42",
+      "adapter_files": {
+        "adapter_versions/v2_0_0.py": "bytes-sha256:6a200f50ce4c2ad720bc2ce2929159d55b5289319f3afd9f4ab43a450a7d30c6",
+        "adapter_versions/fragments_2_0_0.py": "bytes-sha256:c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+        "contracts/authoring-v2-2.0.0.schema.json": "bytes-sha256:b7ae24665898970a246411dceba98203197f7b3d090e97a33bd1e879d3f239bd"
+      },
+      "release": {
+        "behavior_version": "0.14.0",
+        "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+        "core_version": "0.15.0",
+        "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+        "verifier_version": "0.10.0",
+        "adapter_profile": "structured-models.v2",
+        "adapter_version": "2.0.0"
+      },
+      "fixed_entities": [
+        {
+          "name": "Actor",
+          "fields": {
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "trusted_context": {
+        "actor": "trusted_host",
+        "worker": "trusted_host",
+        "now": "utc-unix-milliseconds.v1"
+      },
+      "composition_order": [
+        "review"
+      ],
+      "action_order": [
+        "new_subject"
+      ],
+      "policy_order": []
+    },
+    "closure": {
+      "adapter_versions/v2_0_0.py": "6a200f50ce4c2ad720bc2ce2929159d55b5289319f3afd9f4ab43a450a7d30c6",
+      "adapter_versions/fragments_2_0_0.py": "c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+      "contracts/authoring-v2-2.0.0.schema.json": "b7ae24665898970a246411dceba98203197f7b3d090e97a33bd1e879d3f239bd"
+    },
+    "workspace_files": {
+      "host.sqlite": "d7b4dfc110c1e1730a4bcb3a0dbaf1e52631997c786c4b4d473308f23bc4ee4a",
+      "systems/system-c7dc288562084c029dca827a56fab9f5.sqlite": "c202786dfb9c18b6c08c49da8b7f4a2ec66a43986af9f7803e42bd4c7c1fb33f"
+    }
+  },
+  "test_evidence": [
+    "evidence/tdd/T024.json",
+    "evidence/tdd/T025.json",
+    "evidence/tdd/T026.json",
+    "evidence/tdd/T034.json"
+  ],
+  "safety_status": "no Safety policy or certificate; public admission and host authorization remain separate",
+  "later_families_delivered": false
+}

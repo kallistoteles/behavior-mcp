@@ -1,0 +1,16 @@
+{
+  "task": "T076",
+  "baseline": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_expanded_history.py"
+    ],
+    "exit_code": 0,
+    "stdout": ".                                                                        [100%]\n1 passed in 6.13s\n",
+    "stderr": ""
+  },
+  "note": "Conformance audit of previously delivered immutable adapters; passing existing behavior is not manufactured into an observed-red claim."
+}

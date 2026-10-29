@@ -48,7 +48,7 @@ async def test_two_sessions_recover_a_persistent_runtime(
         )
 
     async with Client(server(), mode=mode, read_timeout_seconds=20) as client:
-        assert len((await client.list_tools()).tools) == 16
+        assert len((await client.list_tools()).tools) == 20
         evaluated = (
             await client.call_tool(
                 "transition_evaluate",

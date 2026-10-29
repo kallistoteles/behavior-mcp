@@ -28,11 +28,35 @@ assignments. Enum cases use explicit ordered arrays. Actor has the fixed trusted
 declaration; the host supplies its identity and bootstrap seed. Public model constructors perform
 normalization, type checking, ownership/composition and lowering.
 
-Generated action names, parameter roles and types come from admitted public module export.
-StateMachine generates transitions; it does not create subject records. The initial domain-creation
-slice uses RequestFlow. Approval and WorkQueue are available upstream but have no authoring adapter
-here. No arbitrary guard/effect expression, additional state binding, command emission, executable
-model definition, scheduler or external adapter is supported.
+The additional `behavior-mcp.authoring.v2` / `structured-models.v2` profile requires an exact
+immutable adapter version:
+
+| Model family | Supported v2 versions | First checkpoint |
+| --- | --- | --- |
+| RequestFlow, StateMachine | 2.0.0, 2.1.0, 2.2.0, 2.3.0 | retained v1 also supported |
+| Approval | 2.0.0, 2.1.0, 2.2.0, 2.3.0 | decisions and public outcome reads |
+| WorkQueue | 2.1.0, 2.2.0, 2.3.0 | all nine actions and public queue reads |
+| FieldOwnership | 2.2.0, 2.3.0 | separate structural Safety policies |
+| LifecycleDependency | 2.3.0 | traced guards, Safety certification and state validation |
+
+Original handlers, helper/schema closures and real workspace fixtures are retained for every
+checkpoint. Draft modules are not runtime handlers. Original source and exact construction context
+are mandatory for re-authoring; stored Wire remains the historical Core interpretation artifact.
+
+Generated action/read names, roles and types come from admitted public module export. Structured
+conditions/effects use the closed [authoring subset](../specs/002-remaining-behavior-models/contracts/authoring.md).
+Entity field projections require a State/query entity binding. Python object equality, scalar
+attribute traversal and literal-left equality are refused rather than evaluated as Python booleans.
+Fixed creation/removal/field/state action factories are supported through public APIs; client code,
+command emission, schedulers and external adapters remain unsupported.
+
+Safety requires the public Behavior release's exact Lean/leanchecker 4.30.0 package:
+`/nix/store/7m5ds60a41w276hsx3rybv76x3609l6k-lean4-4.30.0` on x86_64-linux, with the matching
+release-declared derivation. `flake.lock` pins the upstream proof input independently of nixpkgs.
+Missing or substituted tools fail explicitly. Ordinary non-proof operations need no proof binaries.
+The common gate requires real certification and fresh import checking without skips. A certificate
+retains `Certified under assumptions`, `OrdinaryTransitions`, `Unestablished` initial validity,
+and all upstream obligations/exclusions. No schema migration or external execution guarantee follows.
 
 ## Representations and History
 

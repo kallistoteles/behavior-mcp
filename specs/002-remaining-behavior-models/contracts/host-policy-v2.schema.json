@@ -1,0 +1,2372 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:behavior-mcp:host-policy:v2",
+  "title": "Closed host v2 delegation; exact finite matching rules are normative in host-policy.md",
+  "type": "object",
+  "properties": {
+    "format": {
+      "const": "behavior-mcp.host-policy.v2"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "issuer_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "principal_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "system_scope": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "ids"
+            },
+            "system_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "kind",
+            "system_ids"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "workspace"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "models_list",
+          "definition_propose",
+          "definition_get",
+          "definition_validate",
+          "definition_verify",
+          "systems_create",
+          "systems_list",
+          "system_inspect",
+          "definition_activate",
+          "capabilities_list",
+          "state_read",
+          "transition_evaluate",
+          "transition_commit",
+          "operation_get",
+          "system_recover",
+          "gaps_list",
+          "capability_read",
+          "definition_safety_certify",
+          "definition_safety_verify_evidence",
+          "state_validate_safety"
+        ]
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "system_creation": {
+      "type": "object",
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "max_systems": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "core_policy_profile": {
+          "const": "structural-none"
+        },
+        "bootstrap_actor": {
+          "type": "object",
+          "properties": {
+            "entity": {
+              "const": "Actor"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "entity",
+            "id",
+            "name"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "allowed",
+        "max_systems",
+        "core_policy_profile",
+        "bootstrap_actor"
+      ],
+      "additionalProperties": false
+    },
+    "required_verification": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "semantic_profile_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "required_check_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "required_obligation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "permitted_assumption_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "profile_id",
+          "semantic_profile_id",
+          "required_check_ids",
+          "required_obligation_ids",
+          "permitted_assumption_ids"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "allowed_adapters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/adapter_grant"
+      },
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "runtime_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      },
+      "minItems": 0,
+      "maxItems": 128,
+      "uniqueItems": true
+    },
+    "runtime_reads": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      },
+      "minItems": 0,
+      "maxItems": 128,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "format",
+    "policy_id",
+    "version",
+    "issuer_id",
+    "principal_id",
+    "workspace_id",
+    "system_scope",
+    "operations",
+    "system_creation",
+    "required_verification",
+    "allowed_adapters",
+    "runtime_actions",
+    "runtime_reads"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+    },
+    "entity_ref": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/identifier"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "model_id": {
+              "$ref": "#/$defs/identifier"
+            },
+            "output": {
+              "enum": [
+                "request",
+                "decision",
+                "work"
+              ]
+            }
+          },
+          "required": [
+            "model_id",
+            "output"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "type": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "string",
+                "int",
+                "bool"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "enum",
+                "nominal"
+              ]
+            },
+            "name": {
+              "$ref": "#/$defs/identifier"
+            }
+          },
+          "required": [
+            "kind",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "id",
+                "ref"
+              ]
+            },
+            "entity": {
+              "$ref": "#/$defs/entity_ref"
+            }
+          },
+          "required": [
+            "kind",
+            "entity"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "expr": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "literal"
+            },
+            "value": {
+              "type": [
+                "boolean",
+                "string",
+                "integer"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "enum"
+            },
+            "enum": {
+              "$ref": "#/$defs/identifier"
+            },
+            "case": {
+              "$ref": "#/$defs/identifier"
+            }
+          },
+          "required": [
+            "op",
+            "enum",
+            "case"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "param"
+            },
+            "name": {
+              "$ref": "#/$defs/identifier"
+            }
+          },
+          "required": [
+            "op",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "field"
+            },
+            "value": {
+              "$ref": "#/$defs/expr"
+            },
+            "name": {
+              "$ref": "#/$defs/identifier"
+            }
+          },
+          "required": [
+            "op",
+            "value",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "eq"
+            },
+            "left": {
+              "$ref": "#/$defs/expr"
+            },
+            "right": {
+              "$ref": "#/$defs/expr"
+            }
+          },
+          "required": [
+            "op",
+            "left",
+            "right"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "enum": [
+                "and",
+                "or"
+              ]
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/expr"
+              },
+              "minItems": 1,
+              "maxItems": 32
+            }
+          },
+          "required": [
+            "op",
+            "args"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "not"
+            },
+            "value": {
+              "$ref": "#/$defs/expr"
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "in"
+            },
+            "value": {
+              "$ref": "#/$defs/expr"
+            },
+            "members": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/expr"
+              },
+              "minItems": 1,
+              "maxItems": 64
+            }
+          },
+          "required": [
+            "op",
+            "value",
+            "members"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "any"
+            },
+            "entity": {
+              "$ref": "#/$defs/entity_ref"
+            },
+            "bind": {
+              "$ref": "#/$defs/identifier"
+            },
+            "where": {
+              "$ref": "#/$defs/expr"
+            }
+          },
+          "required": [
+            "op",
+            "entity",
+            "bind",
+            "where"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "derived"
+            },
+            "model_id": {
+              "$ref": "#/$defs/identifier"
+            },
+            "function": {
+              "enum": [
+                "approve_count",
+                "reject_count",
+                "approved",
+                "rejected",
+                "pending",
+                "terminal"
+              ]
+            },
+            "subject": {
+              "$ref": "#/$defs/expr"
+            }
+          },
+          "required": [
+            "op",
+            "model_id",
+            "function",
+            "subject"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "action_selector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "action": {
+              "$ref": "#/$defs/identifier"
+            }
+          },
+          "required": [
+            "action"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "model_id": {
+              "$ref": "#/$defs/identifier"
+            },
+            "local_action_id": {
+              "$ref": "#/$defs/identifier"
+            }
+          },
+          "required": [
+            "model_id",
+            "local_action_id"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "enum": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/identifier"
+              },
+              "value": {
+                "type": "string",
+                "maxLength": 128
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 64
+        }
+      },
+      "required": [
+        "name",
+        "cases"
+      ],
+      "additionalProperties": false
+    },
+    "entity": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "fields": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/type"
+          },
+          "maxProperties": 32
+        }
+      },
+      "required": [
+        "name",
+        "fields"
+      ],
+      "additionalProperties": false
+    },
+    "nominal": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "base": {
+          "const": "int"
+        },
+        "operations": {
+          "const": [
+            "order"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "base",
+        "operations"
+      ],
+      "additionalProperties": false
+    },
+    "transfer": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/expr"
+        },
+        "value": {
+          "$ref": "#/$defs/expr"
+        }
+      },
+      "required": [
+        "target",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "transition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "from": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "to": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "inputs": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/type"
+          },
+          "maxProperties": 32
+        },
+        "parent": {
+          "$ref": "#/$defs/entity_ref"
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/expr"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "assignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/transfer"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "id",
+        "from",
+        "to",
+        "inputs",
+        "requires",
+        "assignments"
+      ],
+      "additionalProperties": false
+    },
+    "creation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "to": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "inputs": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/type"
+          },
+          "maxProperties": 32
+        },
+        "values": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/expr"
+          },
+          "maxProperties": 32
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/expr"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "id",
+        "to",
+        "inputs",
+        "values",
+        "requires"
+      ],
+      "additionalProperties": false
+    },
+    "request_flow": {
+      "type": "object",
+      "properties": {
+        "model_kind": {
+          "const": "request_flow"
+        },
+        "model_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "actor": {
+          "const": "Actor"
+        },
+        "status_enum": {
+          "$ref": "#/$defs/identifier"
+        },
+        "payload": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/type"
+          },
+          "maxProperties": 32
+        },
+        "creations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/creation"
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/transition"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "model_kind",
+        "model_id",
+        "actor",
+        "status_enum",
+        "payload",
+        "creations",
+        "transitions"
+      ],
+      "additionalProperties": false
+    },
+    "state_machine": {
+      "type": "object",
+      "properties": {
+        "model_kind": {
+          "const": "state_machine"
+        },
+        "model_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "subject": {
+          "$ref": "#/$defs/entity_ref"
+        },
+        "state_field": {
+          "$ref": "#/$defs/identifier"
+        },
+        "entry_states": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/transition"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "model_kind",
+        "model_id",
+        "subject",
+        "state_field",
+        "entry_states",
+        "transitions"
+      ],
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "properties": {
+        "inputs": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/type"
+          },
+          "maxProperties": 32
+        },
+        "values": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/expr"
+          },
+          "maxProperties": 32
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/expr"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "inputs",
+        "values",
+        "requires"
+      ],
+      "additionalProperties": false
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "model_kind": {
+          "const": "approval"
+        },
+        "model_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "subject": {
+          "$ref": "#/$defs/entity_ref"
+        },
+        "actor": {
+          "const": "Actor"
+        },
+        "approve_threshold": {
+          "type": "integer"
+        },
+        "reject_threshold": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "payload": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/type"
+          },
+          "maxProperties": 32
+        },
+        "open_when": {
+          "$ref": "#/$defs/expr"
+        },
+        "eligible": {
+          "$ref": "#/$defs/expr"
+        },
+        "decisions": {
+          "type": "object",
+          "properties": {
+            "approve": {
+              "$ref": "#/$defs/decision"
+            },
+            "reject": {
+              "$ref": "#/$defs/decision"
+            }
+          },
+          "required": [
+            "approve",
+            "reject"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "model_kind",
+        "model_id",
+        "subject",
+        "actor",
+        "approve_threshold",
+        "payload",
+        "open_when",
+        "eligible",
+        "decisions"
+      ],
+      "additionalProperties": false
+    },
+    "authorized_capability": {
+      "type": "object",
+      "properties": {
+        "authorization": {
+          "$ref": "#/$defs/expr"
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/expr"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "authorization",
+        "requires"
+      ],
+      "additionalProperties": false
+    },
+    "plain_capability": {
+      "type": "object",
+      "properties": {
+        "requires": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/expr"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "requires"
+      ],
+      "additionalProperties": false
+    },
+    "work_queue": {
+      "type": "object",
+      "properties": {
+        "model_kind": {
+          "const": "work_queue"
+        },
+        "model_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "worker": {
+          "const": "Actor"
+        },
+        "time": {
+          "$ref": "#/$defs/identifier"
+        },
+        "max_attempts": {
+          "type": "integer"
+        },
+        "payload": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/type"
+          },
+          "maxProperties": 32
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "enqueue": {
+              "$ref": "#/$defs/authorized_capability"
+            },
+            "claim": {
+              "$ref": "#/$defs/authorized_capability"
+            },
+            "renew": {
+              "$ref": "#/$defs/plain_capability"
+            },
+            "complete": {
+              "$ref": "#/$defs/plain_capability"
+            },
+            "retry": {
+              "$ref": "#/$defs/plain_capability"
+            },
+            "fail": {
+              "$ref": "#/$defs/plain_capability"
+            },
+            "recover": {
+              "$ref": "#/$defs/authorized_capability"
+            },
+            "exhaust": {
+              "$ref": "#/$defs/authorized_capability"
+            },
+            "cancel": {
+              "$ref": "#/$defs/authorized_capability"
+            }
+          },
+          "required": [
+            "enqueue",
+            "claim",
+            "renew",
+            "complete",
+            "retry",
+            "fail",
+            "recover",
+            "exhaust",
+            "cancel"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "model_kind",
+        "model_id",
+        "worker",
+        "time",
+        "max_attempts",
+        "payload",
+        "capabilities"
+      ],
+      "additionalProperties": false
+    },
+    "action": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "create_entity"
+            },
+            "name": {
+              "$ref": "#/$defs/identifier"
+            },
+            "entity": {
+              "$ref": "#/$defs/entity_ref"
+            },
+            "parent": {
+              "$ref": "#/$defs/entity_ref"
+            },
+            "values": {
+              "type": "object",
+              "propertyNames": {
+                "$ref": "#/$defs/identifier"
+              },
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "const": "literal"
+                      },
+                      "value": {
+                        "type": [
+                          "boolean",
+                          "string",
+                          "integer"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "const": "enum"
+                      },
+                      "enum": {
+                        "$ref": "#/$defs/identifier"
+                      },
+                      "case": {
+                        "$ref": "#/$defs/identifier"
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "enum",
+                      "case"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "const": "field"
+                      },
+                      "value": {
+                        "type": "object",
+                        "properties": {
+                          "op": {
+                            "const": "param"
+                          },
+                          "name": {
+                            "const": "parent"
+                          }
+                        },
+                        "required": [
+                          "op",
+                          "name"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "name": {
+                        "const": "id"
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "value",
+                      "name"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "maxProperties": 32
+            },
+            "requires": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/expr"
+              },
+              "minItems": 0,
+              "maxItems": 32
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "entity",
+            "values",
+            "requires"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "set_field"
+            },
+            "name": {
+              "$ref": "#/$defs/identifier"
+            },
+            "entity": {
+              "$ref": "#/$defs/entity_ref"
+            },
+            "parent": {
+              "$ref": "#/$defs/entity_ref"
+            },
+            "field": {
+              "$ref": "#/$defs/identifier"
+            },
+            "value": {
+              "type": "object",
+              "properties": {
+                "op": {
+                  "const": "enum"
+                },
+                "enum": {
+                  "$ref": "#/$defs/identifier"
+                },
+                "case": {
+                  "$ref": "#/$defs/identifier"
+                }
+              },
+              "required": [
+                "op",
+                "enum",
+                "case"
+              ],
+              "additionalProperties": false
+            },
+            "requires": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/expr"
+              },
+              "minItems": 0,
+              "maxItems": 32
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "entity",
+            "field",
+            "value",
+            "requires"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "remove_entity"
+            },
+            "name": {
+              "$ref": "#/$defs/identifier"
+            },
+            "entity": {
+              "$ref": "#/$defs/entity_ref"
+            },
+            "requires": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/expr"
+              },
+              "minItems": 0,
+              "maxItems": 32
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "entity",
+            "requires"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "field_ownership": {
+      "type": "object",
+      "properties": {
+        "policy_kind": {
+          "const": "field_ownership"
+        },
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "entity": {
+          "$ref": "#/$defs/entity_ref"
+        },
+        "writers": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/action_selector"
+            },
+            "minItems": 0,
+            "maxItems": 32
+          },
+          "maxProperties": 32
+        },
+        "creators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/action_selector"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "removers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/action_selector"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "policy_kind",
+        "id",
+        "entity",
+        "writers",
+        "creators",
+        "removers"
+      ],
+      "additionalProperties": false
+    },
+    "lifecycle_dependency": {
+      "type": "object",
+      "properties": {
+        "policy_kind": {
+          "const": "lifecycle_dependency"
+        },
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "parent": {
+          "$ref": "#/$defs/entity_ref"
+        },
+        "child": {
+          "$ref": "#/$defs/entity_ref"
+        },
+        "owner_field": {
+          "$ref": "#/$defs/identifier"
+        },
+        "parent_state": {
+          "$ref": "#/$defs/identifier"
+        },
+        "child_state": {
+          "$ref": "#/$defs/identifier"
+        },
+        "prohibited": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "terminal": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "ownership": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "minItems": 1,
+          "maxItems": 8
+        }
+      },
+      "required": [
+        "policy_kind",
+        "id",
+        "parent",
+        "child",
+        "owner_field",
+        "parent_state",
+        "child_state",
+        "prohibited",
+        "terminal",
+        "ownership"
+      ],
+      "additionalProperties": false
+    },
+    "field_scope": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/$defs/entity_ref"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "minItems": 0,
+          "maxItems": 32,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "entity",
+        "fields"
+      ],
+      "additionalProperties": false
+    },
+    "guard_roots": {
+      "type": "object",
+      "properties": {
+        "capability": {
+          "$ref": "#/$defs/action_selector"
+        },
+        "roots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/expr"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "capability",
+        "roots"
+      ],
+      "additionalProperties": false
+    },
+    "approval_parameters": {
+      "type": "object",
+      "properties": {
+        "model_kind": {
+          "const": "approval"
+        },
+        "model_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "approve_thresholds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "reject_thresholds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "payload": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/type"
+          },
+          "maxProperties": 32
+        }
+      },
+      "required": [
+        "model_kind",
+        "model_id",
+        "approve_thresholds",
+        "reject_thresholds",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "queue_parameters": {
+      "type": "object",
+      "properties": {
+        "model_kind": {
+          "const": "work_queue"
+        },
+        "model_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "time_nominal": {
+          "$ref": "#/$defs/identifier"
+        },
+        "max_attempts_min": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_attempts_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "payload": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/type"
+          },
+          "maxProperties": 32
+        }
+      },
+      "required": [
+        "model_kind",
+        "model_id",
+        "time_nominal",
+        "max_attempts_min",
+        "max_attempts_max",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "ownership_bounds": {
+      "type": "object",
+      "properties": {
+        "policy_kind": {
+          "const": "field_ownership"
+        },
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "entity": {
+          "$ref": "#/$defs/entity_ref"
+        },
+        "required_protected_fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "minItems": 0,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "writers": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/identifier"
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/action_selector"
+            },
+            "minItems": 0,
+            "maxItems": 32,
+            "uniqueItems": true
+          },
+          "maxProperties": 32
+        },
+        "creators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/action_selector"
+          },
+          "minItems": 0,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "removers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/action_selector"
+          },
+          "minItems": 0,
+          "maxItems": 32,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "policy_kind",
+        "id",
+        "entity",
+        "required_protected_fields",
+        "writers",
+        "creators",
+        "removers"
+      ],
+      "additionalProperties": false
+    },
+    "time_bound": {
+      "type": "object",
+      "properties": {
+        "capability_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "parameter": {
+          "enum": [
+            "lease_until",
+            "available_at"
+          ]
+        },
+        "minimum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "maximum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "max_future_offset_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "capability_id",
+        "parameter",
+        "minimum",
+        "maximum",
+        "max_future_offset_ms"
+      ],
+      "additionalProperties": false
+    },
+    "proof_requirement": {
+      "type": "object",
+      "properties": {
+        "profile_id": {
+          "const": "safety-default"
+        },
+        "analysis_version": {
+          "const": 1
+        },
+        "checker_version": {
+          "const": 3
+        },
+        "dependency_identity": {
+          "const": {
+            "cargo_lock": "sha256:7a2296c69095c093086d1b914805003de36fde00c7d89e170236bf011be88309",
+            "core_release": {
+              "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+              "version": "0.15.0"
+            },
+            "proof_toolchain_manifest": "sha256:84d169bb98b6ee50139e4f2bf3ba0f9e06c2ffb8a034a91245e1a644b1977d0a",
+            "rust_toolchain": "sha256:023075a0ddb84ee3a394b26da660bb9b49491db99c7ccf9cf440b6e69e51b1c5"
+          }
+        },
+        "required_policy_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "required_obligations": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "axiom_audit",
+              "concrete_proof",
+              "fresh_replay",
+              "generic_proof",
+              "inventory_comparison",
+              "lifecycle_preservation",
+              "theorem_types"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "permitted_assumptions": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "Core semantic and backend contracts",
+              "Rust extraction/probe/encoding correspondence",
+              "Pinned kernel/toolchain/build integrity",
+              "Valid initial property and host-enforced approved deployment segment"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 32,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "profile_id",
+        "analysis_version",
+        "checker_version",
+        "dependency_identity",
+        "required_policy_ids",
+        "required_obligations",
+        "permitted_assumptions"
+      ],
+      "additionalProperties": false
+    },
+    "state_field_bound": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "$ref": "#/$defs/entity_ref"
+        },
+        "field": {
+          "$ref": "#/$defs/identifier"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "maxLength": 128
+              },
+              "to": {
+                "type": "string",
+                "maxLength": 128
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "entity",
+        "field",
+        "values",
+        "edges"
+      ],
+      "additionalProperties": false
+    },
+    "v2_grant": {
+      "type": "object",
+      "properties": {
+        "adapter_profile": {
+          "const": "structured-models.v2"
+        },
+        "adapter_version": {
+          "type": "string",
+          "pattern": "^2\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+          "maxLength": 32
+        },
+        "behavior_version": {
+          "const": "0.14.0"
+        },
+        "behavior_commit": {
+          "const": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4"
+        },
+        "core_version": {
+          "const": "0.15.0"
+        },
+        "core_commit": {
+          "const": "6b93898a9375113f7a8946f23ab5535319b6f5d6"
+        },
+        "verifier_version": {
+          "const": "0.10.0"
+        },
+        "allowed_model_kinds": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "request_flow",
+              "state_machine",
+              "approval",
+              "work_queue"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "allowed_model_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "allowed_entity_declarations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entity"
+          },
+          "minItems": 0,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "allowed_enum_declarations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/enum"
+          },
+          "minItems": 0,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "allowed_nominal_declarations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nominal"
+          },
+          "minItems": 0,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "allowed_action_names": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "allowed_read_names": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "allowed_condition_ops": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "literal",
+              "enum",
+              "param",
+              "field",
+              "eq",
+              "and",
+              "or",
+              "not",
+              "in",
+              "any",
+              "derived"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 11,
+          "uniqueItems": true
+        },
+        "allowed_field_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/field_scope"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        "allowed_query_entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entity_ref"
+          },
+          "minItems": 0,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "allowed_derived_functions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "model_id": {
+                "$ref": "#/$defs/identifier"
+              },
+              "function": {
+                "enum": [
+                  "approve_count",
+                  "reject_count",
+                  "approved",
+                  "rejected",
+                  "pending",
+                  "terminal"
+                ]
+              }
+            },
+            "required": [
+              "model_id",
+              "function"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        "required_guard_roots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/guard_roots"
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "allowed_action_descriptors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/action"
+          },
+          "maxItems": 16
+        },
+        "model_parameter_bounds": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/approval_parameters"
+              },
+              {
+                "$ref": "#/$defs/queue_parameters"
+              }
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "allow_new_records": {
+          "type": "boolean"
+        },
+        "allow_existing_record_changes": {
+          "type": "boolean"
+        },
+        "allow_remove_records": {
+          "type": "boolean"
+        },
+        "state_fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/state_field_bound"
+          },
+          "minItems": 0,
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "required_policy_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "field_ownership_bounds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ownership_bounds"
+          },
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "allowed_lifecycle_dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/lifecycle_dependency"
+          },
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "proposed_time_bounds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/time_bound"
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "semantic_time_profile": {
+          "const": "utc-unix-milliseconds.v1"
+        },
+        "required_safety": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/proof_requirement"
+          },
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "allow_external_commands": {
+          "const": false
+        },
+        "allow_permission_expansion": {
+          "const": false
+        },
+        "allow_schema_migration": {
+          "const": false
+        },
+        "required_model_conditions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "model_id": {
+                "$ref": "#/$defs/identifier"
+              },
+              "slot": {
+                "enum": [
+                  "open_when",
+                  "eligible",
+                  "authorization"
+                ]
+              },
+              "capability_id": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  }
+                ]
+              },
+              "expression": {
+                "$ref": "#/$defs/expr"
+              }
+            },
+            "required": [
+              "model_id",
+              "slot",
+              "capability_id",
+              "expression"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "adapter_profile",
+        "adapter_version",
+        "behavior_version",
+        "behavior_commit",
+        "core_version",
+        "core_commit",
+        "verifier_version",
+        "allowed_model_kinds",
+        "allowed_model_ids",
+        "allowed_entity_declarations",
+        "allowed_enum_declarations",
+        "allowed_nominal_declarations",
+        "allowed_action_names",
+        "allowed_read_names",
+        "allowed_condition_ops",
+        "allowed_field_refs",
+        "allowed_query_entities",
+        "allowed_derived_functions",
+        "required_guard_roots",
+        "allowed_action_descriptors",
+        "model_parameter_bounds",
+        "allow_new_records",
+        "allow_existing_record_changes",
+        "allow_remove_records",
+        "state_fields",
+        "required_policy_ids",
+        "field_ownership_bounds",
+        "allowed_lifecycle_dependencies",
+        "proposed_time_bounds",
+        "semantic_time_profile",
+        "required_safety",
+        "allow_external_commands",
+        "allow_permission_expansion",
+        "allow_schema_migration",
+        "required_model_conditions"
+      ],
+      "additionalProperties": false
+    },
+    "adapter_grant": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "adapter_profile": {
+              "const": "scalar-models.v1"
+            },
+            "adapter_version": {
+              "const": "1"
+            },
+            "construction": {
+              "type": "object",
+              "properties": {
+                "adapter_profile": {
+                  "const": "scalar-models.v1"
+                },
+                "adapter_version": {
+                  "const": "1"
+                },
+                "behavior_version": {
+                  "const": "0.14.0"
+                },
+                "core_version": {
+                  "const": "0.15.0"
+                },
+                "core_commit": {
+                  "const": "6b93898a9375113f7a8946f23ab5535319b6f5d6"
+                },
+                "verifier_version": {
+                  "const": "0.10.0"
+                },
+                "allowed_model_kinds": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "request_flow",
+                      "state_machine"
+                    ]
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                },
+                "allowed_model_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                },
+                "allowed_capability_names": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "adapter_profile",
+                "adapter_version",
+                "behavior_version",
+                "core_version",
+                "core_commit",
+                "verifier_version",
+                "allowed_model_kinds",
+                "allowed_model_ids",
+                "allowed_capability_names"
+              ],
+              "additionalProperties": false
+            },
+            "effects": {
+              "type": "object",
+              "properties": {
+                "allowed_forms": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "literal_initializer",
+                      "input_initializer",
+                      "trusted_actor_initializer",
+                      "input_to_field_assignment"
+                    ]
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "initializer_fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "assignment_fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "allow_external_commands": {
+                  "const": false
+                },
+                "allow_permission_expansion": {
+                  "const": false
+                }
+              },
+              "required": [
+                "allowed_forms",
+                "initializer_fields",
+                "assignment_fields",
+                "allow_external_commands",
+                "allow_permission_expansion"
+              ],
+              "additionalProperties": false
+            },
+            "state": {
+              "type": "object",
+              "properties": {
+                "allow_new_records": {
+                  "type": "boolean"
+                },
+                "allow_existing_record_changes": {
+                  "type": "boolean"
+                },
+                "allowed_status_values": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                },
+                "allowed_status_edges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "from": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "to": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "from",
+                      "to"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "allow_schema_migration": {
+                  "const": false
+                }
+              },
+              "required": [
+                "allow_new_records",
+                "allow_existing_record_changes",
+                "allowed_status_values",
+                "allowed_status_edges",
+                "allow_schema_migration"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "adapter_profile",
+            "adapter_version",
+            "construction",
+            "effects",
+            "state"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/v2_grant"
+        }
+      ]
+    }
+  }
+}

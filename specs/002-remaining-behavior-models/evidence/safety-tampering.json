@@ -1,0 +1,21 @@
+{
+  "public_loader": "Both modified bundles remain structurally loadable unverified data.",
+  "checks": [
+    {
+      "tampering": "subject",
+      "outcome": "safety_failed",
+      "request_status": "completed",
+      "assessment_outcome": "Failed",
+      "certificate_ref": null,
+      "error_code": null
+    },
+    {
+      "tampering": "merge_trace",
+      "outcome": "safety_failed",
+      "request_status": "completed",
+      "assessment_outcome": "Failed",
+      "certificate_ref": null,
+      "error_code": null
+    }
+  ]
+}

@@ -1,0 +1,999 @@
+{
+  "checkpoint": "LifecycleDependency 2.3.0",
+  "manifest": {
+    "format": "behavior-mcp.adapter-checkpoint.v1",
+    "version": "2.3.0",
+    "system_id": "system-cae1eccf12b94e8fa8a2e68cbbe48d50",
+    "definition_id": "definition-037544cbd711419eb7cf179c69040b35",
+    "behavior_hash": "sha256:d6c73e43bc8d9b7b36a478efc78982a4a2ecb3dd97d6a4e7f9f254a1896fe047",
+    "schema_hash": "sha256:49c7c330bac17dd051328ce7879a5c76c67841bc42c8a7d48cfcc5ec1a3c6152",
+    "policy_id": "local-lifecycle",
+    "construction_context": {
+      "adapter_profile": "structured-models.v2",
+      "adapter_version": "2.3.0",
+      "adapter_code_identity": "bytes-sha256:7b6ee73f0471e88a2c42e680215629ef466340d7b8ea6ed6707af4aa1e094bdf",
+      "adapter_files": {
+        "adapter_versions/v2_3_0.py": "bytes-sha256:246ff78b225b87877549675f12bfecd4bf79f801d7ba8c135bce05a18c31638c",
+        "adapter_versions/fragments_2_0_0.py": "bytes-sha256:c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+        "contracts/authoring-v2-2.3.0.schema.json": "bytes-sha256:904d7aae1396f103c4715d689112c6ac7fdb0be558295f6b09de85b6d085f2a2"
+      },
+      "release": {
+        "behavior_version": "0.14.0",
+        "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+        "core_version": "0.15.0",
+        "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+        "verifier_version": "0.10.0",
+        "adapter_profile": "structured-models.v2",
+        "adapter_version": "2.3.0"
+      },
+      "fixed_entities": [
+        {
+          "name": "Actor",
+          "fields": {
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "trusted_context": {
+        "actor": "trusted_host",
+        "worker": "trusted_host",
+        "now": "utc-unix-milliseconds.v1"
+      },
+      "composition_order": [],
+      "action_order": [
+        "new_parent",
+        "new_child",
+        "stop_parent",
+        "activate_child",
+        "finish_child",
+        "remove_parent",
+        "remove_child"
+      ],
+      "policy_order": [
+        "parent_control",
+        "child_control",
+        "parent_child"
+      ]
+    },
+    "closure": {
+      "adapter_versions/v2_3_0.py": "246ff78b225b87877549675f12bfecd4bf79f801d7ba8c135bce05a18c31638c",
+      "adapter_versions/fragments_2_0_0.py": "c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+      "contracts/authoring-v2-2.3.0.schema.json": "904d7aae1396f103c4715d689112c6ac7fdb0be558295f6b09de85b6d085f2a2"
+    },
+    "workspace_files": {
+      "host.sqlite": "a24a47449db14f4d2b7ce791384b6a8f07092e92e37122f1d57b29051fed3ad4",
+      "systems/system-cae1eccf12b94e8fa8a2e68cbbe48d50.sqlite": "b1d54077e708cbdda9400b02a1e0ad7fd0878dfa85fb527b3cea20379a213476"
+    }
+  },
+  "public_assessments": [
+    {
+      "action_obligations": [
+        {
+          "action_hash": "sha256:5d850a45996ce95b02e93b78496fcf1d4de6ab88a290e50cec2412859b298e13",
+          "effect_correspondence": "Assumed; irrelevant projections use the proved frame lemmas",
+          "lifecycle": {
+            "class": "Machine-checked theorem instantiated by finite checking",
+            "dependencies": [
+              "sha256:582ecffcb0c30e5a3772198b1258f630633303803a930cb7f47c451128c55f92"
+            ],
+            "issues": [],
+            "result": "Passed"
+          },
+          "operations": [
+            {
+              "entity": "Child",
+              "field": "phase",
+              "hash": "sha256:bd484142678101800bb2fa9fcdf47f4372aa5282be0ca8a10649cee02386a86d",
+              "index": 0,
+              "kind": "assign",
+              "param": "subject",
+              "value": "sha256:fe7ed43d08484e478dddb6c55a8784a86a52dfbd251b9f8cfa87299db125451d"
+            }
+          ],
+          "ownership": {
+            "class": "Kernel-checked finite premises",
+            "proof_integrity": "Complete",
+            "result": "Passed"
+          }
+        },
+        {
+          "action_hash": "sha256:1f9cf93a04c2693557d8ea01a776558a5a37a616fb6faf3f7e68936f89ac8dd2",
+          "effect_correspondence": "Assumed; irrelevant projections use the proved frame lemmas",
+          "lifecycle": {
+            "class": "Machine-checked theorem instantiated by finite checking",
+            "dependencies": [
+              "sha256:582ecffcb0c30e5a3772198b1258f630633303803a930cb7f47c451128c55f92"
+            ],
+            "issues": [],
+            "result": "Passed"
+          },
+          "operations": [
+            {
+              "entity": "Child",
+              "field": "phase",
+              "hash": "sha256:130d856b4410849e3f2c68eee46304077a8775b6493a9e23115e50ea252e819f",
+              "index": 0,
+              "kind": "assign",
+              "param": "subject",
+              "value": "sha256:f1a287798cea3872760590cdbb6171e91fa595ea29e33ba6915aa99eeb4da7d9"
+            }
+          ],
+          "ownership": {
+            "class": "Kernel-checked finite premises",
+            "proof_integrity": "Complete",
+            "result": "Passed"
+          }
+        },
+        {
+          "action_hash": "sha256:edb387f05dc38e91e25f865a0971e9987b0574c59ed4e108ce911a07853bab2e",
+          "effect_correspondence": "Assumed; irrelevant projections use the proved frame lemmas",
+          "lifecycle": {
+            "class": "Machine-checked theorem instantiated by finite checking",
+            "dependencies": [
+              "sha256:582ecffcb0c30e5a3772198b1258f630633303803a930cb7f47c451128c55f92"
+            ],
+            "issues": [],
+            "result": "Passed"
+          },
+          "operations": [
+            {
+              "entity": "Child",
+              "fields": {
+                "owner": "sha256:7e83d63c424a9b410f845d4a59c73edfbdd92e1f166e9b9a01a9ca48d37d6b25",
+                "phase": "sha256:fe7ed43d08484e478dddb6c55a8784a86a52dfbd251b9f8cfa87299db125451d"
+              },
+              "hash": "sha256:e4530d701745149ea6d3991fb99fddf53be657e742755fad1da3e87ee45c80e5",
+              "id": "sha256:62d9c18f795886a3da0480e12558b496345e8f9165f4fdda41eb8bc6b0622324",
+              "index": 0,
+              "kind": "create"
+            }
+          ],
+          "ownership": {
+            "class": "Kernel-checked finite premises",
+            "proof_integrity": "Complete",
+            "result": "Passed"
+          }
+        },
+        {
+          "action_hash": "sha256:4ba8038c098e71f280c253d544f08d0ccc4aaf6aa776933f860fefeddcf7d969",
+          "effect_correspondence": "Assumed; irrelevant projections use the proved frame lemmas",
+          "lifecycle": {
+            "class": "Machine-checked theorem instantiated by finite checking",
+            "dependencies": [
+              "sha256:582ecffcb0c30e5a3772198b1258f630633303803a930cb7f47c451128c55f92"
+            ],
+            "issues": [],
+            "result": "Passed"
+          },
+          "operations": [
+            {
+              "entity": "Parent",
+              "fields": {
+                "phase": "sha256:1764ea4bc3c71337e5de17f991f617160819dd5b338ddc256f0114d81d2f6b27"
+              },
+              "hash": "sha256:29cd95b47ce12f29b3e08b9f93dd6fa807c4dc3bc9588eb27e0d48133d16579f",
+              "id": "sha256:11f0c4e2f624db1176521240a00c2318ba39ab20bf34016d1528b6e87571daee",
+              "index": 0,
+              "kind": "create"
+            }
+          ],
+          "ownership": {
+            "class": "Kernel-checked finite premises",
+            "proof_integrity": "Complete",
+            "result": "Passed"
+          }
+        },
+        {
+          "action_hash": "sha256:a6a30f02910c96573dde796d7783a694e80ddf94ce9a09dc6a0392334539a9e4",
+          "effect_correspondence": "Assumed; irrelevant projections use the proved frame lemmas",
+          "lifecycle": {
+            "class": "Machine-checked theorem instantiated by finite checking",
+            "dependencies": [
+              "sha256:582ecffcb0c30e5a3772198b1258f630633303803a930cb7f47c451128c55f92"
+            ],
+            "issues": [],
+            "result": "Passed"
+          },
+          "operations": [
+            {
+              "entity": "Child",
+              "hash": "sha256:3378a2c226b590eeb5a523fc0c5a1226a310a52d44d4e565b3d4e464ed0f5840",
+              "index": 0,
+              "kind": "remove",
+              "param": "subject"
+            }
+          ],
+          "ownership": {
+            "class": "Kernel-checked finite premises",
+            "proof_integrity": "Complete",
+            "result": "Passed"
+          }
+        },
+        {
+          "action_hash": "sha256:02903c5e526602bc2d16020afcbb71603730c42634dc5a20a41510aa54485f45",
+          "effect_correspondence": "Assumed; irrelevant projections use the proved frame lemmas",
+          "lifecycle": {
+            "class": "Machine-checked theorem instantiated by finite checking",
+            "dependencies": [
+              "sha256:582ecffcb0c30e5a3772198b1258f630633303803a930cb7f47c451128c55f92"
+            ],
+            "issues": [],
+            "result": "Passed"
+          },
+          "operations": [
+            {
+              "entity": "Parent",
+              "hash": "sha256:3378a2c226b590eeb5a523fc0c5a1226a310a52d44d4e565b3d4e464ed0f5840",
+              "index": 0,
+              "kind": "remove",
+              "param": "subject"
+            }
+          ],
+          "ownership": {
+            "class": "Kernel-checked finite premises",
+            "proof_integrity": "Complete",
+            "result": "Passed"
+          }
+        },
+        {
+          "action_hash": "sha256:1db7157d8745e811651678c3cbb3878e8bdf3ecd9c20977417b229647635c0de",
+          "effect_correspondence": "Assumed; irrelevant projections use the proved frame lemmas",
+          "lifecycle": {
+            "class": "Machine-checked theorem instantiated by finite checking",
+            "dependencies": [
+              "sha256:582ecffcb0c30e5a3772198b1258f630633303803a930cb7f47c451128c55f92"
+            ],
+            "issues": [],
+            "result": "Passed"
+          },
+          "operations": [
+            {
+              "entity": "Parent",
+              "field": "phase",
+              "hash": "sha256:f2286013a39211b9a570109bd7c62262b6c2fda272fc8032486d5e2468ed82ee",
+              "index": 0,
+              "kind": "assign",
+              "param": "subject",
+              "value": "sha256:a2c3839e425fdfc2ccd885602a3b51e9eccaab88ee7d8a070be743e25fe227bf"
+            }
+          ],
+          "ownership": {
+            "class": "Kernel-checked finite premises",
+            "proof_integrity": "Complete",
+            "result": "Passed"
+          }
+        }
+      ],
+      "analysis_version": 1,
+      "assumptions": [
+        "Core semantic and backend contracts",
+        "Rust extraction/probe/encoding correspondence",
+        "Pinned kernel/toolchain/build integrity",
+        "Valid initial property and host-enforced approved deployment segment"
+      ],
+      "behavior_hash": "sha256:d6c73e43bc8d9b7b36a478efc78982a4a2ecb3dd97d6a4e7f9f254a1896fe047",
+      "checker_version": 3,
+      "core_release": {
+        "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+        "version": "0.15.0"
+      },
+      "dependency_identity": {
+        "cargo_lock": "sha256:7a2296c69095c093086d1b914805003de36fde00c7d89e170236bf011be88309",
+        "core_release": {
+          "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "version": "0.15.0"
+        },
+        "proof_toolchain_manifest": "sha256:84d169bb98b6ee50139e4f2bf3ba0f9e06c2ffb8a034a91245e1a644b1977d0a",
+        "rust_toolchain": "sha256:023075a0ddb84ee3a394b26da660bb9b49491db99c7ccf9cf440b6e69e51b1c5"
+      },
+      "diagnostic_codes": [],
+      "evidence_hash": "sha256:338d6e3fa037e2f4c07aece94d6405f9963703c6ef5b02f18442f06dffc1fc82",
+      "exclusions": [
+        "Genesis validity",
+        "Migration safety",
+        "Alternative modules",
+        "Physical host execution",
+        "End-to-end formal verification"
+      ],
+      "external_obligations": [
+        {
+          "class": "Separate state-validation obligation",
+          "id": "initial_validity",
+          "status": "Unestablished"
+        },
+        {
+          "class": "Exact BehaviorHash and complete policy set, exact validated activation anchor and enforced continuity",
+          "id": "approved_modules",
+          "status": "Host obligation"
+        },
+        {
+          "class": "Separate resulting-state validation or preservation proof required",
+          "id": "migration_safety",
+          "status": "Excluded"
+        }
+      ],
+      "format": "behavior.safety_evidence.v2",
+      "initial_validity": "Unestablished",
+      "inventory": {
+        "actions": [
+          {
+            "hash": "sha256:5d850a45996ce95b02e93b78496fcf1d4de6ab88a290e50cec2412859b298e13",
+            "name": "activate_child",
+            "operations": [
+              {
+                "entity": "Child",
+                "field": "phase",
+                "hash": "sha256:bd484142678101800bb2fa9fcdf47f4372aa5282be0ca8a10649cee02386a86d",
+                "index": 0,
+                "kind": "assign",
+                "param": "subject",
+                "value": "sha256:fe7ed43d08484e478dddb6c55a8784a86a52dfbd251b9f8cfa87299db125451d"
+              }
+            ],
+            "params": [
+              {
+                "name": "subject",
+                "type": {
+                  "Entity": "Child"
+                }
+              },
+              {
+                "name": "parent",
+                "type": {
+                  "Entity": "Parent"
+                }
+              }
+            ],
+            "postconditions": [],
+            "preconditions": [
+              "sha256:e648e98ac34400245eb5ea3deccf802f34ad569b1c14125a0016b3f005ab2397",
+              "sha256:da9b1bcc780cbafa3ab2263132be9804a9ca11fbd4926b77e70d37a31393acdc"
+            ]
+          },
+          {
+            "hash": "sha256:1f9cf93a04c2693557d8ea01a776558a5a37a616fb6faf3f7e68936f89ac8dd2",
+            "name": "finish_child",
+            "operations": [
+              {
+                "entity": "Child",
+                "field": "phase",
+                "hash": "sha256:130d856b4410849e3f2c68eee46304077a8775b6493a9e23115e50ea252e819f",
+                "index": 0,
+                "kind": "assign",
+                "param": "subject",
+                "value": "sha256:f1a287798cea3872760590cdbb6171e91fa595ea29e33ba6915aa99eeb4da7d9"
+              }
+            ],
+            "params": [
+              {
+                "name": "subject",
+                "type": {
+                  "Entity": "Child"
+                }
+              }
+            ],
+            "postconditions": [],
+            "preconditions": []
+          },
+          {
+            "hash": "sha256:edb387f05dc38e91e25f865a0971e9987b0574c59ed4e108ce911a07853bab2e",
+            "name": "new_child",
+            "operations": [
+              {
+                "entity": "Child",
+                "fields": {
+                  "owner": "sha256:7e83d63c424a9b410f845d4a59c73edfbdd92e1f166e9b9a01a9ca48d37d6b25",
+                  "phase": "sha256:fe7ed43d08484e478dddb6c55a8784a86a52dfbd251b9f8cfa87299db125451d"
+                },
+                "hash": "sha256:e4530d701745149ea6d3991fb99fddf53be657e742755fad1da3e87ee45c80e5",
+                "id": "sha256:62d9c18f795886a3da0480e12558b496345e8f9165f4fdda41eb8bc6b0622324",
+                "index": 0,
+                "kind": "create"
+              }
+            ],
+            "params": [
+              {
+                "name": "parent",
+                "type": {
+                  "Entity": "Parent"
+                }
+              },
+              {
+                "name": "new_id",
+                "type": {
+                  "Id": "Child"
+                }
+              }
+            ],
+            "postconditions": [],
+            "preconditions": [
+              "sha256:da9b1bcc780cbafa3ab2263132be9804a9ca11fbd4926b77e70d37a31393acdc"
+            ]
+          },
+          {
+            "hash": "sha256:4ba8038c098e71f280c253d544f08d0ccc4aaf6aa776933f860fefeddcf7d969",
+            "name": "new_parent",
+            "operations": [
+              {
+                "entity": "Parent",
+                "fields": {
+                  "phase": "sha256:1764ea4bc3c71337e5de17f991f617160819dd5b338ddc256f0114d81d2f6b27"
+                },
+                "hash": "sha256:29cd95b47ce12f29b3e08b9f93dd6fa807c4dc3bc9588eb27e0d48133d16579f",
+                "id": "sha256:11f0c4e2f624db1176521240a00c2318ba39ab20bf34016d1528b6e87571daee",
+                "index": 0,
+                "kind": "create"
+              }
+            ],
+            "params": [
+              {
+                "name": "new_id",
+                "type": {
+                  "Id": "Parent"
+                }
+              }
+            ],
+            "postconditions": [],
+            "preconditions": []
+          },
+          {
+            "hash": "sha256:a6a30f02910c96573dde796d7783a694e80ddf94ce9a09dc6a0392334539a9e4",
+            "name": "remove_child",
+            "operations": [
+              {
+                "entity": "Child",
+                "hash": "sha256:3378a2c226b590eeb5a523fc0c5a1226a310a52d44d4e565b3d4e464ed0f5840",
+                "index": 0,
+                "kind": "remove",
+                "param": "subject"
+              }
+            ],
+            "params": [
+              {
+                "name": "subject",
+                "type": {
+                  "Entity": "Child"
+                }
+              }
+            ],
+            "postconditions": [],
+            "preconditions": []
+          },
+          {
+            "hash": "sha256:02903c5e526602bc2d16020afcbb71603730c42634dc5a20a41510aa54485f45",
+            "name": "remove_parent",
+            "operations": [
+              {
+                "entity": "Parent",
+                "hash": "sha256:3378a2c226b590eeb5a523fc0c5a1226a310a52d44d4e565b3d4e464ed0f5840",
+                "index": 0,
+                "kind": "remove",
+                "param": "subject"
+              }
+            ],
+            "params": [
+              {
+                "name": "subject",
+                "type": {
+                  "Entity": "Parent"
+                }
+              }
+            ],
+            "postconditions": [],
+            "preconditions": []
+          },
+          {
+            "hash": "sha256:1db7157d8745e811651678c3cbb3878e8bdf3ecd9c20977417b229647635c0de",
+            "name": "stop_parent",
+            "operations": [
+              {
+                "entity": "Parent",
+                "field": "phase",
+                "hash": "sha256:f2286013a39211b9a570109bd7c62262b6c2fda272fc8032486d5e2468ed82ee",
+                "index": 0,
+                "kind": "assign",
+                "param": "subject",
+                "value": "sha256:a2c3839e425fdfc2ccd885602a3b51e9eccaab88ee7d8a070be743e25fe227bf"
+              }
+            ],
+            "params": [
+              {
+                "name": "subject",
+                "type": {
+                  "Entity": "Parent"
+                }
+              }
+            ],
+            "postconditions": [],
+            "preconditions": [
+              "sha256:cdb785fcad7012d6f777f2c23e27f07cbd71fc6f6fa3778375d172b41635b2d0"
+            ]
+          }
+        ],
+        "behavior_hash": "sha256:d6c73e43bc8d9b7b36a478efc78982a4a2ecb3dd97d6a4e7f9f254a1896fe047",
+        "core_release": {
+          "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "version": "0.15.0"
+        },
+        "declarations": {
+          "Actor": {
+            "fields": {
+              "id": {
+                "reference": false,
+                "type": {
+                  "Id": "Actor"
+                }
+              },
+              "name": {
+                "reference": false,
+                "type": "String"
+              }
+            },
+            "hash": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+          },
+          "Child": {
+            "fields": {
+              "id": {
+                "reference": false,
+                "type": {
+                  "Id": "Child"
+                }
+              },
+              "owner": {
+                "reference": true,
+                "type": {
+                  "Id": "Parent"
+                }
+              },
+              "phase": {
+                "reference": false,
+                "type": {
+                  "Enum": "ChildPhase"
+                }
+              }
+            },
+            "hash": "sha256:2476b99732138f428b67959b00c15ab80df89910d38566aa95ef62fe845d2bc5"
+          },
+          "Parent": {
+            "fields": {
+              "id": {
+                "reference": false,
+                "type": {
+                  "Id": "Parent"
+                }
+              },
+              "phase": {
+                "reference": false,
+                "type": {
+                  "Enum": "ParentPhase"
+                }
+              }
+            },
+            "hash": "sha256:425fee03aa4908600eaa6413a7d59f50b9b27c102d2ea36f7ffc96d51d072ba6"
+          }
+        },
+        "format": "behavior.safety_inventory.v1",
+        "inventory_hash": "sha256:f830abd83b2924484eeeb2cea0655536e6e123560275148cc96c9f8f34120d8d"
+      },
+      "obligation_evidence": {
+        "axiom_audit": {
+          "class": "Transitive axiom audit",
+          "result": "Passed"
+        },
+        "concrete_proof": {
+          "class": "Kernel-checked finite premises",
+          "result": "Passed"
+        },
+        "fresh_replay": {
+          "class": "Fresh kernel replay",
+          "result": "Passed"
+        },
+        "generic_proof": {
+          "class": "Machine-checked theorem",
+          "result": "Passed"
+        },
+        "inventory_comparison": {
+          "class": "Structural correspondence check",
+          "result": "Passed"
+        },
+        "theorem_types": {
+          "class": "Kernel type comparison",
+          "result": "Passed"
+        }
+      },
+      "obligations": {
+        "axiom_audit": "Passed",
+        "concrete_proof": "Passed",
+        "fresh_replay": "Passed",
+        "generic_proof": "Passed",
+        "inventory_comparison": "Passed",
+        "lifecycle_preservation": "Passed",
+        "theorem_types": "Passed"
+      },
+      "outcome": "Certified under assumptions",
+      "policies": [
+        {
+          "document": {
+            "child": "sha256:2476b99732138f428b67959b00c15ab80df89910d38566aa95ef62fe845d2bc5",
+            "child_state": "phase",
+            "kind": "LifecycleDependency",
+            "model_semantic_version": 1,
+            "owner_field": "owner",
+            "ownership": [
+              "sha256:674560d0dfb4117698093c7fe7794a516413908987cfc31948292168e535bae8",
+              "sha256:d7a3f26ce0e091c42db66ecc579c1fe0f942d407186f4513e6def3fa79440a51"
+            ],
+            "parent": "sha256:425fee03aa4908600eaa6413a7d59f50b9b27c102d2ea36f7ffc96d51d072ba6",
+            "parent_state": "phase",
+            "prohibited": [
+              "Stopped"
+            ],
+            "terminal": [
+              "Terminal"
+            ]
+          },
+          "model_hash": "sha256:582ecffcb0c30e5a3772198b1258f630633303803a930cb7f47c451128c55f92"
+        },
+        {
+          "document": {
+            "creators": [
+              "sha256:4ba8038c098e71f280c253d544f08d0ccc4aaf6aa776933f860fefeddcf7d969"
+            ],
+            "entity": "sha256:425fee03aa4908600eaa6413a7d59f50b9b27c102d2ea36f7ffc96d51d072ba6",
+            "kind": "FieldOwnership",
+            "model_semantic_version": 1,
+            "removers": [
+              "sha256:02903c5e526602bc2d16020afcbb71603730c42634dc5a20a41510aa54485f45"
+            ],
+            "writers": {
+              "phase": [
+                "sha256:1db7157d8745e811651678c3cbb3878e8bdf3ecd9c20977417b229647635c0de"
+              ]
+            }
+          },
+          "model_hash": "sha256:674560d0dfb4117698093c7fe7794a516413908987cfc31948292168e535bae8"
+        },
+        {
+          "document": {
+            "creators": [
+              "sha256:edb387f05dc38e91e25f865a0971e9987b0574c59ed4e108ce911a07853bab2e"
+            ],
+            "entity": "sha256:2476b99732138f428b67959b00c15ab80df89910d38566aa95ef62fe845d2bc5",
+            "kind": "FieldOwnership",
+            "model_semantic_version": 1,
+            "removers": [
+              "sha256:a6a30f02910c96573dde796d7783a694e80ddf94ce9a09dc6a0392334539a9e4"
+            ],
+            "writers": {
+              "owner": [],
+              "phase": [
+                "sha256:1f9cf93a04c2693557d8ea01a776558a5a37a616fb6faf3f7e68936f89ac8dd2",
+                "sha256:5d850a45996ce95b02e93b78496fcf1d4de6ab88a290e50cec2412859b298e13"
+              ]
+            }
+          },
+          "model_hash": "sha256:d7a3f26ce0e091c42db66ecc579c1fe0f942d407186f4513e6def3fa79440a51"
+        }
+      ],
+      "policy_set_hash": "sha256:1424624de8eb1630005bd27c66e6c5347d90c4e71f8b61f29f26592a36c6db3c",
+      "proof": {
+        "audit": [
+          {
+            "axioms": [
+              "Classical.choice",
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Safety.FieldOwnership.sound",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "propext"
+            ],
+            "declaration": "Safety.LifecycleDependency.sound",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "propext"
+            ],
+            "declaration": "Safety.LifecycleDependency.conjunction",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "Classical.choice",
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Safety.LifecycleDependency.projection_frame",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "propext"
+            ],
+            "declaration": "Safety.membership_order_equivalent",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Safety.checkLifecycle_sound",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Safety.classify_permitted",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "Classical.choice",
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Safety.lifecycle_module_preserves",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Safety.checkModule_sound",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "Classical.choice",
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Safety.module_preserves",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "Classical.choice",
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Concrete.checked",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "Classical.choice",
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Concrete.certified",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "Classical.choice",
+              "Quot.sound",
+              "propext"
+            ],
+            "declaration": "Safety.Candidate.traceChecked_sound",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "propext"
+            ],
+            "declaration": "Safety.Candidate.compactPayload_flatten",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "propext"
+            ],
+            "declaration": "Safety.Candidate.literalBytes_injective",
+            "expected_type_checked": true
+          },
+          {
+            "axioms": [
+              "propext"
+            ],
+            "declaration": "Safety.Candidate.checked_from_parts",
+            "expected_type_checked": true
+          }
+        ],
+        "audit_source": "sha256:e2b20aaece01de683934941b83ed5d41938f72823758941504f41fa1942904c7",
+        "checker_version": 3,
+        "concrete_source": "sha256:a8c275735350441677e7edabd8bd676232b5286d4e07984d93e87340175b0639",
+        "implementation_sources": "sha256:3f34199c5fa8ace62f0cdb6b9fd91c120d68fb91bc972d4de6f6be85717d40f5",
+        "sources": {
+          "Audit": "sha256:12a18a5bbb36731690dcec06c8498f0177d17f4680d47a534615ca2f4c5507f7",
+          "Check": "sha256:1693bda67e4015edf4310169c1f797a54edbeb2930bffacce9ed0f924c9b1040",
+          "Data": "sha256:3bb755e874dfae701d06f85c278efe078087df73f94322c52855390308863290",
+          "FieldOwnership": "sha256:146b1f1c7f65a8175668ec881e94476b9a3b8ae691fa3cebdb5232d33e757dbc",
+          "Finite": "sha256:1e07025d7544876cef1e5e60e1034928b9a6d32baae48f419f483ccea0628d62",
+          "LifecycleCheck": "sha256:726df35c5bf5cae60710f5aab66baa31fba2678075601b3483e3f5978e55ace9",
+          "LifecycleData": "sha256:bb88841f1f028122d684aabf9136e5170215348aae458827b3e88436e54a92e8",
+          "LifecycleDependency": "sha256:cc1c9f3144264fc216ccf03dad3632eb173c07719e8f44f2206ee974ffbfa1ed",
+          "LifecycleSequence": "sha256:79aac40034e88c8481adf1dd6b3f9e5c5bb7951ee5255eeaf21653b88628491e"
+        },
+        "statement_version": 2,
+        "toolchain": {
+          "flake_lock_sha256": "ed16bd3f98b17e19e07d6ecafecdd20897024a170f7f3727ed6565c582a01bbe",
+          "platform": "x86_64-linux",
+          "profile": {
+            "drvPath": "/nix/store/6wy0z2zc7gl2i6vxzcw59i9pdhk2g6b8-lean4-4.30.0.drv",
+            "outPath": "/nix/store/7m5ds60a41w276hsx3rybv76x3609l6k-lean4-4.30.0",
+            "version": "4.30.0"
+          }
+        },
+        "witness": {
+          "format": "behavior.safety_merge_trace.v1",
+          "nodes": [
+            {
+              "kind": "leaf"
+            },
+            {
+              "kind": "leaf"
+            },
+            {
+              "kind": "leaf"
+            },
+            {
+              "choices": [
+                true,
+                false
+              ],
+              "kind": "branch",
+              "left": 1,
+              "right": 2
+            },
+            {
+              "choices": [
+                false,
+                true,
+                false
+              ],
+              "kind": "branch",
+              "left": 0,
+              "right": 3
+            },
+            {
+              "kind": "leaf"
+            },
+            {
+              "kind": "leaf"
+            },
+            {
+              "choices": [
+                true,
+                false
+              ],
+              "kind": "branch",
+              "left": 5,
+              "right": 6
+            },
+            {
+              "kind": "leaf"
+            },
+            {
+              "kind": "leaf"
+            },
+            {
+              "choices": [
+                true,
+                false
+              ],
+              "kind": "branch",
+              "left": 8,
+              "right": 9
+            },
+            {
+              "choices": [
+                false,
+                false,
+                true,
+                true
+              ],
+              "kind": "branch",
+              "left": 7,
+              "right": 10
+            },
+            {
+              "choices": [
+                false,
+                false,
+                true,
+                false,
+                true,
+                false,
+                true
+              ],
+              "kind": "branch",
+              "left": 4,
+              "right": 11
+            }
+          ],
+          "root": 12
+        }
+      },
+      "provided_behavior_hash": "sha256:d6c73e43bc8d9b7b36a478efc78982a4a2ecb3dd97d6a4e7f9f254a1896fe047",
+      "runtime_tests": {
+        "class": "Tests",
+        "statement": "Independent Core correspondence tests are separate evidence, not universal proofs",
+        "status": "NotRunByCertification"
+      },
+      "scope": "OrdinaryTransitions",
+      "trusted_correspondence": [
+        {
+          "class": "Trusted semantic contract",
+          "id": "core_semantics",
+          "statement": "Pinned Core admission, ordinary atomic transition semantics, freshness and complete resulting-state Ref integrity",
+          "status": "Assumed"
+        },
+        {
+          "class": "Host/backend obligation",
+          "id": "backend_contract",
+          "statement": "Backend supplies complete consistent typed states and honors Core query and commit contracts",
+          "status": "Assumed"
+        },
+        {
+          "class": "Trusted correspondence",
+          "id": "inventory_extraction",
+          "statement": "Rust extracts every final Core action/effect and compares the full inventory independently",
+          "status": "Assumed"
+        },
+        {
+          "class": "Trusted correspondence",
+          "id": "proof_encoding",
+          "statement": "Rust resolves policy meaning and faithfully encodes Core identities, bindings, values and effect projections into the checked finite model",
+          "status": "Assumed"
+        },
+        {
+          "class": "Cryptographic identity assumption",
+          "id": "core_hashes",
+          "statement": "Core semantic hashing and collision resistance correctly bind the admitted declarations and module",
+          "status": "Assumed"
+        },
+        {
+          "class": "Trusted proof infrastructure",
+          "id": "proof_toolchain",
+          "statement": "Pinned Lean kernel, auditor, immutable Nix store, Rust/compiler dependencies and build environment are sound",
+          "status": "Assumed"
+        },
+        {
+          "class": "Trusted correspondence",
+          "id": "canonical_probes",
+          "statement": "Public Core canonical probe construction and hash associations represent the declared guard meanings and complete effect projections",
+          "status": "Assumed"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    "tdd/T058.json",
+    "tdd/T059.json",
+    "tdd/T060.json",
+    "tdd/T061.json",
+    "tdd/T068.json",
+    "tdd/T071.json",
+    "tdd/T059.json: tampered structurally loadable evidence subject and merge trace negative controls"
+  ],
+  "positive_certification_and_fresh_check": "T059.green_history retains the actual bounded certification and fresh import run; final gate repeats both without skips.",
+  "limits": "proof-resources.json",
+  "claimed_scope": "Only the recorded public Certified under assumptions / OrdinaryTransitions result. Initial validity remains Unestablished in the certificate; exact state validity and activation are separate.",
+  "status": "complete_source_and_installed_acceptance_passed",
+  "release_evidence": [
+    "tdd/T099.json",
+    "package.json",
+    "release-acceptance.json"
+  ]
+}

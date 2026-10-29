@@ -5,8 +5,9 @@ structured data. Behavior IR owns model meaning and lowering; Behavior Core owns
 commit and replay. This package supplies transport, artifact storage, host authorization and
 independent deployment/state boundaries.
 
-The implemented authoring profile supports bounded RequestFlow and StateMachine definitions,
-including composition in one module. Proposals, admitted definitions, verification evidence,
+The retained v1 profile supports RequestFlow and StateMachine. The versioned v2 profile also
+supports Approval, WorkQueue, FieldOwnership and LifecycleDependency, including composition in
+one module, authoritative reads and conditional Safety certification. Proposals, admitted definitions, verification evidence,
 activation and committed state are separate artifacts and operations. Agents do not generate
 application source code or receive filesystem, SQL or process tools.
 
@@ -14,7 +15,8 @@ application source code or receive filesystem, SQL or process tools.
 
 Linux x86_64, Python 3.13+, the exact Behavior 0.14.0 released wheel and bundled Core 0.15.0.
 The pinned Nix shell supplies Python 3.13.14, uv, native Ruff and Z3 4.16.0. Python dependencies
-and build tools use `uv.lock`. See [compatibility](docs/compatibility.md) for identities and limits.
+and build tools use `uv.lock`. The separately pinned public Behavior proof toolchain supplies
+Lean/leanchecker 4.30.0 for Safety certification and fresh bundle checking. See [compatibility](docs/compatibility.md) for identities and limits.
 
 Run the same quality gate used by CI and release checks:
 
@@ -23,7 +25,7 @@ nix develop --command ./scripts/check
 ```
 
 This bootstraps the locked environment, checks released dependency bytes/public interfaces,
-formatting, lint, strict types, deterministic tests, Core backend conformance and physical
+all packaged JSON schemas, formatting, lint, strict types, deterministic tests, Core backend conformance and physical
 recovery. The package installation test also checks the built distribution outside the checkout. Validated
 wheel/source artifacts remain in `dist/`.
 
@@ -52,7 +54,9 @@ Multiple systems share immutable artifacts while keeping mutable state, history,
 request authority isolated by SystemId. Restart does not depend on an agent session, a note client
 or Git.
 
-- [Tool contracts and schemas](specs/001-agent-native-systems/contracts/mcp.md)
+- [Expanded tools and schemas](specs/002-remaining-behavior-models/contracts/mcp.md)
+- [Remaining-model journeys](specs/002-remaining-behavior-models/quickstart.md)
+- [Retained v1 tool contracts](specs/001-agent-native-systems/contracts/mcp.md)
 - [Generic proposal example](specs/001-agent-native-systems/contracts/example-proposal.json)
 - [Delegated host authority](specs/001-agent-native-systems/contracts/host-policy.md)
 - [Acceptance journey](specs/001-agent-native-systems/quickstart.md)
@@ -60,6 +64,8 @@ or Git.
 
 Canonical model documents do not contain every authoring body in this release. The server
 therefore retains complete original authoring data/context alongside canonical documents, Wire
-modules and lowering receipts. Schema-changing activation, arbitrary expressions, command
-execution, cross-system workflows and authored Approval/WorkQueue models remain unsupported.
+modules and lowering receipts. Schema-changing activation, arbitrary executable expressions, command execution and cross-system
+workflows remain unsupported. Structured expressions use a bounded public typed-expression subset.
+Safety certificates cover ordinary transitions under recorded assumptions; activation separately
+requires exact current-state validity and trusted delegated authority.
 Admission, a matching hash, or a successful test is never approval or a general safety proof.

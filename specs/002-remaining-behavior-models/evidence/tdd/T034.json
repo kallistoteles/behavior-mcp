@@ -1,0 +1,17 @@
+{
+  "task": "T034",
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_incremental_adapter_retention.py",
+      "tests/integration/test_expanded_compatibility.py",
+      "tests/integration/test_approval_recovery.py"
+    ],
+    "exit_code": 0,
+    "stdout": "............                                                             [100%]\n12 passed in 55.97s\n",
+    "stderr": ""
+  }
+}

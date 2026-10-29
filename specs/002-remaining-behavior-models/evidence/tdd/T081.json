@@ -1,0 +1,40 @@
+{
+  "task": "T081",
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_expanded_roundtrip.py",
+      "tests/integration/test_expanded_composition.py",
+      "tests/integration/test_expanded_compatibility.py",
+      "tests/integration/test_expanded_history.py",
+      "tests/acceptance/test_remaining_models.py::test_revision_and_composition"
+    ],
+    "exit_code": 0,
+    "stdout": ".........................                                                [100%]\n25 passed in 70.37s (0:01:10)\n",
+    "stderr": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\n"
+  },
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_expanded_composition.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/acceptance/test_remaining_models.py::test_revision_and_composition",
+        "-x"
+      ],
+      "exit_code": 0,
+      "stdout": ".........                                                                [100%]\n9 passed in 23.27s\n",
+      "stderr": ""
+    }
+  ]
+}

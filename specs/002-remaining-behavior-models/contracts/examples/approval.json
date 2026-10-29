@@ -1,0 +1,65 @@
+{
+  "format": "behavior-mcp.authoring.v2",
+  "adapter_profile": "structured-models.v2",
+  "declarations": {
+    "enums": [],
+    "entities": [
+      {
+        "name": "Subject",
+        "fields": {
+          "label": {
+            "kind": "string"
+          }
+        }
+      }
+    ],
+    "nominals": []
+  },
+  "models": [
+    {
+      "model_kind": "approval",
+      "model_id": "review",
+      "subject": "Subject",
+      "actor": "Actor",
+      "approve_threshold": 2,
+      "reject_threshold": 1,
+      "payload": {},
+      "open_when": {
+        "op": "literal",
+        "value": true
+      },
+      "eligible": {
+        "op": "literal",
+        "value": true
+      },
+      "decisions": {
+        "approve": {
+          "inputs": {},
+          "values": {},
+          "requires": []
+        },
+        "reject": {
+          "inputs": {},
+          "values": {},
+          "requires": []
+        }
+      }
+    }
+  ],
+  "actions": [
+    {
+      "kind": "create_entity",
+      "name": "new_subject",
+      "entity": "Subject",
+      "values": {
+        "label": {
+          "op": "literal",
+          "value": "Record"
+        }
+      },
+      "requires": []
+    }
+  ],
+  "safety": [],
+  "adapter_version": "2.0.0"
+}

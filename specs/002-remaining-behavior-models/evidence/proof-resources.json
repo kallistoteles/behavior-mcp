@@ -1,0 +1,15 @@
+{
+  "kind": "public-proof-resource-diagnosis",
+  "behavior": "0.14.0",
+  "core": "0.15.0",
+  "subject": "contracts/examples/lifecycle.json through the public model adapter",
+  "results": {
+    "no_external_guard": "Certified under assumptions",
+    "address_space_4_gib": "Inconclusive: SAFETY_PROOF_EXHAUSTED",
+    "file_size_16_mib": "Certified under assumptions",
+    "file_descriptors_128": "Certified under assumptions"
+  },
+  "observed_leanchecker_vsz_kib": 4734904,
+  "resolution": "Proof workers use a bounded 8 GiB virtual address space. Reads retain 4 GiB. CPU, file, pipe, descriptor and wall guards remain enforced.",
+  "bounded_worker_positive_observed": "T059 actual run: certification succeeded; subsequent definition inspection found an independently tested closed-envelope schema mismatch, now corrected."
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "planning_validation",
+  "date": "2026-10-28",
+  "status": "passed",
+  "feature_directory": "specs/002-remaining-behavior-models",
+  "production_implementation": "not_started",
+  "tasks_generated": false,
+  "constitution_check": "design_pass_no_exception",
+  "schemas_valid": 2,
+  "proposal_examples_valid": 4,
+  "closed_contract_negative_checks": {
+    "field-ownership_unknown_code": true,
+    "work-queue_unknown_code": true,
+    "approval_unknown_code": true,
+    "lifecycle_unknown_code": true,
+    "queue_requires_all_nine": true,
+    "approval_reserved_actor": true,
+    "read_rejects_now": true,
+    "read_rejects_worker": true,
+    "read_rejects_actor": true,
+    "evaluation_rejects_proposed_now": true
+  },
+  "markdown_local_links_valid": true,
+  "legacy_adapter_sha256": "32289a08c99625eb489f67ac0c50bcf8f5692cd80e12a2660ce5837c19533b7c",
+  "production_and_legacy_artifacts_unchanged": true,
+  "research_probe_public_imports_verified": true,
+  "public_probe_results": {
+    "operational_models": "operational_models_results.json",
+    "fixed_lifecycle_factories": "action_factory_results.json",
+    "composition": "composition_results.json",
+    "legacy_context_coupling": "compatibility_results.json",
+    "safety": "safety_public_api_results.json",
+    "certification": "Certified under assumptions",
+    "fresh_import_checking": "Certified under assumptions",
+    "safety_bundle_bytes": 33043,
+    "state_validation": [
+      "Valid",
+      "Invalid"
+    ],
+    "certification_scope": "OrdinaryTransitions",
+    "certification_initial_validity": "Unestablished"
+  },
+  "proof_toolchain_manifest_source": {
+    "repository": "kallistoteles/behavior-ir",
+    "ref": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+    "path": "crates/behavior-models/proofs/toolchain.json"
+  },
+  "remaining_upstream_gaps": [
+    "GAP-001",
+    "GAP-002",
+    "GAP-003",
+    "GAP-004"
+  ],
+  "hooks": {
+    "before_plan": "not_registered",
+    "after_plan": "not_registered"
+  },
+  "new_feature_release_conformance": "not_yet_implemented_or_claimed",
+  "subsequent_review_remediation": "review-remediation.json"
+}

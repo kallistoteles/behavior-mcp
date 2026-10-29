@@ -1,0 +1,119 @@
+{
+  "task": "T010",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_fragments_v2.py",
+      "-k",
+      "python_objects"
+    ],
+    "exit_code": 1,
+    "stdout": "FFF                                                                      [100%]\n=================================== FAILURES ===================================\n_________ test_python_objects_never_define_structured_equality[left0] __________\n\nleft = {'op': 'param', 'name': 'subject'}\n\n    @pytest.mark.parametrize('left',[\n        {'op':'param','name':'subject'},\n        {'op':'field','value':{'op':'param','name':'actor'},'name':'node'},\n        {'op':'field','value':{'op':'field','value':{'op':'param','name':'subject'},'name':'id'},'name':'args'},\n    ])\n    def test_python_objects_never_define_structured_equality(left):\n        from behavior_mcp.adapters import build\n        doc=json.loads((CONTRACTS/'examples/approval.json').read_text())\n        doc['models'][0]['eligible']={'op':'eq','left':left,'right':left}\n>       with pytest.raises(OperationError) as error:build(doc)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE OperationError\n\ntests/unit/test_fragments_v2.py:177: Failed\n_________ test_python_objects_never_define_structured_equality[left1] __________\n\nleft = {'op': 'field', 'value': {'op': 'param', 'name': 'actor'}, 'name': 'node'}\n\n    @pytest.mark.parametrize('left',[\n        {'op':'param','name':'subject'},\n        {'op':'field','value':{'op':'param','name':'actor'},'name':'node'},\n        {'op':'field','value':{'op':'field','value':{'op':'param','name':'subject'},'name':'id'},'name':'args'},\n    ])\n    def test_python_objects_never_define_structured_equality(left):\n        from behavior_mcp.adapters import build\n        doc=json.loads((CONTRACTS/'examples/approval.json').read_text())\n        doc['models'][0]['eligible']={'op':'eq','left':left,'right':left}\n>       with pytest.raises(OperationError) as error:build(doc)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE OperationError\n\ntests/unit/test_fragments_v2.py:177: Failed\n_________ test_python_objects_never_define_structured_equality[left2] __________\n\nleft = {'op': 'field', 'value': {'op': 'field', 'value': {'op': 'param', 'name': 'subject'}, 'name': 'id'}, 'name': 'args'}\n\n    @pytest.mark.parametrize('left',[\n        {'op':'param','name':'subject'},\n        {'op':'field','value':{'op':'param','name':'actor'},'name':'node'},\n        {'op':'field','value':{'op':'field','value':{'op':'param','name':'subject'},'name':'id'},'name':'args'},\n    ])\n    def test_python_objects_never_define_structured_equality(left):\n        from behavior_mcp.adapters import build\n        doc=json.loads((CONTRACTS/'examples/approval.json').read_text())\n        doc['models'][0]['eligible']={'op':'eq','left':left,'right':left}\n>       with pytest.raises(OperationError) as error:build(doc)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE OperationError\n\ntests/unit/test_fragments_v2.py:177: Failed\n=========================== short test summary info ============================\nFAILED tests/unit/test_fragments_v2.py::test_python_objects_never_define_structured_equality[left0]\nFAILED tests/unit/test_fragments_v2.py::test_python_objects_never_define_structured_equality[left1]\nFAILED tests/unit/test_fragments_v2.py::test_python_objects_never_define_structured_equality[left2]\n3 failed, 7 deselected in 0.83s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_fragments_v2.py",
+      "tests/integration/test_lifecycle_dependency.py",
+      "tests/integration/test_expanded_composition.py"
+    ],
+    "exit_code": 0,
+    "stdout": "..................                                                       [100%]\n18 passed in 18.11s\n",
+    "stderr": ""
+  },
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fragments_v2.py"
+      ],
+      "exit_code": 1,
+      "stdout": "F..                                                                      [100%]\n=================================== FAILURES ===================================\n_____________________ test_fixed_create_factory_uses_core ______________________\n\n    def test_fixed_create_factory_uses_core():\n        m=draft().build(base())\n        store=Store.create(InMemoryBackend(),m,Store.genesis_for(m,[]))\n>       e=store.evaluate(m,'new_subject',input={'new_id':'s1'},context={},commit_time='2026-10-28T00:00:00Z')\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: Store.evaluate() missing 1 required keyword-only argument: 'bindings'\n\ntests/unit/test_fragments_v2.py:30: TypeError\n=========================== short test summary info ============================\nFAILED tests/unit/test_fragments_v2.py::test_fixed_create_factory_uses_core\n1 failed, 2 passed in 0.68s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fragments_v2.py"
+      ],
+      "exit_code": 0,
+      "stdout": "...                                                                      [100%]\n3 passed in 0.51s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fragments_v2.py"
+      ],
+      "exit_code": 0,
+      "stdout": "....                                                                     [100%]\n4 passed in 0.62s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fragments_v2.py"
+      ],
+      "exit_code": 1,
+      "stdout": ".....F.                                                                  [100%]\n=================================== FAILURES ===================================\n____________ test_all_lifecycle_factories_and_symbolic_guard_nodes _____________\n\n    def test_all_lifecycle_factories_and_symbolic_guard_nodes():\n        doc=json.loads((CONTRACTS/'examples/lifecycle.json').read_text())\n        doc['safety']=[]\n        m=draft().build(doc)\n        store=Store.create(InMemoryBackend(),m,Store.genesis_for(m,[]))\n        import json as json_module\n        wire=json_module.loads(m.to_wire_json())\n        actions={a['name']:a for a in wire['actions']}\n        for spec in doc['actions']:\n            assert spec['name'] in actions\n        # Guards include eq, and, not, any, in, field, enum, param. Public tracing\n        # preserves each explicit root; the adapter does not recognize proof patterns.\n>       assert len(actions['stop']['requires']) if 'requires' in actions['stop'] else actions['stop']\n                                                                 ^^^^^^^^^^^^^^^\nE       KeyError: 'stop'\n\ntests/unit/test_fragments_v2.py:97: KeyError\n=========================== short test summary info ============================\nFAILED tests/unit/test_fragments_v2.py::test_all_lifecycle_factories_and_symbolic_guard_nodes\n1 failed, 6 passed in 1.02s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fragments_v2.py"
+      ],
+      "exit_code": 0,
+      "stdout": ".......                                                                  [100%]\n7 passed in 1.06s\n",
+      "stderr": ""
+    }
+  ],
+  "red_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fragments_v2.py"
+      ],
+      "exit_code": 1,
+      "stdout": "FFF                                                                      [100%]\n=================================== FAILURES ===================================\n_____________________ test_fixed_create_factory_uses_core ______________________\n\n    def test_fixed_create_factory_uses_core():\n>       m=draft().build(base())\n          ^^^^^^^\n\ntests/unit/test_fragments_v2.py:28: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\n    def draft():\n>       assert importlib.util.find_spec('behavior_mcp.authoring_v2'), 'Typed v2 builder is absent'\nE       AssertionError: Typed v2 builder is absent\nE       assert None\nE        +  where None = <function find_spec at 0x7b7447403ce0>('behavior_mcp.authoring_v2')\nE        +    where <function find_spec at 0x7b7447403ce0> = <module 'importlib.util' (frozen)>.find_spec\nE        +      where <module 'importlib.util' (frozen)> = importlib.util\n\ntests/unit/test_fragments_v2.py:17: AssertionError\n________________ test_unknown_or_unbound_fragments_refuse[bad0] ________________\n\nbad = {'op': 'python', 'source': '1+1'}\n\n    @pytest.mark.parametrize('bad',[{'op':'python','source':'1+1'},{'op':'param','name':'missing'}])\n    def test_unknown_or_unbound_fragments_refuse(bad):\n        doc=base();doc['actions'][0]['requires']=[bad]\n        with pytest.raises((OperationError,KeyError)):\n>           draft().build(doc)\n            ^^^^^^^\n\ntests/unit/test_fragments_v2.py:40: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\n    def draft():\n>       assert importlib.util.find_spec('behavior_mcp.authoring_v2'), 'Typed v2 builder is absent'\nE       AssertionError: Typed v2 builder is absent\nE       assert None\nE        +  where None = <function find_spec at 0x7b7447403ce0>('behavior_mcp.authoring_v2')\nE        +    where <function find_spec at 0x7b7447403ce0> = <module 'importlib.util' (frozen)>.find_spec\nE        +      where <module 'importlib.util' (frozen)> = importlib.util\n\ntests/unit/test_fragments_v2.py:17: AssertionError\n________________ test_unknown_or_unbound_fragments_refuse[bad1] ________________\n\nbad = {'op': 'param', 'name': 'missing'}\n\n    @pytest.mark.parametrize('bad',[{'op':'python','source':'1+1'},{'op':'param','name':'missing'}])\n    def test_unknown_or_unbound_fragments_refuse(bad):\n        doc=base();doc['actions'][0]['requires']=[bad]\n        with pytest.raises((OperationError,KeyError)):\n>           draft().build(doc)\n            ^^^^^^^\n\ntests/unit/test_fragments_v2.py:40: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\n    def draft():\n>       assert importlib.util.find_spec('behavior_mcp.authoring_v2'), 'Typed v2 builder is absent'\nE       AssertionError: Typed v2 builder is absent\nE       assert None\nE        +  where None = <function find_spec at 0x7b7447403ce0>('behavior_mcp.authoring_v2')\nE        +    where <function find_spec at 0x7b7447403ce0> = <module 'importlib.util' (frozen)>.find_spec\nE        +      where <module 'importlib.util' (frozen)> = importlib.util\n\ntests/unit/test_fragments_v2.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED tests/unit/test_fragments_v2.py::test_fixed_create_factory_uses_core\nFAILED tests/unit/test_fragments_v2.py::test_unknown_or_unbound_fragments_refuse[bad0]\nFAILED tests/unit/test_fragments_v2.py::test_unknown_or_unbound_fragments_refuse[bad1]\n3 failed in 0.25s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_fragments_v2.py::test_literal_equality_is_never_evaluated_by_python"
+      ],
+      "exit_code": 1,
+      "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______________ test_literal_equality_is_never_evaluated_by_python ______________\n\n    def test_literal_equality_is_never_evaluated_by_python():\n        doc=base()\n        doc['actions'][0]['requires']=[{'op':'eq','left':{'op':'literal','value':True},'right':{'op':'literal','value':1}}]\n>       with pytest.raises(OperationError) as error:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE OperationError\n\ntests/unit/test_fragments_v2.py:61: Failed\n=========================== short test summary info ============================\nFAILED tests/unit/test_fragments_v2.py::test_literal_equality_is_never_evaluated_by_python\n1 failed in 0.48s\n",
+      "stderr": ""
+    }
+  ]
+}

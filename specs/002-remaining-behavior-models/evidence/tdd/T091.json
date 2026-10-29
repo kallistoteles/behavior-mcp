@@ -1,0 +1,26 @@
+{
+  "task": "T091",
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/contract/test_expanded_results.py",
+      "tests/contract/test_expanded_catalog.py",
+      "tests/integration/test_expanded_isolation.py",
+      "tests/acceptance/test_remaining_models.py::test_support_and_authority",
+      "tests/unit/test_worker_limits.py",
+      "tests/integration/test_safety_workers.py",
+      "-k",
+      "not real_native_proof_cancellation"
+    ],
+    "exit_code": 0,
+    "stdout": ".............................                                            [100%]\n29 passed, 1 deselected in 52.15s\n",
+    "stderr": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\n"
+  }
+}

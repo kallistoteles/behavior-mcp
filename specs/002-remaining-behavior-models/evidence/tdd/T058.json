@@ -1,0 +1,28 @@
+{
+  "task": "T058",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_lifecycle_dependency.py"
+    ],
+    "exit_code": 1,
+    "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n____________ test_canonical_lifecycle_is_lowered_but_not_certified _____________\n\n    def test_canonical_lifecycle_is_lowered_but_not_certified():\n>       module=build(example('lifecycle'))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_lifecycle_dependency.py:10: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/behavior_mcp/adapters.py:95: in build\n    validate_proposal(proposal)\nsrc/behavior_mcp/adapters.py:50: in validate_proposal\n    selected = handler(proposal)\n               ^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nproposal = {'format': 'behavior-mcp.authoring.v2', 'adapter_profile': 'structured-models.v2', 'declarations': {'enums': [{'name':...d': 'enum', 'name': 'ChildPhase'}, 'owner': {'kind': 'ref', 'entity': 'Parent'}}}], 'nominals': []}, 'models': [], ...}\n\n    def handler(proposal: JSON) -> Any:\n        if (\n            proposal.get(\"format\") == \"behavior-mcp.authoring.v1\"\n            and proposal.get(\"adapter_profile\") == \"scalar-models.v1\"\n        ):\n            return legacy\n        if (\n            proposal.get(\"format\") == \"behavior-mcp.authoring.v2\"\n            and proposal.get(\"adapter_profile\") == \"structured-models.v2\"\n        ):\n            selected = HANDLERS.get(proposal.get(\"adapter_version\", \"\"))\n            if selected is not None:\n                return selected\n>       raise OperationError(\n            \"unsupported\",\n            \"ADAPTER_UNAVAILABLE\",\n            \"The exact authoring implementation is unavailable\",\n        )\nE       behavior_mcp.schemas.OperationError: The exact authoring implementation is unavailable\n\nsrc/behavior_mcp/adapters.py:32: OperationError\n___________________ test_missing_whole_guard_remains_visible ___________________\n\n    def test_missing_whole_guard_remains_visible():\n        proposal=example('lifecycle')\n        next(a for a in proposal['actions'] if a['name']=='stop_parent')['requires']=[]\n>       analysis=build(proposal).safety_analysis.to_dict()\n                 ^^^^^^^^^^^^^^^\n\ntests/integration/test_lifecycle_dependency.py:22: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/behavior_mcp/adapters.py:95: in build\n    validate_proposal(proposal)\nsrc/behavior_mcp/adapters.py:50: in validate_proposal\n    selected = handler(proposal)\n               ^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nproposal = {'format': 'behavior-mcp.authoring.v2', 'adapter_profile': 'structured-models.v2', 'declarations': {'enums': [{'name':...d': 'enum', 'name': 'ChildPhase'}, 'owner': {'kind': 'ref', 'entity': 'Parent'}}}], 'nominals': []}, 'models': [], ...}\n\n    def handler(proposal: JSON) -> Any:\n        if (\n            proposal.get(\"format\") == \"behavior-mcp.authoring.v1\"\n            and proposal.get(\"adapter_profile\") == \"scalar-models.v1\"\n        ):\n            return legacy\n        if (\n            proposal.get(\"format\") == \"behavior-mcp.authoring.v2\"\n            and proposal.get(\"adapter_profile\") == \"structured-models.v2\"\n        ):\n            selected = HANDLERS.get(proposal.get(\"adapter_version\", \"\"))\n            if selected is not None:\n                return selected\n>       raise OperationError(\n            \"unsupported\",\n            \"ADAPTER_UNAVAILABLE\",\n            \"The exact authoring implementation is unavailable\",\n        )\nE       behavior_mcp.schemas.OperationError: The exact authoring implementation is unavailable\n\nsrc/behavior_mcp/adapters.py:32: OperationError\n=========================== short test summary info ============================\nFAILED tests/integration/test_lifecycle_dependency.py::test_canonical_lifecycle_is_lowered_but_not_certified\nFAILED tests/integration/test_lifecycle_dependency.py::test_missing_whole_guard_remains_visible\n2 failed in 1.58s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_lifecycle_dependency.py",
+      "tests/integration/test_safety_deployment.py::test_public_valid_and_invalid_snapshot_without_detached_substitute"
+    ],
+    "exit_code": 0,
+    "stdout": "...                                                                      [100%]\n3 passed in 2.53s\n",
+    "stderr": ""
+  }
+}

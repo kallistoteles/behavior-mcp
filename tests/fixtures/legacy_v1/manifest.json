@@ -1,0 +1,156 @@
+{
+  "format": "behavior-mcp.legacy-fixture.v1",
+  "system_id": "system-700a27832e194aec8b8941acda4055f6",
+  "definition": {
+    "behavior_hash": "sha256:c9f182aac46cd9ef9c7b00d584c696e28de3be417ce33b8bb241d96f5a66f8aa",
+    "construction_context_ref": "bytes-sha256:e581c07ff3a530212c0284a44f266a17b94f27b6b405414053b4515f7adf58bd",
+    "definition_id": "definition-517fa3480a5f48b8a4519728f2357d8a",
+    "kind": "definition",
+    "models": [
+      {
+        "canonical_document": {
+          "actor": {
+            "entity": "Actor",
+            "entity_hash": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+          },
+          "assignee": false,
+          "creations": [
+            {
+              "commands": [],
+              "context": [
+                {
+                  "name": "actor",
+                  "type": {
+                    "Id": "Actor"
+                  },
+                  "types": {
+                    "Actor": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+                  }
+                }
+              ],
+              "effects": [],
+              "guards": [],
+              "id": "new",
+              "initializer": {
+                "label": "sha256:b4de7eddc59acceb9c2262e51d2a1c02412d2a7a8e573f7c0215bcf94d42f078",
+                "outcome": "sha256:a1c65e12446c2940bf77b8aa1143bf2d8e9bf2c52249fbea26f8ca014c65392e",
+                "requester": "sha256:2841ab459e90d2de1e21b3eb6d28e86e28bed178767439e814fb6e9202f27e11"
+              },
+              "inputs": [
+                {
+                  "name": "label",
+                  "type": "String",
+                  "types": {}
+                }
+              ],
+              "postconditions": [],
+              "state": [],
+              "to": "Open"
+            }
+          ],
+          "flow_id": "record",
+          "format": "behavior.model.request_flow.v2",
+          "model_kind": "request_flow",
+          "model_semantic_version": 2,
+          "payload": [
+            {
+              "name": "label",
+              "type": "String",
+              "types": {}
+            },
+            {
+              "name": "outcome",
+              "type": "String",
+              "types": {}
+            }
+          ],
+          "state_machine": {
+            "document": {
+              "entry_states": [
+                "Open"
+              ],
+              "field": {
+                "enum": "Status",
+                "enum_hash": "sha256:71d34b2815d5d921f023330cf4970c9739561498b5ec3b6c3442e20193e33330",
+                "name": "status"
+              },
+              "format": "behavior.model.state_machine.v2",
+              "model_id": "record",
+              "model_kind": "state_machine",
+              "model_semantic_version": 2,
+              "subject": {
+                "entity": "Record",
+                "entity_hash": "sha256:b48f527bd84e40d5d48e27a1da2e0f3021b421a772a717feb35d43978805905c"
+              },
+              "subject_param": "record",
+              "transitions": [
+                {
+                  "commands": [],
+                  "context": [],
+                  "effects": [
+                    "sha256:f4198bd1ed68b908f2bfe76b9151c193378951191e3094557be6bd300c8a34a7"
+                  ],
+                  "from": [
+                    "Open"
+                  ],
+                  "guards": [],
+                  "id": "finish",
+                  "inputs": [
+                    {
+                      "name": "outcome",
+                      "type": "String",
+                      "types": {}
+                    }
+                  ],
+                  "postconditions": [],
+                  "to": "Done"
+                }
+              ]
+            },
+            "model_hash": "sha256:2237519e80a4633c8d40b0009180d10a1bbcecbd44d9ed90023422262b54f369"
+          },
+          "status_enum": {
+            "enum_hash": "sha256:71d34b2815d5d921f023330cf4970c9739561498b5ec3b6c3442e20193e33330",
+            "name": "Status"
+          }
+        },
+        "lowerer_version": 1,
+        "model_hash": "sha256:5d69b35137f54a2f7d3485a578b256dc07006845953d5696610b2de10c35c32c",
+        "model_kind": "request_flow",
+        "model_semantic_version": 2,
+        "receipt_ref": "bytes-sha256:096fad073e8020d9960fce2a6aecd864c0923b4a348b15dbb442098310834326"
+      }
+    ],
+    "module_ref": "bytes-sha256:e1c9ce31635e2b30bf9989b4a20f62fec79d692bcabe8d920fff992248947561",
+    "parent_definition_id": null,
+    "release": {
+      "adapter_profile": "scalar-models.v1",
+      "adapter_version": "1",
+      "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+      "behavior_version": "0.14.0",
+      "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+      "core_version": "0.15.0",
+      "verifier_version": "0.10.0"
+    },
+    "schema_hash": "sha256:c84682b3bb38e4f8ae2f13e882ae9927ff8805e37e2800a5c7e080022b6ca9d2",
+    "source": {
+      "proposal_id": "proposal-9d56021b91ff486481031f9dbf0f4f36",
+      "proposal_revision": 1
+    }
+  },
+  "history": {
+    "format": "behavior.history_ref.v1",
+    "store": "sha256:030d862df74f07f147d4bab72bc98a50314c49502eb0766ed975789e6cd8e7ae",
+    "state": "sha256:ca17ea696f1ab98ce95f978b01da06c66cb0ec803a01b1b8c9e4322e85a9a8b5",
+    "position": 1,
+    "record": "sha256:72432b60509e2822d5a1a6d3b2a8478746b8e47ef0cbb8376a9223f122009906"
+  },
+  "frozen_files": {
+    "src/behavior_mcp/authoring.py": "32289a08c99625eb489f67ac0c50bcf8f5692cd80e12a2660ce5837c19533b7c",
+    "specs/001-agent-native-systems/contracts/authoring.schema.json": "8c39ef2d53485955909ffb236c003ebc21ae35273b8788cb9840794b2b9dea5c"
+  },
+  "workspace_files": {
+    "host.sqlite": "aab078d5590e361fbf8aa05052759e900f7b74c4e51ad9cc1bf2875e50587b4f",
+    "systems/system-700a27832e194aec8b8941acda4055f6.sqlite": "c8076a63dc269c285beac909852ec8e24ad3e94708b29339576da1a56402800c"
+  }
+}

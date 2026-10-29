@@ -1,0 +1,41 @@
+{
+  "task": "T094",
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/unit/test_dependencies.py",
+      "tests/conformance/test_sqlite_backend.py",
+      "tests/integration/test_uncertain_commit.py"
+    ],
+    "exit_code": 0,
+    "stdout": "................................                                         [100%]\n32 passed in 146.34s (0:02:26)\n",
+    "stderr": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nerror (ignored): SQLite database '/home/kalle/.cache/nix/eval-cache-v6/cbf5b209fc59912f365c727e539fbe4eed090b3cfeee3d28e0941cd68aa0394f.sqlite' is busy\n"
+  },
+  "green_history": [
+    {
+      "command": [
+        "nix",
+        "develop",
+        "--command",
+        "uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/unit/test_dependencies.py",
+        "tests/conformance/test_sqlite_backend.py",
+        "tests/integration/test_reconciliation.py"
+      ],
+      "exit_code": 4,
+      "stdout": "\nno tests ran in 0.00s\n",
+      "stderr": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nERROR: file or directory not found: tests/integration/test_reconciliation.py\n\n"
+    }
+  ]
+}

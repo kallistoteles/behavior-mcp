@@ -18,4 +18,5 @@ jobs:
           name: release-acceptance-evidence
           path: |
             specs/001-agent-native-systems/evidence
+            specs/002-remaining-behavior-models/evidence
             dist/

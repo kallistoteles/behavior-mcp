@@ -1,0 +1,103 @@
+{
+  "task": "T061",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_safety_workers.py::test_real_native_proof_cancellation_stops_descendants"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n____________ test_real_native_proof_cancellation_stops_descendants _____________\n\ntmp_path = PosixPath('/tmp/nix-shell.pJlv8L/pytest-of-kalle/pytest-0/test_real_native_proof_cancell0')\n\n    def test_real_native_proof_cancellation_stops_descendants(tmp_path):\n        import os,threading,time\n        from pathlib import Path\n        from behavior_mcp.verification import CANCELLATION\n        from behavior_mcp.proof_worker import PROOF_WORKERS\n        from tests.fixtures.expanded import retained_lifecycle\n        app,_,definition,_,_=retained_lifecycle(tmp_path)\n        cancelled=threading.Event();responses=[]\n        def run():\n            token=CANCELLATION.set(cancelled)\n            try:responses.append(app.execute('definition_safety_certify',{'definition_id':definition['definition_id'],'profile_id':'safety-default'}))\n            finally:CANCELLATION.reset(token)\n        def processes():\n            table={}\n            for directory in Path('/proc').iterdir():\n                if not directory.name.isdecimal():continue\n                try:\n                    stat=(directory/'stat').read_text();end=stat.rfind(')');tail=stat[end+2:].split()\n                    table[int(directory.name)]=(int(tail[1]),tail[0],stat[stat.find('(')+1:end])\n                except (OSError,ValueError,IndexError):continue\n            return table\n        before=processes();thread=threading.Thread(target=run);thread.start();native=[]\n        try:\n            deadline=time.monotonic()+15\n            while time.monotonic()<deadline:\n                table=processes();descendants={pid for pid,row in table.items() if row[0]==os.getpid() and pid not in before}\n                for _ in range(8):descendants|={pid for pid,row in table.items() if row[0] in descendants}\n                native=[pid for pid in descendants if table[pid][2] in {'lean','leanchecker'}]\n                if native or not thread.is_alive():break\n                time.sleep(.02)\n>           assert native,('Declared native proof worker never reached the pinned checker',responses)\nE           AssertionError: ('Declared native proof worker never reached the pinned checker', [])\nE           assert []\n\ntests/integration/test_safety_workers.py:146: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_workers.py::test_real_native_proof_cancellation_stops_descendants\n1 failed in 18.04s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_safety_workers.py::test_real_native_proof_cancellation_stops_descendants"
+    ],
+    "exit_code": 0,
+    "stdout": ".                                                                        [100%]\n1 passed in 5.95s\n",
+    "stderr": ""
+  },
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_workers.py"
+      ],
+      "exit_code": 1,
+      "stdout": "..F                                                                      [100%]\n=================================== FAILURES ===================================\n____________ test_chunks_are_bounded_and_system_evidence_is_private ____________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-51/test_chunks_are_bounded_and_sy0')\n\n    def test_chunks_are_bounded_and_system_evidence_is_private(tmp_path):\n        from tests.fixtures.expanded import active\n        app,sid,d,_,_=active(tmp_path,'field-ownership')\n        request={'definition_id':d['definition_id'],'evidence_ref':d['safety_analysis_ref'],'offset':0,'limit':17}\n        chunk=app.execute('definition_get',request)\n>       assert chunk['request_status']=='completed',chunk\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'authoring', 'outcome': 'infrastructure_failure', ...}\nE       assert 'failed' == 'completed'\nE         \nE         - completed\nE         + failed\n\ntests/integration/test_safety_workers.py:27: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_workers.py::test_chunks_are_bounded_and_system_evidence_is_private\n1 failed, 2 passed in 5.88s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_workers.py"
+      ],
+      "exit_code": 1,
+      "stdout": "..F                                                                      [100%]\n=================================== FAILURES ===================================\n____________ test_chunks_are_bounded_and_system_evidence_is_private ____________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-52/test_chunks_are_bounded_and_sy0')\n\n    def test_chunks_are_bounded_and_system_evidence_is_private(tmp_path):\n        from tests.fixtures.expanded import active\n        app,sid,d,_,_=active(tmp_path,'field-ownership')\n        request={'definition_id':d['definition_id'],'evidence_ref':d['safety_analysis_ref'],'offset':0,'limit':17}\n        chunk=app.execute('definition_get',request)\n>       assert chunk['request_status']=='completed',chunk\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'authoring', 'outcome': 'infrastructure_failure', ...}\nE       assert 'failed' == 'completed'\nE         \nE         - completed\nE         + failed\n\ntests/integration/test_safety_workers.py:27: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_workers.py::test_chunks_are_bounded_and_system_evidence_is_private\n1 failed, 2 passed in 5.74s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_workers.py"
+      ],
+      "exit_code": 0,
+      "stdout": "...                                                                      [100%]\n3 passed in 5.92s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_workers.py"
+      ],
+      "exit_code": 0,
+      "stdout": ".........                                                                [100%]\n9 passed in 12.91s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_workers.py::test_real_native_proof_cancellation_stops_descendants"
+      ],
+      "exit_code": 1,
+      "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n____________ test_real_native_proof_cancellation_stops_descendants _____________\n\ntmp_path = PosixPath('/tmp/nix-shell.39r4Kv/pytest-of-kalle/pytest-0/test_real_native_proof_cancell0')\n\n    def test_real_native_proof_cancellation_stops_descendants(tmp_path):\n        import os,threading,time\n        from pathlib import Path\n        from behavior_mcp.verification import CANCELLATION\n        from behavior_mcp.proof_worker import PROOF_WORKERS\n        from tests.fixtures.expanded import retained_lifecycle\n        app,_,definition,_,_=retained_lifecycle(tmp_path)\n        cancelled=threading.Event();responses=[]\n        def run():\n            token=CANCELLATION.set(cancelled)\n            try:responses.append(app.execute('definition_safety_certify',{'definition_id':definition['definition_id'],'profile_id':'safety-default'}))\n            finally:CANCELLATION.reset(token)\n        def processes():\n            table={}\n            for directory in Path('/proc').iterdir():\n                if not directory.name.isdecimal():continue\n                try:\n                    stat=(directory/'stat').read_text();end=stat.rfind(')');tail=stat[end+2:].split()\n                    table[int(directory.name)]=(int(tail[1]),tail[0],stat[stat.find('(')+1:end])\n                except (OSError,ValueError,IndexError):continue\n            return table\n        before=processes();thread=threading.Thread(target=run);thread.start();native=[]\n        try:\n            deadline=time.monotonic()+15\n            while time.monotonic()<deadline:\n                table=processes();descendants={pid for pid,row in table.items() if row[0]==os.getpid() and pid not in before}\n                for _ in range(8):descendants|={pid for pid,row in table.items() if row[0] in descendants}\n                native=[pid for pid in descendants if table[pid][2] in {'lean','leanchecker'}]\n                if native:break\n                time.sleep(.02)\n>           assert native,'Declared native proof worker never reached the pinned checker'\nE           AssertionError: Declared native proof worker never reached the pinned checker\nE           assert []\n\ntests/integration/test_safety_workers.py:146: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_workers.py::test_real_native_proof_cancellation_stops_descendants\n1 failed in 17.98s\n",
+      "stderr": ""
+    }
+  ],
+  "red_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_workers.py"
+      ],
+      "exit_code": 1,
+      "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n___________ test_safety_tools_are_fixed_commands_with_closed_schemas ___________\n\ntrusted_setup = (PosixPath('/tmp/pytest-of-kalle/pytest-50/test_safety_tools_are_fixed_co0'), TrustedContext(principal_id='agent-sessi...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x77d26db4ef90>)\n\n    def test_safety_tools_are_fixed_commands_with_closed_schemas(trusted_setup):\n        from behavior_mcp.server import Application\n        root,context,_,_=trusted_setup\n        names={t.name for t in Application(root,context,'local-delegation').tools()}\n>       assert {'definition_safety_certify','definition_safety_verify_evidence','state_validate_safety'}<=names\nE       AssertionError: assert {'definition_...idate_safety'} <= {'capabilitie...alidate', ...}\nE         \nE         Extra items in the left set:\nE         'definition_safety_verify_evidence'\nE         'definition_safety_certify'\nE         'state_validate_safety'\n\ntests/integration/test_safety_workers.py:12: AssertionError\n______________________ test_owned_staging_cleanup_exists _______________________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-50/test_owned_staging_cleanup_exi0')\n\n    def test_owned_staging_cleanup_exists(tmp_path):\n        from importlib import util,import_module\n>       assert util.find_spec('behavior_mcp.safety'),'Safety staging boundary is absent'\nE       AssertionError: Safety staging boundary is absent\nE       assert None\nE        +  where None = <function find_spec at 0x77d270407ce0>('behavior_mcp.safety')\nE        +    where <function find_spec at 0x77d270407ce0> = <module 'importlib.util' (frozen)>.find_spec\n\ntests/integration/test_safety_workers.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_workers.py::test_safety_tools_are_fixed_commands_with_closed_schemas\nFAILED tests/integration/test_safety_workers.py::test_owned_staging_cleanup_exists\n2 failed in 3.99s\n",
+      "stderr": ""
+    }
+  ]
+}

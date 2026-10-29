@@ -1,0 +1,50 @@
+{
+  "task": "T023",
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_safety_workers.py",
+      "-k",
+      "new_boundary_errors"
+    ],
+    "exit_code": 0,
+    "stdout": "...                                                                      [100%]\n3 passed, 3 deselected in 4.06s\n",
+    "stderr": ""
+  },
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_safety_workers.py",
+      "-k",
+      "new_boundary_errors"
+    ],
+    "exit_code": 1,
+    "stdout": "FFF                                                                      [100%]\n=================================== FAILURES ===================================\n___ test_new_boundary_errors_are_closed_envelopes[definition_safety_certify] ___\n\ntrusted_setup = (PosixPath('/tmp/pytest-of-kalle/pytest-57/test_new_boundary_errors_are_c0'), TrustedContext(principal_id='agent-sessi...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7d357b36ee40>)\nname = 'definition_safety_certify'\n\n    @pytest.mark.parametrize('name',['definition_safety_certify','definition_safety_verify_evidence','state_validate_safety'])\n    def test_new_boundary_errors_are_closed_envelopes(trusted_setup,name):\n        from behavior_mcp.server import Application\n        root,context,_,_=trusted_setup\n>       result=Application(root,context,'local-delegation').execute(name,{})\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_safety_workers.py:44: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/behavior_mcp/server.py:387: in execute\n    return failure(\nsrc/behavior_mcp/schemas.py:343: in failure\n    validate_output(envelope)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nvalue = {'format': 'behavior-mcp.result.v1', 'request_status': 'refused', 'stage': 'safety_certification', 'outcome': 'invalid_input', ...}\nexpanded = False\n\n    def validate_output(value: JSON, *, expanded: bool | None = None) -> None:\n        if expanded is None:\n            # These are server-created subjects and retained snapshots, never a fallback on failure.\n            result = value[\"result\"]\n            expanded = (\n                value[\"subject\"].get(\"release\", {}).get(\"adapter_profile\")\n                == \"structured-models.v2\"\n                or result.get(\"proposal\", {}).get(\"format\") == \"behavior-mcp.authoring.v2\"\n                or (\n                    result.get(\"kind\") == \"models\"\n                    and any(\"category\" in m for m in result[\"models\"])\n                )\n            )\n        try:\n            validate(\"expanded-result\" if expanded else \"result\", value)\n        except OperationError:\n>           raise OperationError(\n                \"infrastructure\",\n                \"RESULT_SCHEMA_INVALID\",\n                \"Server output does not match the declared result schema\",\n            ) from None\nE           behavior_mcp.schemas.OperationError: Server output does not match the declared result schema\n\nsrc/behavior_mcp/schemas.py:137: OperationError\n_ test_new_boundary_errors_are_closed_envelopes[definition_safety_verify_evidence] _\n\ntrusted_setup = (PosixPath('/tmp/pytest-of-kalle/pytest-57/test_new_boundary_errors_are_c1'), TrustedContext(principal_id='agent-sessi...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7d3577fc9090>)\nname = 'definition_safety_verify_evidence'\n\n    @pytest.mark.parametrize('name',['definition_safety_certify','definition_safety_verify_evidence','state_validate_safety'])\n    def test_new_boundary_errors_are_closed_envelopes(trusted_setup,name):\n        from behavior_mcp.server import Application\n        root,context,_,_=trusted_setup\n>       result=Application(root,context,'local-delegation').execute(name,{})\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_safety_workers.py:44: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/behavior_mcp/server.py:387: in execute\n    return failure(\nsrc/behavior_mcp/schemas.py:343: in failure\n    validate_output(envelope)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nvalue = {'format': 'behavior-mcp.result.v1', 'request_status': 'refused', 'stage': 'safety_checking', 'outcome': 'invalid_input', ...}\nexpanded = False\n\n    def validate_output(value: JSON, *, expanded: bool | None = None) -> None:\n        if expanded is None:\n            # These are server-created subjects and retained snapshots, never a fallback on failure.\n            result = value[\"result\"]\n            expanded = (\n                value[\"subject\"].get(\"release\", {}).get(\"adapter_profile\")\n                == \"structured-models.v2\"\n                or result.get(\"proposal\", {}).get(\"format\") == \"behavior-mcp.authoring.v2\"\n                or (\n                    result.get(\"kind\") == \"models\"\n                    and any(\"category\" in m for m in result[\"models\"])\n                )\n            )\n        try:\n            validate(\"expanded-result\" if expanded else \"result\", value)\n        except OperationError:\n>           raise OperationError(\n                \"infrastructure\",\n                \"RESULT_SCHEMA_INVALID\",\n                \"Server output does not match the declared result schema\",\n            ) from None\nE           behavior_mcp.schemas.OperationError: Server output does not match the declared result schema\n\nsrc/behavior_mcp/schemas.py:137: OperationError\n_____ test_new_boundary_errors_are_closed_envelopes[state_validate_safety] _____\n\ntrusted_setup = (PosixPath('/tmp/pytest-of-kalle/pytest-57/test_new_boundary_errors_are_c2'), TrustedContext(principal_id='agent-sessi...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7d3577f9da70>)\nname = 'state_validate_safety'\n\n    @pytest.mark.parametrize('name',['definition_safety_certify','definition_safety_verify_evidence','state_validate_safety'])\n    def test_new_boundary_errors_are_closed_envelopes(trusted_setup,name):\n        from behavior_mcp.server import Application\n        root,context,_,_=trusted_setup\n>       result=Application(root,context,'local-delegation').execute(name,{})\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_safety_workers.py:44: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/behavior_mcp/server.py:387: in execute\n    return failure(\nsrc/behavior_mcp/schemas.py:343: in failure\n    validate_output(envelope)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nvalue = {'format': 'behavior-mcp.result.v1', 'request_status': 'refused', 'stage': 'safety_state_validation', 'outcome': 'invalid_input', ...}\nexpanded = False\n\n    def validate_output(value: JSON, *, expanded: bool | None = None) -> None:\n        if expanded is None:\n            # These are server-created subjects and retained snapshots, never a fallback on failure.\n            result = value[\"result\"]\n            expanded = (\n                value[\"subject\"].get(\"release\", {}).get(\"adapter_profile\")\n                == \"structured-models.v2\"\n                or result.get(\"proposal\", {}).get(\"format\") == \"behavior-mcp.authoring.v2\"\n                or (\n                    result.get(\"kind\") == \"models\"\n                    and any(\"category\" in m for m in result[\"models\"])\n                )\n            )\n        try:\n            validate(\"expanded-result\" if expanded else \"result\", value)\n        except OperationError:\n>           raise OperationError(\n                \"infrastructure\",\n                \"RESULT_SCHEMA_INVALID\",\n                \"Server output does not match the declared result schema\",\n            ) from None\nE           behavior_mcp.schemas.OperationError: Server output does not match the declared result schema\n\nsrc/behavior_mcp/schemas.py:137: OperationError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_workers.py::test_new_boundary_errors_are_closed_envelopes[definition_safety_certify]\nFAILED tests/integration/test_safety_workers.py::test_new_boundary_errors_are_closed_envelopes[definition_safety_verify_evidence]\nFAILED tests/integration/test_safety_workers.py::test_new_boundary_errors_are_closed_envelopes[state_validate_safety]\n3 failed, 3 deselected in 4.78s\n",
+    "stderr": ""
+  },
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_runtime_decisions.py",
+        "tests/integration/test_uncertain_commit.py",
+        "tests/integration/test_definition_artifacts.py",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/unit/test_semantic_time.py",
+        "tests/unit/test_worker_limits.py"
+      ],
+      "exit_code": 0,
+      "stdout": ".................................                                        [100%]\n33 passed in 87.92s (0:01:27)\n",
+      "stderr": ""
+    }
+  ]
+}

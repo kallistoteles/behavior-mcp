@@ -1,0 +1,39 @@
+{
+  "task": "T025",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_approval_runtime.py"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n___________ test_approval_threshold_duplicate_and_exact_public_read ____________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-10/test_approval_threshold_duplic0')\n\n    def test_approval_threshold_duplicate_and_exact_public_read(tmp_path):\n>       app,sid,definition,_,_=active(tmp_path,two_actors=True)\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_approval_runtime.py:12: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntests/fixtures/expanded.py:37: in active\n    app,proposal,policy=setup(root,name,**kwargs)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/tmp/pytest-of-kalle/pytest-10/test_approval_threshold_duplic0')\nname = 'approval', clock = None, actor = 'actor-1', two_actors = True\n\n    def setup(root,name='approval',*,clock=None,actor='actor-1',two_actors=False):\n        proposal=example(name)\n>       assert proposal['adapter_version'] in HANDLERS, 'Exact model checkpoint is not yet supported'\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: Exact model checkpoint is not yet supported\n\ntests/fixtures/expanded.py:23: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_approval_runtime.py::test_approval_threshold_duplicate_and_exact_public_read\n1 failed in 1.60s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_approval_runtime.py"
+    ],
+    "exit_code": 0,
+    "stdout": ".                                                                        [100%]\n1 passed in 12.06s\n",
+    "stderr": ""
+  },
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-c",
+        "import pytest; from behavior_mcp import adapters, authoring_v2; authoring_v2.CLOSURE=[\"authoring_v2.py\",\"fragments_v2.py\"]; adapters.HANDLERS[\"2.0.0\"]=authoring_v2; raise SystemExit(pytest.main([\"-q\",\"tests/integration/test_approval_runtime.py\",\"tests/integration/test_approval_recovery.py\",\"-x\"]))"
+      ],
+      "exit_code": 1,
+      "stdout": ".F\n=================================== FAILURES ===================================\n_________________ test_approval_refusal_read_and_commit_retry __________________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-17/test_approval_refusal_read_and0')\n\n    def test_approval_refusal_read_and_commit_retry(tmp_path):\n        app, sid, _, _, _ = active(tmp_path)\n        evaluate_commit(app, sid, \"new_subject\", \"create-subject\", input={\"new_id\": \"s1\"})\n        _, commit = evaluate_commit(\n            app,\n            sid,\n            \"review__approve\",\n            \"approve\",\n            bindings={\"subject\": \"s1\"},\n            input={\"decision_id\": \"d1\"},\n        )\n        args = {\n            \"system_id\": sid,\n            \"capability_id\": \"review__reject\",\n            \"bindings\": {\"subject\": \"s1\"},\n            \"input\": {\"decision_id\": \"d2\"},\n            \"expected_activation_revision\": 1,\n            \"operation_id\": \"duplicate\",\n        }\n        refused = app.execute(\"transition_evaluate\", args)\n        assert refused[\"outcome\"] == \"semantic_refusal\", refused\n        read_request = read_args(sid, \"mcp_review_status\", \"read\", {\"subject\": \"s1\"})\n        read = app.execute(\"capability_read\", read_request)\n        assert read[\"outcome\"] == \"read\", read\n        app = Application(tmp_path, app.context, app.policy_id)\n        assert app.execute(\"transition_evaluate\", args) == refused\n        assert app.execute(\"capability_read\", read_request) == read\n        recovered = app.execute(\"system_recover\", {\"system_id\": sid})\n>       assert recovered[\"request_status\"] == \"completed\", recovered\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'recovery', 'outcome': 'infrastructure_failure', ...}\nE       assert 'failed' == 'completed'\nE         \nE         - completed\nE         + failed\n\ntests/integration/test_approval_recovery.py:36: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_approval_recovery.py::test_approval_refusal_read_and_commit_retry\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 passed in 16.36s\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,667 @@
+{
+  "format": "behavior-mcp.host-policy.v2",
+  "policy_id": "local-lifecycle",
+  "version": 1,
+  "issuer_id": "local-operator",
+  "principal_id": "agent-session",
+  "workspace_id": "workspace-1",
+  "system_scope": {
+    "kind": "workspace"
+  },
+  "operations": [
+    "models_list",
+    "definition_propose",
+    "definition_get",
+    "definition_validate",
+    "definition_verify",
+    "systems_create",
+    "systems_list",
+    "system_inspect",
+    "definition_activate",
+    "capabilities_list",
+    "state_read",
+    "transition_evaluate",
+    "transition_commit",
+    "operation_get",
+    "system_recover",
+    "gaps_list",
+    "capability_read",
+    "definition_safety_certify",
+    "definition_safety_verify_evidence",
+    "state_validate_safety"
+  ],
+  "system_creation": {
+    "allowed": true,
+    "max_systems": 8,
+    "core_policy_profile": "structural-none",
+    "bootstrap_actor": {
+      "entity": "Actor",
+      "id": "actor-1",
+      "name": "local"
+    }
+  },
+  "required_verification": [],
+  "allowed_adapters": [
+    {
+      "adapter_profile": "structured-models.v2",
+      "behavior_version": "0.14.0",
+      "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+      "core_version": "0.15.0",
+      "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+      "verifier_version": "0.10.0",
+      "semantic_time_profile": "utc-unix-milliseconds.v1",
+      "allow_external_commands": false,
+      "allow_permission_expansion": false,
+      "allow_schema_migration": false,
+      "adapter_version": "2.3.0",
+      "allowed_model_kinds": [],
+      "allowed_model_ids": [],
+      "allowed_entity_declarations": [
+        {
+          "name": "Parent",
+          "fields": {
+            "phase": {
+              "kind": "enum",
+              "name": "ParentPhase"
+            }
+          }
+        },
+        {
+          "name": "Child",
+          "fields": {
+            "phase": {
+              "kind": "enum",
+              "name": "ChildPhase"
+            },
+            "owner": {
+              "kind": "ref",
+              "entity": "Parent"
+            }
+          }
+        }
+      ],
+      "allowed_enum_declarations": [
+        {
+          "name": "ParentPhase",
+          "cases": [
+            {
+              "name": "OPEN",
+              "value": "Open"
+            },
+            {
+              "name": "STOPPED",
+              "value": "Stopped"
+            }
+          ]
+        },
+        {
+          "name": "ChildPhase",
+          "cases": [
+            {
+              "name": "ACTIVE",
+              "value": "Active"
+            },
+            {
+              "name": "TERMINAL",
+              "value": "Terminal"
+            }
+          ]
+        }
+      ],
+      "allowed_nominal_declarations": [],
+      "allowed_action_names": [
+        "new_parent",
+        "new_child",
+        "stop_parent",
+        "activate_child",
+        "finish_child",
+        "remove_parent",
+        "remove_child"
+      ],
+      "allowed_read_names": [],
+      "allowed_condition_ops": [
+        "literal",
+        "enum",
+        "param",
+        "field",
+        "eq",
+        "and",
+        "or",
+        "not",
+        "in",
+        "any",
+        "derived"
+      ],
+      "allowed_field_refs": [
+        {
+          "entity": "Parent",
+          "fields": [
+            "phase",
+            "id"
+          ]
+        },
+        {
+          "entity": "Child",
+          "fields": [
+            "phase",
+            "owner",
+            "id"
+          ]
+        }
+      ],
+      "allowed_query_entities": [
+        "Child"
+      ],
+      "allowed_derived_functions": [],
+      "required_guard_roots": [
+        {
+          "capability": {
+            "action": "new_child"
+          },
+          "roots": [
+            {
+              "op": "not",
+              "value": {
+                "op": "in",
+                "value": {
+                  "op": "field",
+                  "value": {
+                    "op": "param",
+                    "name": "parent"
+                  },
+                  "name": "phase"
+                },
+                "members": [
+                  {
+                    "op": "enum",
+                    "enum": "ParentPhase",
+                    "case": "STOPPED"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "capability": {
+            "action": "stop_parent"
+          },
+          "roots": [
+            {
+              "op": "not",
+              "value": {
+                "op": "any",
+                "entity": "Child",
+                "bind": "child",
+                "where": {
+                  "op": "and",
+                  "args": [
+                    {
+                      "op": "eq",
+                      "left": {
+                        "op": "field",
+                        "value": {
+                          "op": "param",
+                          "name": "child"
+                        },
+                        "name": "owner"
+                      },
+                      "right": {
+                        "op": "field",
+                        "value": {
+                          "op": "param",
+                          "name": "subject"
+                        },
+                        "name": "id"
+                      }
+                    },
+                    {
+                      "op": "not",
+                      "value": {
+                        "op": "in",
+                        "value": {
+                          "op": "field",
+                          "value": {
+                            "op": "param",
+                            "name": "child"
+                          },
+                          "name": "phase"
+                        },
+                        "members": [
+                          {
+                            "op": "enum",
+                            "enum": "ChildPhase",
+                            "case": "TERMINAL"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "capability": {
+            "action": "activate_child"
+          },
+          "roots": [
+            {
+              "op": "eq",
+              "left": {
+                "op": "field",
+                "value": {
+                  "op": "param",
+                  "name": "subject"
+                },
+                "name": "owner"
+              },
+              "right": {
+                "op": "field",
+                "value": {
+                  "op": "param",
+                  "name": "parent"
+                },
+                "name": "id"
+              }
+            },
+            {
+              "op": "not",
+              "value": {
+                "op": "in",
+                "value": {
+                  "op": "field",
+                  "value": {
+                    "op": "param",
+                    "name": "parent"
+                  },
+                  "name": "phase"
+                },
+                "members": [
+                  {
+                    "op": "enum",
+                    "enum": "ParentPhase",
+                    "case": "STOPPED"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "allowed_action_descriptors": [
+        {
+          "kind": "create_entity",
+          "name": "new_parent",
+          "entity": "Parent",
+          "values": {
+            "phase": {
+              "op": "enum",
+              "enum": "ParentPhase",
+              "case": "OPEN"
+            }
+          },
+          "requires": []
+        },
+        {
+          "kind": "create_entity",
+          "name": "new_child",
+          "entity": "Child",
+          "parent": "Parent",
+          "values": {
+            "phase": {
+              "op": "enum",
+              "enum": "ChildPhase",
+              "case": "ACTIVE"
+            },
+            "owner": {
+              "op": "field",
+              "value": {
+                "op": "param",
+                "name": "parent"
+              },
+              "name": "id"
+            }
+          },
+          "requires": [
+            {
+              "op": "not",
+              "value": {
+                "op": "in",
+                "value": {
+                  "op": "field",
+                  "value": {
+                    "op": "param",
+                    "name": "parent"
+                  },
+                  "name": "phase"
+                },
+                "members": [
+                  {
+                    "op": "enum",
+                    "enum": "ParentPhase",
+                    "case": "STOPPED"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "kind": "set_field",
+          "name": "stop_parent",
+          "entity": "Parent",
+          "field": "phase",
+          "value": {
+            "op": "enum",
+            "enum": "ParentPhase",
+            "case": "STOPPED"
+          },
+          "requires": [
+            {
+              "op": "not",
+              "value": {
+                "op": "any",
+                "entity": "Child",
+                "bind": "child",
+                "where": {
+                  "op": "and",
+                  "args": [
+                    {
+                      "op": "eq",
+                      "left": {
+                        "op": "field",
+                        "value": {
+                          "op": "param",
+                          "name": "child"
+                        },
+                        "name": "owner"
+                      },
+                      "right": {
+                        "op": "field",
+                        "value": {
+                          "op": "param",
+                          "name": "subject"
+                        },
+                        "name": "id"
+                      }
+                    },
+                    {
+                      "op": "not",
+                      "value": {
+                        "op": "in",
+                        "value": {
+                          "op": "field",
+                          "value": {
+                            "op": "param",
+                            "name": "child"
+                          },
+                          "name": "phase"
+                        },
+                        "members": [
+                          {
+                            "op": "enum",
+                            "enum": "ChildPhase",
+                            "case": "TERMINAL"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "set_field",
+          "name": "activate_child",
+          "entity": "Child",
+          "parent": "Parent",
+          "field": "phase",
+          "value": {
+            "op": "enum",
+            "enum": "ChildPhase",
+            "case": "ACTIVE"
+          },
+          "requires": [
+            {
+              "op": "eq",
+              "left": {
+                "op": "field",
+                "value": {
+                  "op": "param",
+                  "name": "subject"
+                },
+                "name": "owner"
+              },
+              "right": {
+                "op": "field",
+                "value": {
+                  "op": "param",
+                  "name": "parent"
+                },
+                "name": "id"
+              }
+            },
+            {
+              "op": "not",
+              "value": {
+                "op": "in",
+                "value": {
+                  "op": "field",
+                  "value": {
+                    "op": "param",
+                    "name": "parent"
+                  },
+                  "name": "phase"
+                },
+                "members": [
+                  {
+                    "op": "enum",
+                    "enum": "ParentPhase",
+                    "case": "STOPPED"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "kind": "set_field",
+          "name": "finish_child",
+          "entity": "Child",
+          "field": "phase",
+          "value": {
+            "op": "enum",
+            "enum": "ChildPhase",
+            "case": "TERMINAL"
+          },
+          "requires": []
+        },
+        {
+          "kind": "remove_entity",
+          "name": "remove_parent",
+          "entity": "Parent",
+          "requires": []
+        },
+        {
+          "kind": "remove_entity",
+          "name": "remove_child",
+          "entity": "Child",
+          "requires": []
+        }
+      ],
+      "model_parameter_bounds": [],
+      "allow_new_records": true,
+      "allow_existing_record_changes": true,
+      "allow_remove_records": true,
+      "state_fields": [
+        {
+          "entity": "Parent",
+          "field": "phase",
+          "values": [
+            "Open",
+            "Stopped"
+          ],
+          "edges": [
+            {
+              "from": "Open",
+              "to": "Stopped"
+            }
+          ]
+        },
+        {
+          "entity": "Child",
+          "field": "phase",
+          "values": [
+            "Active",
+            "Terminal"
+          ],
+          "edges": [
+            {
+              "from": "Active",
+              "to": "Terminal"
+            },
+            {
+              "from": "Terminal",
+              "to": "Active"
+            }
+          ]
+        }
+      ],
+      "required_policy_ids": [
+        "parent_control",
+        "child_control",
+        "parent_child"
+      ],
+      "field_ownership_bounds": [
+        {
+          "policy_kind": "field_ownership",
+          "id": "parent_control",
+          "entity": "Parent",
+          "writers": {
+            "phase": [
+              {
+                "action": "stop_parent"
+              }
+            ]
+          },
+          "creators": [
+            {
+              "action": "new_parent"
+            }
+          ],
+          "removers": [
+            {
+              "action": "remove_parent"
+            }
+          ],
+          "required_protected_fields": [
+            "phase"
+          ]
+        },
+        {
+          "policy_kind": "field_ownership",
+          "id": "child_control",
+          "entity": "Child",
+          "writers": {
+            "phase": [
+              {
+                "action": "activate_child"
+              },
+              {
+                "action": "finish_child"
+              }
+            ],
+            "owner": []
+          },
+          "creators": [
+            {
+              "action": "new_child"
+            }
+          ],
+          "removers": [
+            {
+              "action": "remove_child"
+            }
+          ],
+          "required_protected_fields": [
+            "phase",
+            "owner"
+          ]
+        }
+      ],
+      "allowed_lifecycle_dependencies": [
+        {
+          "policy_kind": "lifecycle_dependency",
+          "id": "parent_child",
+          "parent": "Parent",
+          "child": "Child",
+          "owner_field": "owner",
+          "parent_state": "phase",
+          "child_state": "phase",
+          "prohibited": [
+            "Stopped"
+          ],
+          "terminal": [
+            "Terminal"
+          ],
+          "ownership": [
+            "parent_control",
+            "child_control"
+          ]
+        }
+      ],
+      "proposed_time_bounds": [],
+      "required_safety": [
+        {
+          "profile_id": "safety-default",
+          "analysis_version": 1,
+          "checker_version": 3,
+          "dependency_identity": {
+            "cargo_lock": "sha256:7a2296c69095c093086d1b914805003de36fde00c7d89e170236bf011be88309",
+            "core_release": {
+              "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+              "version": "0.15.0"
+            },
+            "proof_toolchain_manifest": "sha256:84d169bb98b6ee50139e4f2bf3ba0f9e06c2ffb8a034a91245e1a644b1977d0a",
+            "rust_toolchain": "sha256:023075a0ddb84ee3a394b26da660bb9b49491db99c7ccf9cf440b6e69e51b1c5"
+          },
+          "required_policy_ids": [
+            "parent_control",
+            "child_control",
+            "parent_child"
+          ],
+          "required_obligations": [
+            "axiom_audit",
+            "concrete_proof",
+            "fresh_replay",
+            "generic_proof",
+            "inventory_comparison",
+            "lifecycle_preservation",
+            "theorem_types"
+          ],
+          "permitted_assumptions": [
+            "Core semantic and backend contracts",
+            "Rust extraction/probe/encoding correspondence",
+            "Pinned kernel/toolchain/build integrity",
+            "Valid initial property and host-enforced approved deployment segment"
+          ]
+        }
+      ],
+      "required_model_conditions": []
+    }
+  ],
+  "runtime_actions": [
+    "new_parent",
+    "new_child",
+    "stop_parent",
+    "activate_child",
+    "finish_child",
+    "remove_parent",
+    "remove_child"
+  ],
+  "runtime_reads": []
+}

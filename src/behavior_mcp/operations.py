@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from behavior import CommitRefused, StateConflict, Store, replay_data
 
-from .authoring import reconstruct, release_identity
+from .adapters import historical_module, reconstruct
 from .schemas import JSON, OperationError, failure
 
 if TYPE_CHECKING:
@@ -43,7 +43,7 @@ class Operations:
                 "transition",
             )
         m.ensure_resolved(sid, opid)
-        definition, module, _ = m.active(sid)
+        definition, module, snapshot = m.active(sid)
         active = m.metadata(sid, "active")
         if (
             active is None
@@ -52,15 +52,7 @@ class Operations:
             raise OperationError(
                 "conflict", "DEPLOYMENT_MOVED", "Requested activation revision is stale"
             )
-        if (
-            args["capability_id"]
-            not in m.policy.document["construction"]["allowed_capability_names"]
-        ):
-            raise OperationError(
-                "unauthorized",
-                "CAPABILITY_DENIED",
-                "Capability is outside current runtime authority",
-            )
+        m.policy.authorize_capability(args["capability_id"])
         store = Store.open(m.backend(sid))
         history = store.current_history().as_dict()
         subject.update(m.subject(sid, definition, history, opid))
@@ -71,13 +63,30 @@ class Operations:
             p["role"] == "context" and p["name"] == "actor" for p in action["params"]
         ):
             context["actor"] = m.context.actor_id
+        audit_time = (
+            m.context.clock()
+            if definition["release"]["adapter_profile"] != "structured-models.v2"
+            else ""
+        )
+        provenance = None
+        if definition["release"]["adapter_profile"] == "structured-models.v2":
+            from .runtime_context import bind_context
+
+            if action is None:
+                raise OperationError(
+                    "invalid_input", "CAPABILITY_UNKNOWN", "Capability is not declared"
+                )
+            context, provenance = bind_context(
+                m.policy, m.context, snapshot["proposal"], action, args
+            )
+            audit_time = provenance["audit_time"]
         evaluated = store.evaluate(
             module,
             args["capability_id"],
             bindings=args["bindings"],
             input=args["input"],
             context=context,
-            commit_time=m.context.clock(),
+            commit_time=audit_time,
         )
         decision = {
             "result": evaluated.decision.result,
@@ -104,6 +113,8 @@ class Operations:
             },
             "receipt": None,
         }
+        if provenance is not None:
+            operation["context_provenance"] = provenance
         if evaluated.bundle is None:
             refusal = failure(
                 "evaluation",
@@ -162,17 +173,11 @@ class Operations:
                 "DEPLOYMENT_MOVED",
                 "Deployment differs from the original evaluation",
             )
-        if (
-            operation["request"]["capability_id"]
-            not in m.policy.document["construction"]["allowed_capability_names"]
-        ):
-            raise OperationError(
-                "unauthorized",
-                "CAPABILITY_DENIED",
-                "Current authority does not permit the original capability",
-            )
+        m.policy.authorize_capability(operation["request"]["capability_id"])
         if (
             operation["trusted_context"].get("actor", m.context.actor_id)
+            != m.context.actor_id
+            or operation["trusted_context"].get("worker", m.context.actor_id)
             != m.context.actor_id
         ):
             raise OperationError(
@@ -319,7 +324,7 @@ class Operations:
             # boundaries. Observe the original backend; inspection never completes creation.
             if m.backend(sid).genesis() is not None:
                 status = "unknown"
-        return {
+        report = {
             "kind": "operation_report",
             "operation_id": opid,
             "operation_kind": binding["kind"],
@@ -330,10 +335,33 @@ class Operations:
             else None,
             "observed_current_deployment": m.activation_ref(m.metadata(sid, "active")),
         }
+        if binding["kind"] == "read":
+            report["read_record_ref"] = (
+                operation.get("read_record_ref") if operation else None
+            )
+        return report
+
+    def report_subject(self, sid: str, operation: JSON, opid: str) -> JSON:
+        receipt = operation.get("receipt") or {}
+        definition_id = operation.get("definition_id") or receipt.get("definition_id")
+        history = receipt.get("history_anchor") or operation.get("source_history")
+        if definition_id and history:
+            return self.manager.subject(
+                sid,
+                self.manager.artifacts.definition(definition_id),
+                dict(history),
+                opid,
+            )
+        return {}
 
     def get(self, args: JSON, subject: JSON) -> JSON:
         subject["operation_id"] = args["operation_id"]
         result = self.report(args["system_id"], args["operation_id"])
+        operation = self.manager.operation(args["system_id"], args["operation_id"])
+        if operation:
+            subject.update(
+                self.report_subject(args["system_id"], operation, args["operation_id"])
+            )
         return self.manager.response("recovery", "operation_status", subject, result)
 
     def reconcile_transition(self, sid: str, opid: str) -> JSON:
@@ -367,7 +395,7 @@ class Operations:
         outcome = "not_committed"
         basis = "original exact Core history unchanged; no atomic publication receipt"
         if observed != operation["source_history"]:
-            from .authoring import historical_module
+            from .adapters import historical_module
 
             definition, module = historical_module(
                 m.artifacts, operation["definition_id"]
@@ -440,6 +468,8 @@ class Operations:
                     "Original operation is unavailable",
                 )
             operation = m.operation(sid, opid)
+            if operation:
+                subject.update(self.report_subject(sid, operation, opid))
             if (
                 operation
                 and operation["status"] in {"committing", "unknown"}
@@ -469,6 +499,8 @@ class Operations:
                 m.recovery_operation_id = opid
                 m.activate(binding["request"], dict(subject))
             result = self.report(sid, opid)
+            if result.get("receipt") and "history_anchor" in subject:
+                subject["history_anchor"] = result["receipt"]["history_anchor"]
             outcome = (
                 "recovered"
                 if result["status"] in {"committed", "not_committed", "refused"}
@@ -490,9 +522,9 @@ class Operations:
                 "SYSTEM_CREATING",
                 "Incomplete system creation requires its original reservation",
             )
-        reconstruct(m.artifacts, descriptor["definition_id"])
+        definition, _ = historical_module(m.artifacts, descriptor["definition_id"])
         if active is not None:
-            reconstruct(m.artifacts, active["definition_id"])
+            definition, _ = historical_module(m.artifacts, active["definition_id"])
         store = Store.open(m.backend(sid))
         if not replay_data(store).ok:
             raise OperationError(
@@ -507,8 +539,9 @@ class Operations:
             "recovered_operations": recovered,
             "active": m.activation_ref(active),
             "history_anchor": store.current_history().as_dict(),
-            "release": release_identity(),
+            "release": definition["release"],
         }
+        subject.update(m.subject(sid, definition, result["history_anchor"]))
         replay = m.replay(sid)
         return m.response(
             "recovery",

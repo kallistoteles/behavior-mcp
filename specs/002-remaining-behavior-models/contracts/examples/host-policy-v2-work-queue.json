@@ -1,0 +1,191 @@
+{
+  "format": "behavior-mcp.host-policy.v2",
+  "policy_id": "local-queue",
+  "version": 1,
+  "issuer_id": "local-operator",
+  "principal_id": "agent-session",
+  "workspace_id": "workspace-1",
+  "system_scope": {
+    "kind": "workspace"
+  },
+  "operations": [
+    "models_list",
+    "definition_propose",
+    "definition_get",
+    "definition_validate",
+    "definition_verify",
+    "systems_create",
+    "systems_list",
+    "system_inspect",
+    "definition_activate",
+    "capabilities_list",
+    "state_read",
+    "transition_evaluate",
+    "transition_commit",
+    "operation_get",
+    "system_recover",
+    "gaps_list",
+    "capability_read",
+    "definition_safety_certify",
+    "definition_safety_verify_evidence",
+    "state_validate_safety"
+  ],
+  "system_creation": {
+    "allowed": true,
+    "max_systems": 8,
+    "core_policy_profile": "structural-none",
+    "bootstrap_actor": {
+      "entity": "Actor",
+      "id": "actor-1",
+      "name": "local"
+    }
+  },
+  "required_verification": [],
+  "allowed_adapters": [
+    {
+      "adapter_profile": "structured-models.v2",
+      "behavior_version": "0.14.0",
+      "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+      "core_version": "0.15.0",
+      "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+      "verifier_version": "0.10.0",
+      "semantic_time_profile": "utc-unix-milliseconds.v1",
+      "allow_external_commands": false,
+      "allow_permission_expansion": false,
+      "allow_schema_migration": false,
+      "adapter_version": "2.1.0",
+      "allowed_model_kinds": [
+        "work_queue"
+      ],
+      "allowed_model_ids": [
+        "jobs"
+      ],
+      "allowed_entity_declarations": [],
+      "allowed_enum_declarations": [],
+      "allowed_nominal_declarations": [
+        {
+          "name": "Time",
+          "base": "int",
+          "operations": [
+            "order"
+          ]
+        }
+      ],
+      "allowed_action_names": [
+        "jobs__enqueue",
+        "jobs__claim",
+        "jobs__renew",
+        "jobs__complete",
+        "jobs__retry",
+        "jobs__fail",
+        "jobs__recover",
+        "jobs__exhaust",
+        "jobs__cancel"
+      ],
+      "allowed_read_names": [
+        "jobs__ready",
+        "jobs__expired",
+        "mcp_jobs_terminal"
+      ],
+      "allowed_condition_ops": [
+        "literal",
+        "enum",
+        "param",
+        "field",
+        "eq",
+        "and",
+        "or",
+        "not",
+        "in",
+        "any",
+        "derived"
+      ],
+      "allowed_field_refs": [],
+      "allowed_query_entities": [],
+      "allowed_derived_functions": [
+        {
+          "model_id": "jobs",
+          "function": "terminal"
+        }
+      ],
+      "required_guard_roots": [],
+      "allowed_action_descriptors": [],
+      "model_parameter_bounds": [
+        {
+          "model_kind": "work_queue",
+          "model_id": "jobs",
+          "time_nominal": "Time",
+          "max_attempts_min": 1,
+          "max_attempts_max": 3,
+          "payload": {
+            "label": {
+              "kind": "string"
+            }
+          }
+        }
+      ],
+      "allow_new_records": true,
+      "allow_existing_record_changes": true,
+      "allow_remove_records": false,
+      "state_fields": [],
+      "required_policy_ids": [],
+      "field_ownership_bounds": [],
+      "allowed_lifecycle_dependencies": [],
+      "proposed_time_bounds": [
+        {
+          "capability_id": "jobs__enqueue",
+          "parameter": "available_at",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "max_future_offset_ms": 60000
+        },
+        {
+          "capability_id": "jobs__claim",
+          "parameter": "lease_until",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "max_future_offset_ms": 60000
+        },
+        {
+          "capability_id": "jobs__renew",
+          "parameter": "lease_until",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "max_future_offset_ms": 60000
+        },
+        {
+          "capability_id": "jobs__retry",
+          "parameter": "available_at",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "max_future_offset_ms": 60000
+        },
+        {
+          "capability_id": "jobs__recover",
+          "parameter": "available_at",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "max_future_offset_ms": 60000
+        }
+      ],
+      "required_safety": [],
+      "required_model_conditions": []
+    }
+  ],
+  "runtime_actions": [
+    "jobs__enqueue",
+    "jobs__claim",
+    "jobs__renew",
+    "jobs__complete",
+    "jobs__retry",
+    "jobs__fail",
+    "jobs__recover",
+    "jobs__exhaust",
+    "jobs__cancel"
+  ],
+  "runtime_reads": [
+    "jobs__ready",
+    "jobs__expired",
+    "mcp_jobs_terminal"
+  ]
+}

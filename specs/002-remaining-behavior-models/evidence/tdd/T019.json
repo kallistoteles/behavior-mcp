@@ -1,0 +1,55 @@
+{
+  "task": "T019",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/contract/test_host_policy_v2.py::test_required_safety_cannot_be_ignored_for_operational_only_model"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______ test_required_safety_cannot_be_ignored_for_operational_only_model _______\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-33/test_required_safety_cannot_be0')\n\n    def test_required_safety_cannot_be_ignored_for_operational_only_model(tmp_path):\n        from behavior_mcp.artifacts import ArtifactStore\n        from behavior_mcp.policy import TrustedContext\n        from behavior_mcp.server import Application\n        from tests.fixtures.expanded import example\n        from tests.fixtures.runtime import authored\n        doc=example('host-policy-v2')\n        doc['allowed_adapters'][0]['required_safety']=example('host-policy-v2-safety')['allowed_adapters'][0]['required_safety']\n        assert doc['allowed_adapters'][0]['required_safety']\n        artifacts=ArtifactStore(tmp_path);artifacts.install_policy(Delegation.from_document(doc,'local-operator').document)\n        ctx=TrustedContext('agent-session','workspace-1','actor-1',lambda:'2026-10-28T00:00:00Z')\n        app=Application(tmp_path,ctx,doc['policy_id'])\n        d=authored(app,example('approval'))\n        c=app.execute('systems_create',{'definition_id':d['definition_id'],'operation_id':'create'})\n        assert c['outcome']=='created',c\n        receipt=c['result']['receipt']\n        activated=app.execute('definition_activate',{'system_id':receipt['system_id'],'definition_id':d['definition_id'],'operation_id':'activate','expected_activation_revision':0,'expected_history':receipt['history_anchor']})\n>       assert activated['outcome']=='unauthorized',activated\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'completed', 'stage': 'activation', 'outcome': 'activated', ...}\nE       assert 'activated' == 'unauthorized'\nE         \nE         - unauthorized\nE         + activated\n\ntests/contract/test_host_policy_v2.py:112: AssertionError\n=========================== short test summary info ============================\nFAILED tests/contract/test_host_policy_v2.py::test_required_safety_cannot_be_ignored_for_operational_only_model\n1 failed in 4.65s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/contract/test_host_policy_v2.py"
+    ],
+    "exit_code": 0,
+    "stdout": ".............                                                            [100%]\n13 passed in 5.57s\n",
+    "stderr": ""
+  },
+  "red_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_expanded_compatibility.py::test_explicit_legacy_grant_in_v2_policy"
+      ],
+      "exit_code": 1,
+      "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n___________________ test_explicit_legacy_grant_in_v2_policy ____________________\n\ntrusted_setup = (PosixPath('/tmp/pytest-of-kalle/pytest-25/test_explicit_legacy_grant_in_0'), TrustedContext(principal_id='agent-sessi...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7a1e6b6cc440>)\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\npolicy_document = {'format': 'behavior-mcp.host-policy.v1', 'policy_id': 'local-delegation', 'version': 1, 'issuer_id': 'local-operator', ...}\n\n    def test_explicit_legacy_grant_in_v2_policy(trusted_setup,proposal,policy_document):\n        from behavior_mcp.adapters import build\n        from behavior_mcp.policy import Delegation\n        from tests.fixtures.expanded import example\n        document=example('host-policy-v2')\n        legacy={'adapter_profile':'scalar-models.v1','adapter_version':'1',**{k:policy_document[k] for k in ('construction','effects','state')}}\n        document['allowed_adapters'].append(legacy)\n        delegation=Delegation.from_document(document,'local-operator')\n>       delegation.check_candidate(proposal,build(proposal),existing=False)\n\ntests/integration/test_expanded_compatibility.py:53: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/behavior_mcp/policy.py:111: in check_candidate\n    grant = select_grant(self.document, proposal)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ndocument = {'allowed_adapters': [{'adapter_profile': 'structured-models.v2', 'adapter_version': '2.0.0', 'allow_existing_record_c...list', 'definition_propose', 'definition_get', 'definition_validate', 'definition_verify', 'systems_create', ...], ...}\nproposal = {'format': 'behavior-mcp.authoring.v1', 'adapter_profile': 'scalar-models.v1', 'declarations': {'enums': [{'name': 'St...quest_flow', 'model_id': 'record', 'status_enum': 'Status', 'payload': {'label': 'string', 'outcome': 'string'}, ...}]}\n\n    def select_grant(document: JSON, proposal: JSON) -> JSON:\n        from .adapters import release_identity\n    \n        release = release_identity(proposal)\n        found = [\n            g\n            for g in document[\"allowed_adapters\"]\n            if g[\"adapter_profile\"] == release[\"adapter_profile\"]\n            and g[\"adapter_version\"] == release[\"adapter_version\"]\n        ]\n        if len(found) != 1:\n            raise OperationError(\n                \"unauthorized\", \"ADAPTER_DENIED\", \"Exact adapter is outside delegation\"\n            )\n        grant = found[0]\n        if any(grant.get(k) != v for k, v in release.items()):\n>           raise OperationError(\n                \"unauthorized\", \"RELEASE_DENIED\", \"Release differs from trusted grant\"\n            )\nE           behavior_mcp.schemas.OperationError: Release differs from trusted grant\n\nsrc/behavior_mcp/policy_v2.py:100: OperationError\n=========================== short test summary info ============================\nFAILED tests/integration/test_expanded_compatibility.py::test_explicit_legacy_grant_in_v2_policy\n1 failed in 2.45s\n",
+      "stderr": ""
+    }
+  ],
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_expanded_compatibility.py::test_explicit_legacy_grant_in_v2_policy"
+      ],
+      "exit_code": 0,
+      "stdout": ".                                                                        [100%]\n1 passed in 2.30s\n",
+      "stderr": ""
+    }
+  ]
+}

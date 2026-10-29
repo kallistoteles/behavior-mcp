@@ -19,6 +19,11 @@ class HostLimits:
     page_default: int = 50
     page_max: int = 100
     verification_workers: int = 2
+    proof_workers: int = 1
+    proof_timeout_seconds: int = 120
+    proof_bundle_bytes: int = 8388608
+    read_timeout_seconds: int = 5
+    read_output_bytes: int = 1048576
     _profiles_json: str = json.dumps(DEFAULT_PROFILES, sort_keys=True)
 
     @staticmethod
@@ -35,6 +40,11 @@ class HostLimits:
             "page_default": 50,
             "page_max": 100,
             "verification_workers": 2,
+            "proof_workers": 1,
+            "proof_timeout_seconds": 120,
+            "proof_bundle_bytes": 8388608,
+            "read_timeout_seconds": 5,
+            "read_output_bytes": 1048576,
         }
         if not isinstance(doc, dict) or set(doc) - (
             set(maxima) | {"verification_profiles"}
@@ -68,6 +78,11 @@ class HostLimits:
             page_default=page_default,
             page_max=page_max,
             verification_workers=doc.get("verification_workers", 2),
+            proof_workers=doc.get("proof_workers", 1),
+            proof_timeout_seconds=doc.get("proof_timeout_seconds", 120),
+            proof_bundle_bytes=doc.get("proof_bundle_bytes", 8388608),
+            read_timeout_seconds=doc.get("read_timeout_seconds", 5),
+            read_output_bytes=doc.get("read_output_bytes", 1048576),
             _profiles_json=json.dumps(profiles, sort_keys=True),
         )
 

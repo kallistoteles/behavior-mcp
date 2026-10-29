@@ -43,7 +43,8 @@ def install_policy(root: Path, document: JSON, authority: AdminAuthority) -> Non
 
 
 def install_approval(root: Path, document: JSON, authority: AdminAuthority) -> None:
-    validate("activation-approval", document)
+    expanded = document.get("format") == "behavior-mcp.activation-approval.v2"
+    validate("activation-approval-v2" if expanded else "activation-approval", document)
     _bound(root, document, authority, "grantee_principal_id")
     artifacts = ArtifactStore(root)
     with file_lock(root / "policy.lock"):
@@ -58,6 +59,14 @@ def install_approval(root: Path, document: JSON, authority: AdminAuthority) -> N
                 "Approval does not match its trusted policy",
             )
         manifest = artifacts.definition(document["definition_id"])
+        if expanded != (
+            manifest["release"]["adapter_profile"] == "structured-models.v2"
+        ) or (expanded and document["policy_set_hash"] != manifest["policy_set_hash"]):
+            raise OperationError(
+                "unauthorized",
+                "APPROVAL_SUBJECT_DENIED",
+                "Approval format or policy set differs from its exact subject",
+            )
         if any(document[k] != manifest[k] for k in ("behavior_hash", "schema_hash")):
             raise OperationError(
                 "unauthorized",
