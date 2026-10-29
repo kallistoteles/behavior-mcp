@@ -1,0 +1,27 @@
+{
+  "status": "complete_source_and_installed_acceptance_passed",
+  "test_runs": [
+    "tdd/T075.json",
+    "tdd/T079.json",
+    "tdd/T081.json"
+  ],
+  "observations": [
+    "Four-family unchanged reconstruction and metadata/semantic revisions preserve original artifacts and exact adapter context.",
+    "Approval+RequestFlow and WorkQueue+StateMachine compose through public contributed handles. The latter shares one Core CAS boundary.",
+    "Conflicting ownership, cyclic unresolved declarations and schema-changing activation are refused.",
+    "Original v1 operation subjects survive an explicit v2 fork and deployment change.",
+    "History resolves original policy/certificate/state-validation identities; missing evidence fails closed. Historical Core replay does not require fresh authoring."
+  ],
+  "retained_versions": [
+    "1",
+    "2.0.0",
+    "2.1.0",
+    "2.2.0",
+    "2.3.0"
+  ],
+  "release_evidence": [
+    "tdd/T099.json",
+    "package.json",
+    "release-acceptance.json"
+  ]
+}

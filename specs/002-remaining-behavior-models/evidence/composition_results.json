@@ -1,0 +1,795 @@
+{
+  "versions": {
+    "accepted_wire_ir": [
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7",
+      "0.8"
+    ],
+    "command_occurrence_domain": "behavior.command_occurrence.v1",
+    "command_stream": "behavior.command_stream_request.v1",
+    "engine": "0.15.0",
+    "read_records": [
+      "behavior.read_record.v1",
+      "behavior.read_record.v2"
+    ],
+    "records": [
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7",
+      "0.8"
+    ],
+    "store_documents": [
+      "behavior.entity_content.v1",
+      "behavior.entity_version.v1",
+      "behavior.state.v1",
+      "behavior.evidence_policy.v1",
+      "behavior.store_genesis.v1",
+      "behavior.commit_bundle.v1",
+      "behavior.transition_record.v1",
+      "behavior.replay_report.v1",
+      "behavior.migration_bundle.v1",
+      "behavior.store_genesis.v2",
+      "behavior.commit_bundle.v2",
+      "behavior.migration_bundle.v2",
+      "behavior.transition_record.v2"
+    ],
+    "verifier": "0.10.0",
+    "wire_ir": [
+      "0.1",
+      "0.2",
+      "0.3",
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7"
+    ],
+    "core": {
+      "version": "0.15.0",
+      "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6"
+    },
+    "binding": {
+      "python": "0.14.0"
+    }
+  },
+  "approval_request_flow": {
+    "behavior_hash": "sha256:61f99acf717246d6c06f23f9c78eeb5d6f2b789a1c083fca9a05f884d71b531c",
+    "models": [
+      "request_flow",
+      "approval"
+    ]
+  },
+  "work_queue_state_machine_field_ownership": {
+    "behavior_hash": "sha256:54e1b3f3a3bb7e823ddb2af5c45f6eafbad2b49862d90212e8265a5bb2a959fd",
+    "models": [
+      "state_machine",
+      "work_queue"
+    ],
+    "safety": {
+      "analysis_version": 1,
+      "checker_version": 3,
+      "dependencies": [],
+      "inventory": {
+        "actions": [
+          {
+            "hash": "sha256:971388002a5489e1dec6aa0b741e7fa60ea21f9e181c3cc2ecd9ec7c7c899fae",
+            "name": "auxiliary__finish",
+            "operations": [
+              {
+                "entity": "Auxiliary",
+                "field": "phase",
+                "hash": "sha256:34d4971f26499a57999667539789757d955e67932f3b72ca1fd5532637128d18",
+                "index": 0,
+                "kind": "assign",
+                "param": "auxiliary",
+                "value": "sha256:97d2f2e07048a3a7a11c99f64c675c42f2f79ed17b31a312f7356f7a6efab9ab"
+              }
+            ],
+            "params": [
+              {
+                "name": "auxiliary",
+                "type": {
+                  "Entity": "Auxiliary"
+                }
+              }
+            ],
+            "postconditions": [
+              "sha256:bfaab10dff03748d26906c8d2818c12a0adad5b719cb205b6c2f7be5745d37e6"
+            ],
+            "preconditions": [
+              "sha256:6e9238da467078b90a5303796dc61361ed26a86a6cfe31b8eb1a9aa0b42ce1ff"
+            ]
+          },
+          {
+            "hash": "sha256:d800d4b953cdb819bc84a037e571acc9ffb7f17e4d74b248d5b5afb6931656dc",
+            "name": "jobs__cancel",
+            "operations": [
+              {
+                "entity": "Jobs",
+                "field": "status",
+                "hash": "sha256:f3b54f264e358c31d47c6cb99a8a274fc0237590f5f91aaa08f2d32ff4e091b0",
+                "index": 0,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:048e285057fa49afd9c6628264118648fb9e71e3bb6d4fce1962e41457d66e85"
+              },
+              {
+                "entity": "Jobs",
+                "field": "owner",
+                "hash": "sha256:5f13479bd14cfc9e1e4b94023f3dcca168b203cd134a4fdf21f010ec9af05e36",
+                "index": 1,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:73a5621a6ec499d2c1c5a6bb0a5281d93bb4aa4bded1b70501f78c7f92bb837f"
+              },
+              {
+                "entity": "Jobs",
+                "field": "lease_until",
+                "hash": "sha256:98fb1253fa0efcce84476dbe03d888f8a3a6c3c117d75d64506811695ab36f74",
+                "index": 2,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:bc3fed96042e363b119df5139c8860e2e37447d156aaabdadc5a5653a524ffeb"
+              }
+            ],
+            "params": [
+              {
+                "name": "jobs",
+                "type": {
+                  "Entity": "Jobs"
+                }
+              }
+            ],
+            "postconditions": [
+              "sha256:3e7ac4fdae925d7ae6816d5efb67e003773a9f9b485c7f84be455ad48314e2f5"
+            ],
+            "preconditions": [
+              "sha256:6313a9dc6557221471587e2d2e6b7ab7f0fc57e58bfad7c98ae44d058212739f",
+              "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a"
+            ]
+          },
+          {
+            "hash": "sha256:2a2a38ae51bd0f34d6aac3318f44d20858fbd074cb91fc6287458ad39188f5f6",
+            "name": "jobs__claim",
+            "operations": [
+              {
+                "entity": "Jobs",
+                "field": "status",
+                "hash": "sha256:b3c0b67acb0e625687cab6cf7da2fab230881d0cc1c9eddca63f3fbd5184b3fe",
+                "index": 0,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:01769b18f174c50114d512d234a15677d654d34020baaee51a41b998818c28fc"
+              },
+              {
+                "entity": "Jobs",
+                "field": "attempts",
+                "hash": "sha256:1429a8337ba1745b5062066e248a8b75568f2abd0d3102a3c3ed84b2a76df95c",
+                "index": 1,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:55333108ca8425799c851e0ab2933a44959bb0d7c325705c9d3a99c53f5f81c3"
+              },
+              {
+                "entity": "Jobs",
+                "field": "owner",
+                "hash": "sha256:97dffdf1edf19ecd57dabf305e300413e7118d40f06b7614cdff4ab241b4e0a4",
+                "index": 2,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:5faf3fdb1b46cb1801c6ac43d6474bc1db0465d7f9ed3936944a7d322e0b4417"
+              },
+              {
+                "entity": "Jobs",
+                "field": "lease_until",
+                "hash": "sha256:48468607ee65d91ae5f1a95e19ec6e2839dee21920b66da446da1c3ba489429f",
+                "index": 3,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:709f94ca58db2e42d3c28288cf95e9886d9b4965940638900db99e3af492e74d"
+              }
+            ],
+            "params": [
+              {
+                "name": "jobs",
+                "type": {
+                  "Entity": "Jobs"
+                }
+              },
+              {
+                "name": "expected_generation",
+                "type": "Int"
+              },
+              {
+                "name": "lease_until",
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              {
+                "name": "now",
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              {
+                "name": "worker",
+                "type": {
+                  "Id": "Actor"
+                }
+              }
+            ],
+            "postconditions": [
+              "sha256:8b8c99a3b2b83ba033a0319fd8da9bb9506f7a2ce381c39e9324777ee6226b3a",
+              "sha256:7ba713d4572b0211b113c4a551c487876d8d96441b52f773039a5e9f46fe576b"
+            ],
+            "preconditions": [
+              "sha256:42c900dac2047c1674ddfbfca153d1e06385805b5365ee95cbea7877754fae69",
+              "sha256:b756406e2558d5fc1d47780fd074df560ad1c2ce4d6d1271290e20c1bfb1afad",
+              "sha256:e3e2a01d97c803edc7c644ad3fc2961349f5d43144a97ee2fa968e5d12b59474",
+              "sha256:58330ae561163241f1648f0e1d65e37a2b87fc00172af51bba0d2e0d4b2c6264",
+              "sha256:9397e58593e6bc9a157d0b89a783ea7cf4f6ad00998f02ad03c68cd288f71e99",
+              "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a"
+            ]
+          },
+          {
+            "hash": "sha256:5f809c760eef9e57dda932cfdc1c45bc6946ce276a9c71aed59148d944e1d2f7",
+            "name": "jobs__complete",
+            "operations": [
+              {
+                "entity": "Jobs",
+                "field": "status",
+                "hash": "sha256:f688bcae013f202455e8fced2d335926cca9b322b1919eba34bf73491cb185e6",
+                "index": 0,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:a11a879813f673cfa3ab6f6a4a6c659817b485c849bf62a59e3ac7ee8a132710"
+              },
+              {
+                "entity": "Jobs",
+                "field": "owner",
+                "hash": "sha256:5f13479bd14cfc9e1e4b94023f3dcca168b203cd134a4fdf21f010ec9af05e36",
+                "index": 1,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:73a5621a6ec499d2c1c5a6bb0a5281d93bb4aa4bded1b70501f78c7f92bb837f"
+              },
+              {
+                "entity": "Jobs",
+                "field": "lease_until",
+                "hash": "sha256:98fb1253fa0efcce84476dbe03d888f8a3a6c3c117d75d64506811695ab36f74",
+                "index": 2,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:bc3fed96042e363b119df5139c8860e2e37447d156aaabdadc5a5653a524ffeb"
+              }
+            ],
+            "params": [
+              {
+                "name": "jobs",
+                "type": {
+                  "Entity": "Jobs"
+                }
+              },
+              {
+                "name": "generation",
+                "type": "Int"
+              },
+              {
+                "name": "now",
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              {
+                "name": "worker",
+                "type": {
+                  "Id": "Actor"
+                }
+              }
+            ],
+            "postconditions": [
+              "sha256:3b103e882bf4b55e1532fca52f730d37f375c558ed05aadad3336eefe6d95f89",
+              "sha256:35d3052d1fc7801f20f6e68963d001e3d849580df29c5a08eff9a2921d6e78ff"
+            ],
+            "preconditions": [
+              "sha256:6ab0f297643d495dcf2b0fdedea6980621e6022b93c2fe61eb1e737307e0c9be",
+              "sha256:c8a3e3b7782dd0d8878bfacb66cea03313c5d78f6b30c29a2a92edc6be53fe72",
+              "sha256:35d3052d1fc7801f20f6e68963d001e3d849580df29c5a08eff9a2921d6e78ff",
+              "sha256:dfe38ee816dfb04304480e5c351d39e5d026112f974f141c7a35fc4be598e034"
+            ]
+          },
+          {
+            "hash": "sha256:e0c2fe566dfe3ddf5af9b221e8996fc63f0a64e7199182908c4d04dc5787d665",
+            "name": "jobs__enqueue",
+            "operations": [
+              {
+                "entity": "Jobs",
+                "fields": {
+                  "attempts": "sha256:fb4071bb5dd7e5fff03505cde9e633e8db4a1ca70003b03b86a6e7fc13382344",
+                  "available_at": "sha256:7bcc2111c78481ad4e336d459d9cb52da2369923af954f060f736aa443cf315c",
+                  "lease_until": "sha256:bc3fed96042e363b119df5139c8860e2e37447d156aaabdadc5a5653a524ffeb",
+                  "owner": "sha256:73a5621a6ec499d2c1c5a6bb0a5281d93bb4aa4bded1b70501f78c7f92bb837f",
+                  "status": "sha256:7c125f39bf2e32c273d3a1bb511fa66e7c15ce3d108a7280d0b074c5df18f568"
+                },
+                "hash": "sha256:b36cb5c8fbca5c9af59567573a823ece944b115ebec046734a9347d2555632ad",
+                "id": "sha256:41ecba9f8da03d14a9c596fd5dccbe5851402644a93823d85703155f3e6fc06e",
+                "index": 0,
+                "kind": "create"
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "type": {
+                  "Id": "Jobs"
+                }
+              },
+              {
+                "name": "available_at",
+                "type": {
+                  "Nominal": "Time"
+                }
+              }
+            ],
+            "postconditions": [],
+            "preconditions": [
+              "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a"
+            ]
+          },
+          {
+            "hash": "sha256:3780b6da8a2f3a12a85e336d502d42d4012673680dfab1b7c6e8eb39ac025aed",
+            "name": "jobs__exhaust",
+            "operations": [
+              {
+                "entity": "Jobs",
+                "field": "status",
+                "hash": "sha256:d557b5a280d43ea18d500eb883f17fc4528e8852f8db7abb97b1847b3f37742d",
+                "index": 0,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:4463e55114b004c4064c523126689f569e586e11375bf9baae55280a7b4fc9ef"
+              },
+              {
+                "entity": "Jobs",
+                "field": "owner",
+                "hash": "sha256:5f13479bd14cfc9e1e4b94023f3dcca168b203cd134a4fdf21f010ec9af05e36",
+                "index": 1,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:73a5621a6ec499d2c1c5a6bb0a5281d93bb4aa4bded1b70501f78c7f92bb837f"
+              },
+              {
+                "entity": "Jobs",
+                "field": "lease_until",
+                "hash": "sha256:98fb1253fa0efcce84476dbe03d888f8a3a6c3c117d75d64506811695ab36f74",
+                "index": 2,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:bc3fed96042e363b119df5139c8860e2e37447d156aaabdadc5a5653a524ffeb"
+              }
+            ],
+            "params": [
+              {
+                "name": "jobs",
+                "type": {
+                  "Entity": "Jobs"
+                }
+              },
+              {
+                "name": "now",
+                "type": {
+                  "Nominal": "Time"
+                }
+              }
+            ],
+            "postconditions": [
+              "sha256:6f216a963e31157d6dcfd4a000fbc7625759b8d5b545e3c3d9ccc141da7489ec"
+            ],
+            "preconditions": [
+              "sha256:6ab0f297643d495dcf2b0fdedea6980621e6022b93c2fe61eb1e737307e0c9be",
+              "sha256:2a03bc2af6b2fa3017770ba7c62778c6c249f66d1555b4292f9f14b95a3d7969",
+              "sha256:975cc83b2c726dbfac1ce5cebec8f6177b3590ca3d807ea75f6956b3382596e3",
+              "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a"
+            ]
+          },
+          {
+            "hash": "sha256:eb5e69f7ea744243ea673bcf648c689a5e1663c735c8436d09c3f199ad469c84",
+            "name": "jobs__fail",
+            "operations": [
+              {
+                "entity": "Jobs",
+                "field": "status",
+                "hash": "sha256:d557b5a280d43ea18d500eb883f17fc4528e8852f8db7abb97b1847b3f37742d",
+                "index": 0,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:4463e55114b004c4064c523126689f569e586e11375bf9baae55280a7b4fc9ef"
+              },
+              {
+                "entity": "Jobs",
+                "field": "owner",
+                "hash": "sha256:5f13479bd14cfc9e1e4b94023f3dcca168b203cd134a4fdf21f010ec9af05e36",
+                "index": 1,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:73a5621a6ec499d2c1c5a6bb0a5281d93bb4aa4bded1b70501f78c7f92bb837f"
+              },
+              {
+                "entity": "Jobs",
+                "field": "lease_until",
+                "hash": "sha256:98fb1253fa0efcce84476dbe03d888f8a3a6c3c117d75d64506811695ab36f74",
+                "index": 2,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:bc3fed96042e363b119df5139c8860e2e37447d156aaabdadc5a5653a524ffeb"
+              }
+            ],
+            "params": [
+              {
+                "name": "jobs",
+                "type": {
+                  "Entity": "Jobs"
+                }
+              },
+              {
+                "name": "generation",
+                "type": "Int"
+              },
+              {
+                "name": "now",
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              {
+                "name": "worker",
+                "type": {
+                  "Id": "Actor"
+                }
+              }
+            ],
+            "postconditions": [
+              "sha256:6f216a963e31157d6dcfd4a000fbc7625759b8d5b545e3c3d9ccc141da7489ec",
+              "sha256:35d3052d1fc7801f20f6e68963d001e3d849580df29c5a08eff9a2921d6e78ff"
+            ],
+            "preconditions": [
+              "sha256:6ab0f297643d495dcf2b0fdedea6980621e6022b93c2fe61eb1e737307e0c9be",
+              "sha256:c8a3e3b7782dd0d8878bfacb66cea03313c5d78f6b30c29a2a92edc6be53fe72",
+              "sha256:35d3052d1fc7801f20f6e68963d001e3d849580df29c5a08eff9a2921d6e78ff",
+              "sha256:dfe38ee816dfb04304480e5c351d39e5d026112f974f141c7a35fc4be598e034"
+            ]
+          },
+          {
+            "hash": "sha256:17d9fa12275dc0220927e9c67e8ceb465f8173234ec541fae4e35ad870f3bdb5",
+            "name": "jobs__recover",
+            "operations": [
+              {
+                "entity": "Jobs",
+                "field": "status",
+                "hash": "sha256:d456a0c20645a8609f2e38fd27b750e87d395f47a3830a4cf8753db11a819d71",
+                "index": 0,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:7c125f39bf2e32c273d3a1bb511fa66e7c15ce3d108a7280d0b074c5df18f568"
+              },
+              {
+                "entity": "Jobs",
+                "field": "owner",
+                "hash": "sha256:5f13479bd14cfc9e1e4b94023f3dcca168b203cd134a4fdf21f010ec9af05e36",
+                "index": 1,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:73a5621a6ec499d2c1c5a6bb0a5281d93bb4aa4bded1b70501f78c7f92bb837f"
+              },
+              {
+                "entity": "Jobs",
+                "field": "lease_until",
+                "hash": "sha256:98fb1253fa0efcce84476dbe03d888f8a3a6c3c117d75d64506811695ab36f74",
+                "index": 2,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:bc3fed96042e363b119df5139c8860e2e37447d156aaabdadc5a5653a524ffeb"
+              },
+              {
+                "entity": "Jobs",
+                "field": "available_at",
+                "hash": "sha256:ba08fd199fc5b5ab35caa6339b03faabf7b2a993c0ed699db6445ab0f9f07985",
+                "index": 3,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:7bcc2111c78481ad4e336d459d9cb52da2369923af954f060f736aa443cf315c"
+              }
+            ],
+            "params": [
+              {
+                "name": "jobs",
+                "type": {
+                  "Entity": "Jobs"
+                }
+              },
+              {
+                "name": "available_at",
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              {
+                "name": "now",
+                "type": {
+                  "Nominal": "Time"
+                }
+              }
+            ],
+            "postconditions": [
+              "sha256:27c95f5e33adba2318d362b6d5dac4974e273daefc7eb15e9143aaf99911c6ad"
+            ],
+            "preconditions": [
+              "sha256:6ab0f297643d495dcf2b0fdedea6980621e6022b93c2fe61eb1e737307e0c9be",
+              "sha256:2a03bc2af6b2fa3017770ba7c62778c6c249f66d1555b4292f9f14b95a3d7969",
+              "sha256:e3e2a01d97c803edc7c644ad3fc2961349f5d43144a97ee2fa968e5d12b59474",
+              "sha256:9c547c176971bf49cafc9fab97b29ea9b6fd3005ef7cdbe8fddc8b2d592f3824",
+              "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a"
+            ]
+          },
+          {
+            "hash": "sha256:f05f2901dd420c0e9d7207cc0e63863dc6a1b539caa2f4bd410a8e731dddc1aa",
+            "name": "jobs__renew",
+            "operations": [
+              {
+                "entity": "Jobs",
+                "field": "status",
+                "hash": "sha256:b3c0b67acb0e625687cab6cf7da2fab230881d0cc1c9eddca63f3fbd5184b3fe",
+                "index": 0,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:01769b18f174c50114d512d234a15677d654d34020baaee51a41b998818c28fc"
+              },
+              {
+                "entity": "Jobs",
+                "field": "lease_until",
+                "hash": "sha256:48468607ee65d91ae5f1a95e19ec6e2839dee21920b66da446da1c3ba489429f",
+                "index": 1,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:709f94ca58db2e42d3c28288cf95e9886d9b4965940638900db99e3af492e74d"
+              }
+            ],
+            "params": [
+              {
+                "name": "jobs",
+                "type": {
+                  "Entity": "Jobs"
+                }
+              },
+              {
+                "name": "generation",
+                "type": "Int"
+              },
+              {
+                "name": "lease_until",
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              {
+                "name": "now",
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              {
+                "name": "worker",
+                "type": {
+                  "Id": "Actor"
+                }
+              }
+            ],
+            "postconditions": [
+              "sha256:8b8c99a3b2b83ba033a0319fd8da9bb9506f7a2ce381c39e9324777ee6226b3a",
+              "sha256:35d3052d1fc7801f20f6e68963d001e3d849580df29c5a08eff9a2921d6e78ff"
+            ],
+            "preconditions": [
+              "sha256:6ab0f297643d495dcf2b0fdedea6980621e6022b93c2fe61eb1e737307e0c9be",
+              "sha256:c8a3e3b7782dd0d8878bfacb66cea03313c5d78f6b30c29a2a92edc6be53fe72",
+              "sha256:35d3052d1fc7801f20f6e68963d001e3d849580df29c5a08eff9a2921d6e78ff",
+              "sha256:dfe38ee816dfb04304480e5c351d39e5d026112f974f141c7a35fc4be598e034",
+              "sha256:ac0ba9eaa494dbee317dba21155930d4be81a2c3b693768ba0b4e009fa9b6bdc"
+            ]
+          },
+          {
+            "hash": "sha256:a3a0b744800464778885c93db7979c802beaaa773a1d7aeaf2b626b1f05fc83c",
+            "name": "jobs__retry",
+            "operations": [
+              {
+                "entity": "Jobs",
+                "field": "status",
+                "hash": "sha256:d456a0c20645a8609f2e38fd27b750e87d395f47a3830a4cf8753db11a819d71",
+                "index": 0,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:7c125f39bf2e32c273d3a1bb511fa66e7c15ce3d108a7280d0b074c5df18f568"
+              },
+              {
+                "entity": "Jobs",
+                "field": "owner",
+                "hash": "sha256:5f13479bd14cfc9e1e4b94023f3dcca168b203cd134a4fdf21f010ec9af05e36",
+                "index": 1,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:73a5621a6ec499d2c1c5a6bb0a5281d93bb4aa4bded1b70501f78c7f92bb837f"
+              },
+              {
+                "entity": "Jobs",
+                "field": "lease_until",
+                "hash": "sha256:98fb1253fa0efcce84476dbe03d888f8a3a6c3c117d75d64506811695ab36f74",
+                "index": 2,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:bc3fed96042e363b119df5139c8860e2e37447d156aaabdadc5a5653a524ffeb"
+              },
+              {
+                "entity": "Jobs",
+                "field": "available_at",
+                "hash": "sha256:ba08fd199fc5b5ab35caa6339b03faabf7b2a993c0ed699db6445ab0f9f07985",
+                "index": 3,
+                "kind": "assign",
+                "param": "jobs",
+                "value": "sha256:7bcc2111c78481ad4e336d459d9cb52da2369923af954f060f736aa443cf315c"
+              }
+            ],
+            "params": [
+              {
+                "name": "jobs",
+                "type": {
+                  "Entity": "Jobs"
+                }
+              },
+              {
+                "name": "generation",
+                "type": "Int"
+              },
+              {
+                "name": "available_at",
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              {
+                "name": "now",
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              {
+                "name": "worker",
+                "type": {
+                  "Id": "Actor"
+                }
+              }
+            ],
+            "postconditions": [
+              "sha256:27c95f5e33adba2318d362b6d5dac4974e273daefc7eb15e9143aaf99911c6ad",
+              "sha256:35d3052d1fc7801f20f6e68963d001e3d849580df29c5a08eff9a2921d6e78ff"
+            ],
+            "preconditions": [
+              "sha256:6ab0f297643d495dcf2b0fdedea6980621e6022b93c2fe61eb1e737307e0c9be",
+              "sha256:c8a3e3b7782dd0d8878bfacb66cea03313c5d78f6b30c29a2a92edc6be53fe72",
+              "sha256:35d3052d1fc7801f20f6e68963d001e3d849580df29c5a08eff9a2921d6e78ff",
+              "sha256:dfe38ee816dfb04304480e5c351d39e5d026112f974f141c7a35fc4be598e034",
+              "sha256:e3e2a01d97c803edc7c644ad3fc2961349f5d43144a97ee2fa968e5d12b59474",
+              "sha256:9c547c176971bf49cafc9fab97b29ea9b6fd3005ef7cdbe8fddc8b2d592f3824"
+            ]
+          }
+        ],
+        "behavior_hash": "sha256:54e1b3f3a3bb7e823ddb2af5c45f6eafbad2b49862d90212e8265a5bb2a959fd",
+        "core_release": {
+          "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+          "version": "0.15.0"
+        },
+        "declarations": {
+          "Actor": {
+            "fields": {
+              "id": {
+                "reference": false,
+                "type": {
+                  "Id": "Actor"
+                }
+              },
+              "name": {
+                "reference": false,
+                "type": "String"
+              }
+            },
+            "hash": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+          },
+          "Auxiliary": {
+            "fields": {
+              "id": {
+                "reference": false,
+                "type": {
+                  "Id": "Auxiliary"
+                }
+              },
+              "phase": {
+                "reference": false,
+                "type": {
+                  "Enum": "Phase"
+                }
+              }
+            },
+            "hash": "sha256:a4066f7e56eb508bfafd3a38e213dff83bac52f2a1fa1ae77662d0026dd9c3d7"
+          },
+          "Jobs": {
+            "fields": {
+              "attempts": {
+                "reference": false,
+                "type": "Int"
+              },
+              "available_at": {
+                "reference": false,
+                "type": {
+                  "Nominal": "Time"
+                }
+              },
+              "id": {
+                "reference": false,
+                "type": {
+                  "Id": "Jobs"
+                }
+              },
+              "lease_until": {
+                "reference": false,
+                "type": {
+                  "Option": {
+                    "Nominal": "Time"
+                  }
+                }
+              },
+              "owner": {
+                "reference": false,
+                "type": {
+                  "Option": {
+                    "Id": "Actor"
+                  }
+                }
+              },
+              "status": {
+                "reference": false,
+                "type": {
+                  "Enum": "JobsStatus"
+                }
+              }
+            },
+            "hash": "sha256:00a56159fb1529d043e2ed4974057b6fc9536f311ee191f009a6a668f4227c98"
+          }
+        },
+        "format": "behavior.safety_inventory.v1",
+        "inventory_hash": "sha256:9f04ca511a011798d55edba6193c84f3fca24b4961135944fab87676f4143893"
+      },
+      "is_certified": false,
+      "issues": [],
+      "policies": [
+        {
+          "document": {
+            "creators": [],
+            "entity": "sha256:a4066f7e56eb508bfafd3a38e213dff83bac52f2a1fa1ae77662d0026dd9c3d7",
+            "kind": "FieldOwnership",
+            "model_semantic_version": 1,
+            "removers": [],
+            "writers": {
+              "phase": [
+                "sha256:971388002a5489e1dec6aa0b741e7fa60ea21f9e181c3cc2ecd9ec7c7c899fae"
+              ]
+            }
+          },
+          "model_hash": "sha256:339d930660266f5a79ebb289bce7441dd5b6f4531d5e595ccaaa708a48fcf49e"
+        }
+      ],
+      "policy_set_hash": "sha256:134056a8ebd1d52f033655d30f91e6507dd7debd4096401e0c6340de8e7ac2c3",
+      "status": "Lowered"
+    }
+  }
+}

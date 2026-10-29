@@ -1,0 +1,198 @@
+{
+  "status": "reviewed_conformant_for_declared_bounded_scope",
+  "reviewer": "Codex implementation self-review; no independent peer approval claimed",
+  "questions": [
+    {
+      "question": 1,
+      "topic": "Public capabilities",
+      "finding": "Only declared top-level public model, type/expression/action/read, Store, Safety certification/checking/snapshot and replay interfaces. The exact released Behavior wheel bytes, Core release and immutable public Lean package are checked.",
+      "evidence": [
+        "dependency-conformance.json",
+        "tdd/T094.json"
+      ],
+      "status": "conforms_with_recorded_limits"
+    },
+    {
+      "question": 2,
+      "topic": "Layer ownership",
+      "finding": "No Behavior semantic implementation, proof rule, canonicalizer or Wire authoring bypass. Structured proposals translate through public constructors; source operand restrictions refuse unsupported Python operations. Host policy/transport/byte digests are operational controls. Original source is retained because canonical-only re-authoring is unavailable. Derived tool schemas restrict only transport stages and prune unreachable definitions; full runtime contracts and Behavior semantics are unchanged.",
+      "evidence": [
+        "../../../SEMANTIC_GAPS.md",
+        "../contracts/authoring.md",
+        "tdd/T010.json"
+      ],
+      "status": "conforms_with_recorded_limits"
+    },
+    {
+      "question": 3,
+      "topic": "Persistence and authority",
+      "finding": "Trusted immutable versioned policy/approval objects remain separate from agent models. SystemId scopes independent stores, activation, reads, operation binding and recovery. Pure definition evidence is shared without disclosing system state/deployment evidence.",
+      "evidence": [
+        "us6.json",
+        "../contracts/host-policy.md",
+        "tdd/T068.json"
+      ],
+      "status": "conforms_with_recorded_limits"
+    },
+    {
+      "question": 4,
+      "topic": "Exact guarantees",
+      "finding": "Core owns evaluation, CAS, refusal, complete resulting-state validity and replay. Original bundles/context/refusals survive retries and reconciliation. Public conditional proof remains OrdinaryTransitions with Unestablished initial validity and recorded exclusions. Activation freshly validates exact incoming policies/state under all writer coordination. SQLite/local trust and unsupported migration/external execution limits remain explicit.",
+      "evidence": [
+        "us4.json",
+        "us5.json",
+        "../../../docs/operations.md",
+        "tdd/T079.json"
+      ],
+      "status": "conforms_with_recorded_limits"
+    },
+    {
+      "question": 5,
+      "topic": "Deterministic evidence",
+      "finding": "Observed failure records precede new behavior fixes; per-family constructs compare to independently constructed public consumers. Forty-five public Backend cases, real process crashes, time/authority changes, bounded output/cancellation, original-version workspaces and actual stdio/admin journeys pass focused checks. Final gate also requires non-skipped positive proofs and the clean installed suite. Fixed host schema meta-validation is an explicit gate; runtime caller data validation remains mandatory.",
+      "evidence": [
+        "tdd/",
+        "dependency-conformance.json",
+        "us1.json",
+        "us2.json",
+        "us3.json",
+        "us4.json",
+        "us5.json",
+        "us6.json"
+      ],
+      "status": "conforms_with_recorded_limits"
+    },
+    {
+      "question": 6,
+      "topic": "Visible gaps",
+      "finding": "GAP-001 through GAP-004 remain open with bounded consumer handling. GAP-005 records unavailable public scalar literal equality construction; unsupported literal-left/entity-object expressions fail explicitly. No unresolved gap blocks the declared bounded journeys; canonical-only editing, generic upstream metadata and governed schema migration remain unclaimed.",
+      "evidence": [
+        "../../../SEMANTIC_GAPS.md",
+        "tdd/T010.json"
+      ],
+      "status": "conforms_with_recorded_limits"
+    },
+    {
+      "question": 7,
+      "topic": "Simpler public API integration",
+      "finding": "Existing public Models, contributed handles, typed factories, declared reads, Safety functions and the existing SQLite/journal boundary suffice. No scheduler, plugin framework, generic interpreter, external business I/O or copied Core lowerer is added. Frozen repeated adapters are retained compatibility artifacts.",
+      "evidence": [
+        "../plan.md",
+        "../contracts/adapter-versions.md",
+        "us5.json"
+      ],
+      "status": "conforms_with_recorded_limits"
+    }
+  ],
+  "immutable_checkpoint_audit": {
+    "tests/fixtures/adapter_versions/v2_0_0/manifest.json": {
+      "manifest_sha256": "800f3389dc325b2a8cab29731bcf14692d901420b9f06e1457b9b00c340b3a84",
+      "closure": {
+        "adapter_versions/v2_0_0.py": "6a200f50ce4c2ad720bc2ce2929159d55b5289319f3afd9f4ab43a450a7d30c6",
+        "adapter_versions/fragments_2_0_0.py": "c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+        "contracts/authoring-v2-2.0.0.schema.json": "b7ae24665898970a246411dceba98203197f7b3d090e97a33bd1e879d3f239bd"
+      },
+      "workspace_files": {
+        "host.sqlite": "d7b4dfc110c1e1730a4bcb3a0dbaf1e52631997c786c4b4d473308f23bc4ee4a",
+        "systems/system-c7dc288562084c029dca827a56fab9f5.sqlite": "c202786dfb9c18b6c08c49da8b7f4a2ec66a43986af9f7803e42bd4c7c1fb33f"
+      }
+    },
+    "tests/fixtures/adapter_versions/v2_1_0/manifest.json": {
+      "manifest_sha256": "6f4cdb5fdc49b1959e993b28f0999233c38d4f15610a0cfe1ec3757c80fa69f7",
+      "closure": {
+        "adapter_versions/v2_1_0.py": "195ae5857f2e05f05f1886b6f2ef2c48e6c5bd80242fc905006d9c71a4cdb926",
+        "adapter_versions/fragments_2_0_0.py": "c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+        "contracts/authoring-v2-2.1.0.schema.json": "50e27a14e4289d6066584a3eb924ff9896155aae492684d3fb4326e929febc61"
+      },
+      "workspace_files": {
+        "host.sqlite": "67485a0eee537966c49894e1f80995bad4288a03fb7e95308cbdd556ead89c6e",
+        "systems/system-3b0a36c24ce043289746fba1ef01d9bf.sqlite": "0fda48733a7e480102876af4141d63cfaf83176fee9ea26f46f41bf53e0bdf23"
+      }
+    },
+    "tests/fixtures/adapter_versions/v2_2_0/manifest.json": {
+      "manifest_sha256": "211d8d8325e226b77663284a3866007b768cbd62eb899662c6b5f0cb0845e83a",
+      "closure": {
+        "adapter_versions/v2_2_0.py": "9b1c2fafce16c7990929222a7889e5fdd640c0189d6ae7ecdaa0dca2dc3b3e6b",
+        "adapter_versions/fragments_2_0_0.py": "c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+        "contracts/authoring-v2-2.2.0.schema.json": "94141d81290666c98e5b6499508908f8e62254a39188acf3184a8fe2cd8d468a"
+      },
+      "workspace_files": {
+        "host.sqlite": "9546d11092503e6a81a2ab071bc930292af5c9acdf435b4bc84de80c4fb7d1ea",
+        "systems/system-bc9153a1a1da4406a1e2b74f1afceb73.sqlite": "7ebf2164f27359a0a3844bba48237fa2706a49237fd8ee690a9f4065612fdc8d"
+      }
+    },
+    "tests/fixtures/adapter_versions/v2_3_0/manifest.json": {
+      "manifest_sha256": "595e0dc42568907cf0d35178e468851ab7b8225787b86aa1a2c764013dd66939",
+      "closure": {
+        "adapter_versions/v2_3_0.py": "246ff78b225b87877549675f12bfecd4bf79f801d7ba8c135bce05a18c31638c",
+        "adapter_versions/fragments_2_0_0.py": "c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+        "contracts/authoring-v2-2.3.0.schema.json": "904d7aae1396f103c4715d689112c6ac7fdb0be558295f6b09de85b6d085f2a2"
+      },
+      "workspace_files": {
+        "host.sqlite": "a24a47449db14f4d2b7ce791384b6a8f07092e92e37122f1d57b29051fed3ad4",
+        "systems/system-cae1eccf12b94e8fa8a2e68cbbe48d50.sqlite": "b1d54077e708cbdda9400b02a1e0ad7fd0878dfa85fb527b3cea20379a213476"
+      }
+    },
+    "tests/fixtures/legacy_v1/manifest.json": {
+      "manifest_sha256": "bf74a9620be5b87b7f505f898cf15656a3ab85aa30f3912dda3b2e8c40232078",
+      "closure": {
+        "src/behavior_mcp/authoring.py": "32289a08c99625eb489f67ac0c50bcf8f5692cd80e12a2660ce5837c19533b7c",
+        "specs/001-agent-native-systems/contracts/authoring.schema.json": "8c39ef2d53485955909ffb236c003ebc21ae35273b8788cb9840794b2b9dea5c"
+      },
+      "workspace_files": {
+        "host.sqlite": "aab078d5590e361fbf8aa05052759e900f7b74c4e51ad9cc1bf2875e50587b4f",
+        "systems/system-700a27832e194aec8b8941acda4055f6.sqlite": "c8076a63dc269c285beac909852ec8e24ad3e94708b29339576da1a56402800c"
+      }
+    }
+  },
+  "source_sha256": {
+    "src/behavior_mcp/__init__.py": "3ddfe0c38615fffdb29d15238f1e9912c02c0429d7d6001dad25686c244eac5b",
+    "src/behavior_mcp/adapter_versions/__init__.py": "9eee21a181b4ed42cc3885c34edd4749506f089ec38cc4e87e06c421254f9800",
+    "src/behavior_mcp/adapter_versions/fragments_2_0_0.py": "c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+    "src/behavior_mcp/adapter_versions/v2_0_0.py": "6a200f50ce4c2ad720bc2ce2929159d55b5289319f3afd9f4ab43a450a7d30c6",
+    "src/behavior_mcp/adapter_versions/v2_1_0.py": "195ae5857f2e05f05f1886b6f2ef2c48e6c5bd80242fc905006d9c71a4cdb926",
+    "src/behavior_mcp/adapter_versions/v2_2_0.py": "9b1c2fafce16c7990929222a7889e5fdd640c0189d6ae7ecdaa0dca2dc3b3e6b",
+    "src/behavior_mcp/adapter_versions/v2_3_0.py": "246ff78b225b87877549675f12bfecd4bf79f801d7ba8c135bce05a18c31638c",
+    "src/behavior_mcp/adapters.py": "10415a53c72d4dece30ee2314b4fe18b2360089d50099d9f364fb2d3d3740920",
+    "src/behavior_mcp/admin.py": "49cdfa7639dc8d2bcf5f17f24655c2328e7230dc1222af63d9b341dacc8bbb81",
+    "src/behavior_mcp/artifacts.py": "b3b20fed7fdf18ab907cbe42e6fc37024984210f8fc3d33927b7eb5b20f86695",
+    "src/behavior_mcp/authoring.py": "32289a08c99625eb489f67ac0c50bcf8f5692cd80e12a2660ce5837c19533b7c",
+    "src/behavior_mcp/authoring_v2.py": "3771f3b4fea65801b99e1f7fb34f33fd907d6844c1968388bf4fa1c937efd711",
+    "src/behavior_mcp/dependencies.py": "4e4a1dc04b47066e9df196b2c3b3ead03b8b85aff5f198fcd9bdbe7179cef083",
+    "src/behavior_mcp/fragments_v2.py": "4a16873093d0061951a069a79b84b759a718af91b353a2c9d2414b037842be32",
+    "src/behavior_mcp/limits.py": "5538ef579fae260fe35dc6f77dfd535641f110ca3b6de2d769722a3ec4728df8",
+    "src/behavior_mcp/operations.py": "a66a8f3cbe76bb9294eb227b89b836ae188c82bd8ef68f4eef7e927c05ad93fd",
+    "src/behavior_mcp/policy.py": "f496ebf6537df903e2f04954c097dd6dc0538b80b77a4767b9fda3f41cf4016a",
+    "src/behavior_mcp/policy_v2.py": "8b9f2e4d99f30ee964af4d57d0b1b68af04ea76e080adadb496f4dbfea021bac",
+    "src/behavior_mcp/proof_worker.py": "b1dcf991645755e10654e8d1d85ac8f7f5360b4ea1c426b526a512677fd4d82e",
+    "src/behavior_mcp/reads.py": "d17d948254271d1ab2deef63f264faa3d01f7bd8d2c6799e0b44c011596f75f5",
+    "src/behavior_mcp/runtime_context.py": "9391d825bf348666a1f61fdf23d0253dbfdf4bb548a33e79977d1ef83606ee7b",
+    "src/behavior_mcp/safety.py": "2a47f239fb9964de284bd42c1615b3e3b1c845c662eb9e89383543f339df4772",
+    "src/behavior_mcp/schemas.py": "25fdb2c27273a2c6efba983523c9f8b29365653a6714a389d4bc5b0a6e8531f7",
+    "src/behavior_mcp/server.py": "9d737b5f5b226f2b99dec77c6ac9fc3217b48247402ca447b15479f09f4ff373",
+    "src/behavior_mcp/source_bounds.py": "35d44b324a2533d843f4ff4ca96eaf062e0c184b08da9d3d6383cd4d60b9efc8",
+    "src/behavior_mcp/sqlite_backend.py": "421ce65d071551acd58f0f7f833350e5414bef364b02cd1d966e55f53a0d3217",
+    "src/behavior_mcp/storage.py": "b8016a8044a4a1981b472989a3ed932f2008a0028fe1794abd50caea3b600c7f",
+    "src/behavior_mcp/systems.py": "4e05fd515a2e41103c5c528d6dda9aaed315383aeea54f8fbf927749d9bde565",
+    "src/behavior_mcp/verification.py": "fa96b5ed9e43db32d7a3dc35e39ef4093052725fdfaeaccf11ddaad80c524586"
+  },
+  "graph_sha256": {
+    "uv.lock": "5ba548320de9b61e1b5daf1bccf4b9617ca12ea6c7aaf506fee765160d5db918",
+    "flake.lock": "ddbda36308775a021945796dbcd4d6e0020068696954764eefdd1ae1177cefac"
+  },
+  "final_gate": "nix develop --command ./scripts/check",
+  "exceptions_requested": [],
+  "quality_gate_exit_code": 0,
+  "quality_evidence": [
+    "tdd/T099.json",
+    "package.json",
+    "release-acceptance.json"
+  ],
+  "final_checkpoint_manifest_sha256": {
+    "tests/fixtures/adapter_versions/v2_0_0/manifest.json": "800f3389dc325b2a8cab29731bcf14692d901420b9f06e1457b9b00c340b3a84",
+    "tests/fixtures/adapter_versions/v2_1_0/manifest.json": "6f4cdb5fdc49b1959e993b28f0999233c38d4f15610a0cfe1ec3757c80fa69f7",
+    "tests/fixtures/adapter_versions/v2_2_0/manifest.json": "211d8d8325e226b77663284a3866007b768cbd62eb899662c6b5f0cb0845e83a",
+    "tests/fixtures/adapter_versions/v2_3_0/manifest.json": "595e0dc42568907cf0d35178e468851ab7b8225787b86aa1a2c764013dd66939",
+    "tests/fixtures/legacy_v1/manifest.json": "bf74a9620be5b87b7f505f898cf15656a3ab85aa30f3912dda3b2e8c40232078"
+  }
+}

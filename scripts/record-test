@@ -1,17 +1,27 @@
 #!/usr/bin/env python3
 """Record actual deterministic test executions; never infer red or green."""
 
+import argparse
 import json
 import subprocess
 import sys
 from pathlib import Path
 
-task, phase, *command = sys.argv[1:]
-assert phase in {"red", "green"}
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument(
+    "--feature-dir", type=Path, default=Path("specs/001-agent-native-systems")
+)
+parser.add_argument("task")
+parser.add_argument("phase", choices=("red", "green"))
+parser.add_argument("command", nargs=argparse.REMAINDER)
+args = parser.parse_args()
+task, phase, command = args.task, args.phase, args.command
+if not command or Path(task).name != task:
+    parser.error("A task name and test command are required")
 run = subprocess.run(command, capture_output=True, text=True)
 print(run.stdout, end="")
 print(run.stderr, end="", file=sys.stderr)
-p = Path("specs/001-agent-native-systems/evidence/tdd") / (task + ".json")
+p = args.feature_dir / "evidence/tdd" / (task + ".json")
 prior = json.loads(p.read_text()) if p.exists() else {"task": task}
 if phase in prior:
     prior.setdefault(phase + "_history", []).append(prior[phase])

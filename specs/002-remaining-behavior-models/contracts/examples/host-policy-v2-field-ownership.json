@@ -1,0 +1,205 @@
+{
+  "format": "behavior-mcp.host-policy.v2",
+  "policy_id": "local-ownership",
+  "version": 1,
+  "issuer_id": "local-operator",
+  "principal_id": "agent-session",
+  "workspace_id": "workspace-1",
+  "system_scope": {
+    "kind": "workspace"
+  },
+  "operations": [
+    "models_list",
+    "definition_propose",
+    "definition_get",
+    "definition_validate",
+    "definition_verify",
+    "systems_create",
+    "systems_list",
+    "system_inspect",
+    "definition_activate",
+    "capabilities_list",
+    "state_read",
+    "transition_evaluate",
+    "transition_commit",
+    "operation_get",
+    "system_recover",
+    "gaps_list",
+    "capability_read",
+    "definition_safety_certify",
+    "definition_safety_verify_evidence",
+    "state_validate_safety"
+  ],
+  "system_creation": {
+    "allowed": true,
+    "max_systems": 8,
+    "core_policy_profile": "structural-none",
+    "bootstrap_actor": {
+      "entity": "Actor",
+      "id": "actor-1",
+      "name": "local"
+    }
+  },
+  "required_verification": [],
+  "allowed_adapters": [
+    {
+      "adapter_profile": "structured-models.v2",
+      "behavior_version": "0.14.0",
+      "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+      "core_version": "0.15.0",
+      "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+      "verifier_version": "0.10.0",
+      "semantic_time_profile": "utc-unix-milliseconds.v1",
+      "allow_external_commands": false,
+      "allow_permission_expansion": false,
+      "allow_schema_migration": false,
+      "adapter_version": "2.2.0",
+      "allowed_model_kinds": [
+        "state_machine"
+      ],
+      "allowed_model_ids": [
+        "parent"
+      ],
+      "allowed_entity_declarations": [
+        {
+          "name": "Parent",
+          "fields": {
+            "phase": {
+              "kind": "enum",
+              "name": "ParentPhase"
+            }
+          }
+        }
+      ],
+      "allowed_enum_declarations": [
+        {
+          "name": "ParentPhase",
+          "cases": [
+            {
+              "name": "OPEN",
+              "value": "Open"
+            },
+            {
+              "name": "STOPPED",
+              "value": "Stopped"
+            }
+          ]
+        }
+      ],
+      "allowed_nominal_declarations": [],
+      "allowed_action_names": [
+        "new_parent",
+        "remove_parent",
+        "parent__stop"
+      ],
+      "allowed_read_names": [],
+      "allowed_condition_ops": [
+        "literal",
+        "enum",
+        "param",
+        "field",
+        "eq",
+        "and",
+        "or",
+        "not",
+        "in",
+        "any",
+        "derived"
+      ],
+      "allowed_field_refs": [
+        {
+          "entity": "Parent",
+          "fields": [
+            "phase",
+            "id"
+          ]
+        }
+      ],
+      "allowed_query_entities": [],
+      "allowed_derived_functions": [],
+      "required_guard_roots": [],
+      "allowed_action_descriptors": [
+        {
+          "kind": "create_entity",
+          "name": "new_parent",
+          "entity": "Parent",
+          "values": {
+            "phase": {
+              "op": "enum",
+              "enum": "ParentPhase",
+              "case": "OPEN"
+            }
+          },
+          "requires": []
+        },
+        {
+          "kind": "remove_entity",
+          "name": "remove_parent",
+          "entity": "Parent",
+          "requires": []
+        }
+      ],
+      "model_parameter_bounds": [],
+      "allow_new_records": true,
+      "allow_existing_record_changes": true,
+      "allow_remove_records": true,
+      "state_fields": [
+        {
+          "entity": "Parent",
+          "field": "phase",
+          "values": [
+            "Open",
+            "Stopped"
+          ],
+          "edges": [
+            {
+              "from": "Open",
+              "to": "Stopped"
+            }
+          ]
+        }
+      ],
+      "required_policy_ids": [
+        "parent_control"
+      ],
+      "field_ownership_bounds": [
+        {
+          "policy_kind": "field_ownership",
+          "id": "parent_control",
+          "entity": "Parent",
+          "writers": {
+            "phase": [
+              {
+                "model_id": "parent",
+                "local_action_id": "stop"
+              }
+            ]
+          },
+          "creators": [
+            {
+              "action": "new_parent"
+            }
+          ],
+          "removers": [
+            {
+              "action": "remove_parent"
+            }
+          ],
+          "required_protected_fields": [
+            "phase"
+          ]
+        }
+      ],
+      "allowed_lifecycle_dependencies": [],
+      "proposed_time_bounds": [],
+      "required_safety": [],
+      "required_model_conditions": []
+    }
+  ],
+  "runtime_actions": [
+    "new_parent",
+    "remove_parent",
+    "parent__stop"
+  ],
+  "runtime_reads": []
+}

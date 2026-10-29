@@ -1,0 +1,16 @@
+{
+  "task": "T073",
+  "baseline": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_expanded_roundtrip.py"
+    ],
+    "exit_code": 0,
+    "stdout": "....                                                                     [100%]\n4 passed in 17.39s\n",
+    "stderr": ""
+  },
+  "note": "Conformance audit of previously delivered immutable adapters; passing existing behavior is not manufactured into an observed-red claim."
+}

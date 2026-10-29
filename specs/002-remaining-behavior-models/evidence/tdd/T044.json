@@ -1,0 +1,27 @@
+{
+  "task": "T044",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_work_queue_recovery.py::test_queue_recovery_after_authority_changes[commit_grant-commit_after_commit]"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n_ test_queue_recovery_after_authority_changes[commit_grant-commit_after_commit] _\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-44/test_queue_recovery_after_auth0')\nsubprocess_python = <function subprocess_python.<locals>.run at 0x747428e04360>\nphase = 'commit_after_commit', change = 'commit_grant'\n\n    @pytest.mark.parametrize(\"phase\", [\"commit_before_commit\", \"commit_after_commit\"])\n    @pytest.mark.parametrize(\n        \"change\", [\"commit_grant\", \"capability\", \"worker\", \"activation\"]\n    )\n    def test_queue_recovery_after_authority_changes(\n        tmp_path, subprocess_python, phase, change\n    ):\n        from tests.fixtures.runtime import authored\n    \n        app, sid, _, proposal, policy = active(tmp_path, \"work-queue\")\n        run(\n            app,\n            sid,\n            \"enqueue\",\n            \"enqueue\",\n            inputs={\"id\": \"w1\", \"available_at\": 0, \"label\": \"Example\"},\n        )\n        args = request(\n            app,\n            sid,\n            \"claim\",\n            \"uncertain\",\n            inputs={\"expected_generation\": 0},\n            proposals={\"lease_until\": 20},\n        )\n        e = app.execute(\"transition_evaluate\", args)\n        assert e[\"outcome\"] == \"evaluation_allowed\", e\n        commit = {\n            \"system_id\": sid,\n            \"operation_id\": \"uncertain\",\n            \"evaluation_token\": e[\"result\"][\"evaluation_token\"],\n        }\n        script = \"\"\"import os,sys,json\n    from pathlib import Path\n    from behavior_mcp import adapters,authoring_v2\n    from behavior_mcp.policy import TrustedContext\n    from behavior_mcp.server import Application\n    if '2.1.0' not in adapters.HANDLERS:\n     authoring_v2.CLOSURE=['authoring_v2.py','fragments_v2.py']\n     adapters.HANDLERS['2.1.0']=authoring_v2\n    ctx=TrustedContext('agent-session','workspace-1','actor-1',lambda:'2026-10-28T00:00:00Z',semantic_clock=lambda:10)\n    app=Application(Path(sys.argv[1]),ctx,'local-queue',fault=lambda stage:os._exit(76) if stage==sys.argv[2] else None)\n    app.execute('transition_commit',json.loads(sys.argv[3]))\n    \"\"\"\n        assert (\n            subprocess_python(script, tmp_path, phase, json.dumps(commit)).returncode == 76\n        )\n        published = phase == \"commit_after_commit\"\n        if change == \"activation\" and published:\n            changed = copy.deepcopy(proposal)\n            changed[\"metadata\"] = {\"title\": \"Revised deployment\"}\n            d = authored(app, changed)\n            history = app.execute(\"system_inspect\", {\"system_id\": sid})[\"result\"][\n                \"history_anchor\"\n            ]\n            response = app.execute(\n                \"definition_activate\",\n                {\n                    \"system_id\": sid,\n                    \"definition_id\": d[\"definition_id\"],\n                    \"expected_activation_revision\": 1,\n                    \"expected_history\": history,\n                    \"operation_id\": \"replace\",\n                },\n            )\n            assert response[\"outcome\"] == \"activated\", response\n        changed = copy.deepcopy(policy)\n        changed[\"version\"] = 2\n        if change == \"commit_grant\" or (change == \"activation\" and not published):\n            changed[\"operations\"].remove(\"transition_commit\")\n        if change == \"capability\":\n            changed[\"runtime_actions\"].remove(\"jobs__claim\")\n        app.artifacts.install_policy(changed)\n        ctx = (\n            replace(app.context, actor_id=\"worker-2\") if change == \"worker\" else app.context\n        )\n        recovering = Application(tmp_path, ctx, app.policy_id)\n        result = recovering.execute(\n            \"system_recover\", {\"system_id\": sid, \"operation_id\": \"uncertain\"}\n        )\n>       assert result[\"request_status\"] == \"completed\", result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'recovery', 'outcome': 'infrastructure_failure', ...}\nE       assert 'failed' == 'completed'\nE         \nE         - completed\nE         + failed\n\ntests/integration/test_work_queue_recovery.py:124: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_work_queue_recovery.py::test_queue_recovery_after_authority_changes[commit_grant-commit_after_commit]\n1 failed in 9.29s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_work_queue_recovery.py::test_queue_recovery_after_authority_changes[commit_grant-commit_after_commit]"
+    ],
+    "exit_code": 0,
+    "stdout": ".                                                                        [100%]\n1 passed in 8.75s\n",
+    "stderr": ""
+  }
+}

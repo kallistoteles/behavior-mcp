@@ -1,0 +1,1357 @@
+{
+  "release": {
+    "accepted_wire_ir": [
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7",
+      "0.8"
+    ],
+    "command_occurrence_domain": "behavior.command_occurrence.v1",
+    "command_stream": "behavior.command_stream_request.v1",
+    "engine": "0.15.0",
+    "read_records": [
+      "behavior.read_record.v1",
+      "behavior.read_record.v2"
+    ],
+    "records": [
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7",
+      "0.8"
+    ],
+    "store_documents": [
+      "behavior.entity_content.v1",
+      "behavior.entity_version.v1",
+      "behavior.state.v1",
+      "behavior.evidence_policy.v1",
+      "behavior.store_genesis.v1",
+      "behavior.commit_bundle.v1",
+      "behavior.transition_record.v1",
+      "behavior.replay_report.v1",
+      "behavior.migration_bundle.v1",
+      "behavior.store_genesis.v2",
+      "behavior.commit_bundle.v2",
+      "behavior.migration_bundle.v2",
+      "behavior.transition_record.v2"
+    ],
+    "verifier": "0.10.0",
+    "wire_ir": [
+      "0.1",
+      "0.2",
+      "0.3",
+      "0.4",
+      "0.5",
+      "0.6",
+      "0.7"
+    ],
+    "core": {
+      "version": "0.15.0",
+      "commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6"
+    },
+    "binding": {
+      "python": "0.14.0"
+    }
+  },
+  "approval": {
+    "module": {
+      "ir_version": "0.7",
+      "behavior_hash": "sha256:fef6e1c0894d92fe6ec77a9af3926e04cd859f6f02f92cb06d4aecc92d3f3b86",
+      "schema_hash": "sha256:f4ce0d314f08b3e62e9c8aa20cc9874ccfda3f516894811a29dee962a5f648e5",
+      "entities": [
+        {
+          "name": "Actor",
+          "fields": [
+            {
+              "name": "name",
+              "type": {
+                "t": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "ApprovalDecision",
+          "fields": [
+            {
+              "name": "actor",
+              "type": {
+                "entity": "Actor",
+                "t": "id"
+              }
+            },
+            {
+              "name": "choice",
+              "type": {
+                "name": "ApprovalDecisionChoice",
+                "t": "enum"
+              }
+            },
+            {
+              "name": "subject",
+              "type": {
+                "entity": "Subject",
+                "t": "id"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Subject",
+          "fields": [
+            {
+              "name": "label",
+              "type": {
+                "t": "string"
+              }
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "approval__approve",
+          "params": [
+            {
+              "name": "decision_id",
+              "role": "input",
+              "type": {
+                "entity": "ApprovalDecision",
+                "t": "id"
+              }
+            },
+            {
+              "name": "subject",
+              "role": "state",
+              "type": {
+                "name": "Subject",
+                "t": "entity"
+              }
+            },
+            {
+              "name": "actor",
+              "role": "context",
+              "type": {
+                "entity": "Actor",
+                "t": "id"
+              }
+            }
+          ]
+        },
+        {
+          "name": "approval__reject",
+          "params": [
+            {
+              "name": "decision_id",
+              "role": "input",
+              "type": {
+                "entity": "ApprovalDecision",
+                "t": "id"
+              }
+            },
+            {
+              "name": "subject",
+              "role": "state",
+              "type": {
+                "name": "Subject",
+                "t": "entity"
+              }
+            },
+            {
+              "name": "actor",
+              "role": "context",
+              "type": {
+                "entity": "Actor",
+                "t": "id"
+              }
+            }
+          ]
+        }
+      ],
+      "reads": [
+        {
+          "name": "approval_status",
+          "params": [
+            {
+              "name": "subject",
+              "role": "state",
+              "type": {
+                "name": "Subject",
+                "t": "entity"
+              }
+            }
+          ]
+        }
+      ],
+      "derived": [
+        {
+          "name": "approval__approve_count",
+          "kind": "derived",
+          "params": [
+            {
+              "name": "s",
+              "type": {
+                "name": "Subject",
+                "t": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "name": "approval__approved",
+          "kind": "rule",
+          "params": [
+            {
+              "name": "s",
+              "type": {
+                "name": "Subject",
+                "t": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "name": "approval__pending",
+          "kind": "rule",
+          "params": [
+            {
+              "name": "s",
+              "type": {
+                "name": "Subject",
+                "t": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "name": "approval__reject_count",
+          "kind": "derived",
+          "params": [
+            {
+              "name": "s",
+              "type": {
+                "name": "Subject",
+                "t": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "name": "approval__rejected",
+          "kind": "rule",
+          "params": [
+            {
+              "name": "s",
+              "type": {
+                "name": "Subject",
+                "t": "entity"
+              }
+            }
+          ]
+        }
+      ],
+      "receipts": [
+        {
+          "kind": "approval",
+          "model_hash": "sha256:8b6ff1e6f4cf3b07cfa0c7499b23893124786a0f3678a3791fe39a58173cf2f0",
+          "model_semantic_version": 1,
+          "lowerer_version": 1,
+          "canonical_model": {
+            "actor": {
+              "entity": "Actor",
+              "entity_hash": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+            },
+            "approval_id": "approval",
+            "approve_threshold": 2,
+            "capabilities": [
+              {
+                "actor": "sha256:2841ab459e90d2de1e21b3eb6d28e86e28bed178767439e814fb6e9202f27e11",
+                "commands": [],
+                "context": [
+                  {
+                    "name": "actor",
+                    "type": {
+                      "Id": "Actor"
+                    },
+                    "types": {
+                      "Actor": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+                    }
+                  }
+                ],
+                "eligible": "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a",
+                "guards": [],
+                "id": "approve",
+                "inputs": [],
+                "open": "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a",
+                "payload": {}
+              },
+              {
+                "actor": "sha256:2841ab459e90d2de1e21b3eb6d28e86e28bed178767439e814fb6e9202f27e11",
+                "commands": [],
+                "context": [
+                  {
+                    "name": "actor",
+                    "type": {
+                      "Id": "Actor"
+                    },
+                    "types": {
+                      "Actor": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+                    }
+                  }
+                ],
+                "eligible": "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a",
+                "guards": [],
+                "id": "reject",
+                "inputs": [],
+                "open": "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a",
+                "payload": {}
+              }
+            ],
+            "format": "behavior.model.approval.v1",
+            "model_kind": "approval",
+            "model_semantic_version": 1,
+            "payload": [],
+            "reject_threshold": 1,
+            "subject": {
+              "entity": "Subject",
+              "entity_hash": "sha256:a1effe95c1ba32d504ab075152a6f5c2e373608e9a37b3d3acdd9300a5bdc4ee"
+            }
+          }
+        }
+      ]
+    },
+    "declared_read_intent": {
+      "record_id": "read:sha256:21db723b5fd311028ed173286e3b75c69ed3432d1e8c7984e926f141f69d9365",
+      "result": "VALUE",
+      "value": {
+        "approval__approve_count": 0,
+        "approval__approved": false,
+        "approval__pending": true,
+        "approval__reject_count": 0,
+        "approval__rejected": false,
+        "id": "subject-1"
+      }
+    },
+    "read_before": {
+      "record_id": "read:sha256:21db723b5fd311028ed173286e3b75c69ed3432d1e8c7984e926f141f69d9365",
+      "result": "VALUE",
+      "value": {
+        "approval__approve_count": 0,
+        "approval__approved": false,
+        "approval__pending": true,
+        "approval__reject_count": 0,
+        "approval__rejected": false,
+        "id": "subject-1"
+      }
+    },
+    "operations": [
+      {
+        "decision": "ALLOW",
+        "reasons": [],
+        "already": false,
+        "history_position": 1
+      },
+      {
+        "decision": "DENY",
+        "reasons": [
+          {
+            "code": "PRECONDITION_FAILED"
+          }
+        ]
+      },
+      {
+        "decision": "ALLOW",
+        "reasons": [],
+        "already": false,
+        "history_position": 2
+      }
+    ],
+    "read_middle": {
+      "record_id": "read:sha256:eac8db618dea7cee9aee247d5332056e407ed1eb574431ebd7dc4406c41eff13",
+      "result": "VALUE",
+      "value": {
+        "approval__approve_count": 1,
+        "approval__approved": false,
+        "approval__pending": true,
+        "approval__reject_count": 0,
+        "approval__rejected": false,
+        "id": "subject-1"
+      }
+    },
+    "read_after": {
+      "record_id": "read:sha256:051a170d52beb81fe4a98be07cd3e96c55694e554d4e696a926f7d44efd128e5",
+      "result": "VALUE",
+      "value": {
+        "approval__approve_count": 2,
+        "approval__approved": true,
+        "approval__pending": false,
+        "approval__reject_count": 0,
+        "approval__rejected": false,
+        "id": "subject-1"
+      }
+    },
+    "read_replay": true,
+    "wire_reimport_receipt_count": 0
+  },
+  "work_queue": {
+    "module": {
+      "ir_version": "0.7",
+      "behavior_hash": "sha256:e41eb74096bf1b08de9f6f18abd753cbd41ffde9001d17becebda91af7a621b2",
+      "schema_hash": "sha256:2db978d88fa2bfd6e9e486754c55647ea934c0592523ab784041c9237d17e314",
+      "entities": [
+        {
+          "name": "Actor",
+          "fields": [
+            {
+              "name": "name",
+              "type": {
+                "t": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Queue",
+          "fields": [
+            {
+              "name": "attempts",
+              "type": {
+                "t": "int"
+              }
+            },
+            {
+              "name": "available_at",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "label",
+              "type": {
+                "t": "string"
+              }
+            },
+            {
+              "name": "lease_until",
+              "type": {
+                "of": {
+                  "name": "Time",
+                  "t": "nominal"
+                },
+                "t": "option"
+              }
+            },
+            {
+              "name": "owner",
+              "type": {
+                "of": {
+                  "entity": "Actor",
+                  "t": "id"
+                },
+                "t": "option"
+              }
+            },
+            {
+              "name": "status",
+              "type": {
+                "name": "QueueStatus",
+                "t": "enum"
+              }
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "name": "queue__cancel",
+          "params": [
+            {
+              "name": "queue",
+              "role": "state",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue__claim",
+          "params": [
+            {
+              "name": "queue",
+              "role": "state",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            },
+            {
+              "name": "expected_generation",
+              "role": "input",
+              "type": {
+                "t": "int"
+              }
+            },
+            {
+              "name": "lease_until",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "now",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "worker",
+              "role": "context",
+              "type": {
+                "entity": "Actor",
+                "t": "id"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue__complete",
+          "params": [
+            {
+              "name": "queue",
+              "role": "state",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            },
+            {
+              "name": "generation",
+              "role": "input",
+              "type": {
+                "t": "int"
+              }
+            },
+            {
+              "name": "now",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "worker",
+              "role": "context",
+              "type": {
+                "entity": "Actor",
+                "t": "id"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue__enqueue",
+          "params": [
+            {
+              "name": "id",
+              "role": "input",
+              "type": {
+                "entity": "Queue",
+                "t": "id"
+              }
+            },
+            {
+              "name": "available_at",
+              "role": "input",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "label",
+              "role": "input",
+              "type": {
+                "t": "string"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue__exhaust",
+          "params": [
+            {
+              "name": "queue",
+              "role": "state",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            },
+            {
+              "name": "now",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue__fail",
+          "params": [
+            {
+              "name": "queue",
+              "role": "state",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            },
+            {
+              "name": "generation",
+              "role": "input",
+              "type": {
+                "t": "int"
+              }
+            },
+            {
+              "name": "now",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "worker",
+              "role": "context",
+              "type": {
+                "entity": "Actor",
+                "t": "id"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue__recover",
+          "params": [
+            {
+              "name": "queue",
+              "role": "state",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            },
+            {
+              "name": "available_at",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "now",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue__renew",
+          "params": [
+            {
+              "name": "queue",
+              "role": "state",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            },
+            {
+              "name": "generation",
+              "role": "input",
+              "type": {
+                "t": "int"
+              }
+            },
+            {
+              "name": "lease_until",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "now",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "worker",
+              "role": "context",
+              "type": {
+                "entity": "Actor",
+                "t": "id"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue__retry",
+          "params": [
+            {
+              "name": "queue",
+              "role": "state",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            },
+            {
+              "name": "generation",
+              "role": "input",
+              "type": {
+                "t": "int"
+              }
+            },
+            {
+              "name": "available_at",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "now",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            },
+            {
+              "name": "worker",
+              "role": "context",
+              "type": {
+                "entity": "Actor",
+                "t": "id"
+              }
+            }
+          ]
+        }
+      ],
+      "reads": [
+        {
+          "name": "queue__expired",
+          "params": [
+            {
+              "name": "now",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue__ready",
+          "params": [
+            {
+              "name": "now",
+              "role": "context",
+              "type": {
+                "name": "Time",
+                "t": "nominal"
+              }
+            }
+          ]
+        },
+        {
+          "name": "queue_terminal",
+          "params": [
+            {
+              "name": "work",
+              "role": "state",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            }
+          ]
+        }
+      ],
+      "derived": [
+        {
+          "name": "queue__terminal",
+          "kind": "rule",
+          "params": [
+            {
+              "name": "w",
+              "type": {
+                "name": "Queue",
+                "t": "entity"
+              }
+            }
+          ]
+        }
+      ],
+      "receipts": [
+        {
+          "kind": "work_queue",
+          "model_hash": "sha256:74b87d807293f52ab2765010c4607b6628ea5bbc7304cb9164dc4c724861e83d",
+          "model_semantic_version": 1,
+          "lowerer_version": 1,
+          "canonical_model": {
+            "capabilities": [
+              {
+                "action": "sha256:385e2974cd2e7ca46f14a62a402a6ff9bad2403b093706d3deca15afd132af31",
+                "context": [],
+                "id": "cancel",
+                "inputs": [],
+                "state": []
+              },
+              {
+                "action": "sha256:f62cc26b015a8239edf79e07d4af64c72c5f56dd6133c639c219aeb65ac5841a",
+                "context": [],
+                "id": "claim",
+                "inputs": [],
+                "state": []
+              },
+              {
+                "action": "sha256:6c734ccad0c54f06011b97235dc2431649238db84bacc5798a2a6fab98825971",
+                "context": [],
+                "id": "complete",
+                "inputs": [],
+                "state": []
+              },
+              {
+                "action": "sha256:258ed90ac6daa40a10c39aa9d75fe6a610cc50dace2547a849452cd551d7b8b1",
+                "context": [],
+                "id": "enqueue",
+                "inputs": [],
+                "state": []
+              },
+              {
+                "action": "sha256:b56a2ae18182f910bb4b1af57ad61c38f329aa2b5b175eb783282de4a6de9281",
+                "context": [],
+                "id": "exhaust",
+                "inputs": [],
+                "state": []
+              },
+              {
+                "action": "sha256:ada5f08c61943bbe10c0541589ab41cdcdf9934b0774484e9d1fb2f8077c288d",
+                "context": [],
+                "id": "fail",
+                "inputs": [],
+                "state": []
+              },
+              {
+                "action": "sha256:486cbcb9bef82d62f1691abb6191779ee8a39a79be8b229994dc5550c53d5548",
+                "context": [],
+                "id": "recover",
+                "inputs": [],
+                "state": []
+              },
+              {
+                "action": "sha256:843d96decd7e3d502ff6c7b69c6eeddbfe70767848ffb51e37b29016f3113657",
+                "context": [],
+                "id": "renew",
+                "inputs": [],
+                "state": []
+              },
+              {
+                "action": "sha256:a594798eb3dcfad635fc9722c9b2280621ec31b38aafce9106e8562de64b09fa",
+                "context": [],
+                "id": "retry",
+                "inputs": [],
+                "state": []
+              }
+            ],
+            "format": "behavior.model.work_queue.v1",
+            "max_attempts": 2,
+            "model_kind": "work_queue",
+            "model_semantic_version": 1,
+            "payload": [
+              {
+                "name": "label",
+                "type": "String",
+                "types": {}
+              }
+            ],
+            "queue_id": "queue",
+            "state_machine": {
+              "document": {
+                "entry_states": [
+                  "READY"
+                ],
+                "field": {
+                  "enum": "QueueStatus",
+                  "enum_hash": "sha256:3e1c577afaae398ca5c242461429e63b2e4abd781d2f26aec6d49c7c4bb91319",
+                  "name": "status"
+                },
+                "format": "behavior.model.state_machine.v2",
+                "model_id": "queue",
+                "model_kind": "state_machine",
+                "model_semantic_version": 2,
+                "subject": {
+                  "entity": "Queue",
+                  "entity_hash": "sha256:70d29db3e50c1cc24de264c345bc94c4eddcc5871250c0b620078c51bfedc10e"
+                },
+                "subject_param": "queue",
+                "transitions": [
+                  {
+                    "commands": [],
+                    "context": [],
+                    "effects": [
+                      "sha256:59ca89e35e8fcd04781ae8d2b6f1feb2985650dd77d0839afd4d4c0681a6743c",
+                      "sha256:cf7b2fe6772a0e9c1901fc4c76cef67f21452b3a78b91e76728384cedee5d1b8"
+                    ],
+                    "from": [
+                      "LEASED",
+                      "READY"
+                    ],
+                    "guards": [
+                      "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a"
+                    ],
+                    "id": "cancel",
+                    "inputs": [],
+                    "postconditions": [],
+                    "to": "CANCELLED"
+                  },
+                  {
+                    "commands": [],
+                    "context": [
+                      {
+                        "name": "lease_until",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      },
+                      {
+                        "name": "now",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      },
+                      {
+                        "name": "worker",
+                        "type": {
+                          "Id": "Actor"
+                        },
+                        "types": {
+                          "Actor": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+                        }
+                      }
+                    ],
+                    "effects": [
+                      "sha256:715cde7c55dfd30eb934a0e13663c95b9fcb0b0856dfe02642b4f9be00c20a61",
+                      "sha256:8a5f671965eb4e1ffecb05f4c2b5637ad9273a3f91d4d03dc4e9839b8d777b3d",
+                      "sha256:22a846692534f67f0d023a5bfb6b14cc2b3bf7ad384e339e3e60ee72103645dd"
+                    ],
+                    "from": [
+                      "READY"
+                    ],
+                    "guards": [
+                      "sha256:276f02e674d2656122ea49bad08cdebb84ba8970bc05aab1869bbfcc485751a8",
+                      "sha256:158d68de2014ee1eaad5f1e7de2d6dbe4ddff1ca5ff6dc381d4d0f1c8b36edcb",
+                      "sha256:b6664d38bd0d4e2476fb6150207a245b54a05fd6850db46e5365b100361238be",
+                      "sha256:9397e58593e6bc9a157d0b89a783ea7cf4f6ad00998f02ad03c68cd288f71e99",
+                      "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a"
+                    ],
+                    "id": "claim",
+                    "inputs": [
+                      {
+                        "name": "expected_generation",
+                        "type": "Int",
+                        "types": {}
+                      }
+                    ],
+                    "postconditions": [
+                      "sha256:5b33f816e813d7bf27209a50e92629cefdeeba3a086bb2bc84915ee3ca0bacd8"
+                    ],
+                    "to": "LEASED"
+                  },
+                  {
+                    "commands": [],
+                    "context": [
+                      {
+                        "name": "now",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      },
+                      {
+                        "name": "worker",
+                        "type": {
+                          "Id": "Actor"
+                        },
+                        "types": {
+                          "Actor": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+                        }
+                      }
+                    ],
+                    "effects": [
+                      "sha256:59ca89e35e8fcd04781ae8d2b6f1feb2985650dd77d0839afd4d4c0681a6743c",
+                      "sha256:cf7b2fe6772a0e9c1901fc4c76cef67f21452b3a78b91e76728384cedee5d1b8"
+                    ],
+                    "from": [
+                      "LEASED"
+                    ],
+                    "guards": [
+                      "sha256:d31dd7c5060bdc4920453425d893e59c6219076d43af73b885a17c036b93c119",
+                      "sha256:040f2b3982fd40ea9cf1278143a796c06349ec3f9d07faaf4789ef0452073494",
+                      "sha256:e8237f878490b60f0da2b24ee11daaf7fee7d8938338b163515e24e39b64a3d4"
+                    ],
+                    "id": "complete",
+                    "inputs": [
+                      {
+                        "name": "generation",
+                        "type": "Int",
+                        "types": {}
+                      }
+                    ],
+                    "postconditions": [
+                      "sha256:040f2b3982fd40ea9cf1278143a796c06349ec3f9d07faaf4789ef0452073494"
+                    ],
+                    "to": "SUCCEEDED"
+                  },
+                  {
+                    "commands": [],
+                    "context": [
+                      {
+                        "name": "now",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      }
+                    ],
+                    "effects": [
+                      "sha256:59ca89e35e8fcd04781ae8d2b6f1feb2985650dd77d0839afd4d4c0681a6743c",
+                      "sha256:cf7b2fe6772a0e9c1901fc4c76cef67f21452b3a78b91e76728384cedee5d1b8"
+                    ],
+                    "from": [
+                      "LEASED"
+                    ],
+                    "guards": [
+                      "sha256:ec75fed23c6be5354fa8f433219933836f83992720504eacebe7f9b46c14502e",
+                      "sha256:a31392232d5e27bf0d45b285a115921c49ecd194dfe0ec927665fe3c825917ce",
+                      "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a"
+                    ],
+                    "id": "exhaust",
+                    "inputs": [],
+                    "postconditions": [],
+                    "to": "FAILED"
+                  },
+                  {
+                    "commands": [],
+                    "context": [
+                      {
+                        "name": "now",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      },
+                      {
+                        "name": "worker",
+                        "type": {
+                          "Id": "Actor"
+                        },
+                        "types": {
+                          "Actor": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+                        }
+                      }
+                    ],
+                    "effects": [
+                      "sha256:59ca89e35e8fcd04781ae8d2b6f1feb2985650dd77d0839afd4d4c0681a6743c",
+                      "sha256:cf7b2fe6772a0e9c1901fc4c76cef67f21452b3a78b91e76728384cedee5d1b8"
+                    ],
+                    "from": [
+                      "LEASED"
+                    ],
+                    "guards": [
+                      "sha256:d31dd7c5060bdc4920453425d893e59c6219076d43af73b885a17c036b93c119",
+                      "sha256:040f2b3982fd40ea9cf1278143a796c06349ec3f9d07faaf4789ef0452073494",
+                      "sha256:e8237f878490b60f0da2b24ee11daaf7fee7d8938338b163515e24e39b64a3d4"
+                    ],
+                    "id": "fail",
+                    "inputs": [
+                      {
+                        "name": "generation",
+                        "type": "Int",
+                        "types": {}
+                      }
+                    ],
+                    "postconditions": [
+                      "sha256:040f2b3982fd40ea9cf1278143a796c06349ec3f9d07faaf4789ef0452073494"
+                    ],
+                    "to": "FAILED"
+                  },
+                  {
+                    "commands": [],
+                    "context": [
+                      {
+                        "name": "available_at",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      },
+                      {
+                        "name": "now",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      }
+                    ],
+                    "effects": [
+                      "sha256:59ca89e35e8fcd04781ae8d2b6f1feb2985650dd77d0839afd4d4c0681a6743c",
+                      "sha256:cf7b2fe6772a0e9c1901fc4c76cef67f21452b3a78b91e76728384cedee5d1b8",
+                      "sha256:58c826f66f7460bb60205ddff2c1f6f0694fdfa6aae902407284c5c76136bee2"
+                    ],
+                    "from": [
+                      "LEASED"
+                    ],
+                    "guards": [
+                      "sha256:ec75fed23c6be5354fa8f433219933836f83992720504eacebe7f9b46c14502e",
+                      "sha256:158d68de2014ee1eaad5f1e7de2d6dbe4ddff1ca5ff6dc381d4d0f1c8b36edcb",
+                      "sha256:9c547c176971bf49cafc9fab97b29ea9b6fd3005ef7cdbe8fddc8b2d592f3824",
+                      "sha256:77fc719fc815a1714c4ca23b411e1be7149f6827cba068f8a8101ebb1486e37a"
+                    ],
+                    "id": "recover",
+                    "inputs": [],
+                    "postconditions": [],
+                    "to": "READY"
+                  },
+                  {
+                    "commands": [],
+                    "context": [
+                      {
+                        "name": "lease_until",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      },
+                      {
+                        "name": "now",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      },
+                      {
+                        "name": "worker",
+                        "type": {
+                          "Id": "Actor"
+                        },
+                        "types": {
+                          "Actor": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+                        }
+                      }
+                    ],
+                    "effects": [
+                      "sha256:22a846692534f67f0d023a5bfb6b14cc2b3bf7ad384e339e3e60ee72103645dd"
+                    ],
+                    "from": [
+                      "LEASED"
+                    ],
+                    "guards": [
+                      "sha256:d31dd7c5060bdc4920453425d893e59c6219076d43af73b885a17c036b93c119",
+                      "sha256:040f2b3982fd40ea9cf1278143a796c06349ec3f9d07faaf4789ef0452073494",
+                      "sha256:e8237f878490b60f0da2b24ee11daaf7fee7d8938338b163515e24e39b64a3d4",
+                      "sha256:7e42dd27f5f7954a8995ed6300fca60917b4f6605d63cf85f00a27c95b28c561"
+                    ],
+                    "id": "renew",
+                    "inputs": [
+                      {
+                        "name": "generation",
+                        "type": "Int",
+                        "types": {}
+                      }
+                    ],
+                    "postconditions": [
+                      "sha256:040f2b3982fd40ea9cf1278143a796c06349ec3f9d07faaf4789ef0452073494"
+                    ],
+                    "to": "LEASED"
+                  },
+                  {
+                    "commands": [],
+                    "context": [
+                      {
+                        "name": "available_at",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      },
+                      {
+                        "name": "now",
+                        "type": {
+                          "Nominal": "Time"
+                        },
+                        "types": {
+                          "Time": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349"
+                        }
+                      },
+                      {
+                        "name": "worker",
+                        "type": {
+                          "Id": "Actor"
+                        },
+                        "types": {
+                          "Actor": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+                        }
+                      }
+                    ],
+                    "effects": [
+                      "sha256:59ca89e35e8fcd04781ae8d2b6f1feb2985650dd77d0839afd4d4c0681a6743c",
+                      "sha256:cf7b2fe6772a0e9c1901fc4c76cef67f21452b3a78b91e76728384cedee5d1b8",
+                      "sha256:58c826f66f7460bb60205ddff2c1f6f0694fdfa6aae902407284c5c76136bee2"
+                    ],
+                    "from": [
+                      "LEASED"
+                    ],
+                    "guards": [
+                      "sha256:d31dd7c5060bdc4920453425d893e59c6219076d43af73b885a17c036b93c119",
+                      "sha256:040f2b3982fd40ea9cf1278143a796c06349ec3f9d07faaf4789ef0452073494",
+                      "sha256:e8237f878490b60f0da2b24ee11daaf7fee7d8938338b163515e24e39b64a3d4",
+                      "sha256:158d68de2014ee1eaad5f1e7de2d6dbe4ddff1ca5ff6dc381d4d0f1c8b36edcb",
+                      "sha256:9c547c176971bf49cafc9fab97b29ea9b6fd3005ef7cdbe8fddc8b2d592f3824"
+                    ],
+                    "id": "retry",
+                    "inputs": [
+                      {
+                        "name": "generation",
+                        "type": "Int",
+                        "types": {}
+                      }
+                    ],
+                    "postconditions": [
+                      "sha256:040f2b3982fd40ea9cf1278143a796c06349ec3f9d07faaf4789ef0452073494"
+                    ],
+                    "to": "READY"
+                  }
+                ]
+              },
+              "model_hash": "sha256:32ad6213d1d34ad5d8e4e7ba47d2b394fec06dfc696043de412ad5ed05bde2da"
+            },
+            "time": {
+              "hash": "sha256:21064d90c48cc3446f85c988ed2f95d39afea5c703551dc611c3ae80fc65d349",
+              "name": "Time"
+            },
+            "worker": {
+              "entity": "Actor",
+              "entity_hash": "sha256:3c2d5b4ae57fb368be537819863739df3b0a37e9eb03e2cd167432dd2625d32c"
+            }
+          }
+        }
+      ]
+    },
+    "operations": [
+      {
+        "decision": "ALLOW",
+        "reasons": [],
+        "already": false,
+        "history_position": 1
+      },
+      {
+        "decision": "ALLOW",
+        "reasons": [],
+        "already": false,
+        "history_position": 2
+      },
+      {
+        "decision": "DENY",
+        "reasons": [
+          {
+            "code": "PRECONDITION_FAILED"
+          }
+        ]
+      },
+      {
+        "decision": "ALLOW",
+        "reasons": [],
+        "already": false,
+        "history_position": 3
+      }
+    ],
+    "ready": {
+      "record_id": "read:sha256:037f3a9366c43f3282d5bf65ce6b35a76787af8cc46e187b72bc19efbb02df05",
+      "result": "VALUE",
+      "value": [
+        {
+          "id": "work-1"
+        }
+      ]
+    },
+    "expired_before": {
+      "record_id": "read:sha256:ae479a326803ce3c8ae2f5129e765c709260cb14f1bed0806ecae2223f9c0400",
+      "result": "VALUE",
+      "value": []
+    },
+    "expired_at": {
+      "record_id": "read:sha256:e76966e22870acedfdb50491f5b776773d8b45672b8114b2cd74ff66f3193988",
+      "result": "VALUE",
+      "value": [
+        {
+          "id": "work-1"
+        }
+      ]
+    },
+    "read_replay": true,
+    "wire_reimport_receipt_count": 0
+  },
+  "public_store_interfaces": {
+    "read": "(self, model: 'BehaviorModule', r: 'Any', *, bindings: 'dict[str, str] | None' = None, input: 'dict[str, Any] | None' = None, context: 'dict[str, Any] | None' = None, at: 'StateRef | None' = None) -> 'Any'",
+    "read_intent": "(self, model: 'BehaviorModule', intent: 'dict[str, Any]', *, context: 'dict[str, Any] | None' = None, at: 'StateRef | None' = None) -> 'Any'",
+    "evaluate": "(self, model: 'BehaviorModule', action: 'str', *, bindings: 'dict[str, str]', input: 'dict[str, Any] | None' = None, context: 'dict[str, Any] | None' = None, commit_time: 'str', evidence: 'dict[str, Any] | None' = None) -> 'Evaluation'",
+    "commit": "(self, model: 'BehaviorModule', bundle: 'Document', expected_parent: 'StateRef | None' = None) -> 'CommitResult'"
+  }
+}

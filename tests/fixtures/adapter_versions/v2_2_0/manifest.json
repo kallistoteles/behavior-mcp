@@ -1,0 +1,62 @@
+{
+  "format": "behavior-mcp.adapter-checkpoint.v1",
+  "version": "2.2.0",
+  "system_id": "system-bc9153a1a1da4406a1e2b74f1afceb73",
+  "definition_id": "definition-8c6ad36ffc2a46ac9d46781dc9da7f2f",
+  "behavior_hash": "sha256:91be3092002db9d259ebaa9121c8daf5503fc8598d10f4c01ae0b4402144da11",
+  "schema_hash": "sha256:335335f2ed7af64693c7840cda56f00c3d3ec7838d54b20fdd49b739cfddcd8d",
+  "policy_id": "local-ownership",
+  "construction_context": {
+    "adapter_profile": "structured-models.v2",
+    "adapter_version": "2.2.0",
+    "adapter_code_identity": "bytes-sha256:dc4bd70e9f48a9113d9366517c28fa7050673c94e1ed29d0d377b6ba9904ba50",
+    "adapter_files": {
+      "adapter_versions/v2_2_0.py": "bytes-sha256:9b1c2fafce16c7990929222a7889e5fdd640c0189d6ae7ecdaa0dca2dc3b3e6b",
+      "adapter_versions/fragments_2_0_0.py": "bytes-sha256:c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+      "contracts/authoring-v2-2.2.0.schema.json": "bytes-sha256:94141d81290666c98e5b6499508908f8e62254a39188acf3184a8fe2cd8d468a"
+    },
+    "release": {
+      "behavior_version": "0.14.0",
+      "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+      "core_version": "0.15.0",
+      "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+      "verifier_version": "0.10.0",
+      "adapter_profile": "structured-models.v2",
+      "adapter_version": "2.2.0"
+    },
+    "fixed_entities": [
+      {
+        "name": "Actor",
+        "fields": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    ],
+    "trusted_context": {
+      "actor": "trusted_host",
+      "worker": "trusted_host",
+      "now": "utc-unix-milliseconds.v1"
+    },
+    "composition_order": [
+      "parent"
+    ],
+    "action_order": [
+      "new_parent",
+      "remove_parent"
+    ],
+    "policy_order": [
+      "parent_control"
+    ]
+  },
+  "closure": {
+    "adapter_versions/v2_2_0.py": "9b1c2fafce16c7990929222a7889e5fdd640c0189d6ae7ecdaa0dca2dc3b3e6b",
+    "adapter_versions/fragments_2_0_0.py": "c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+    "contracts/authoring-v2-2.2.0.schema.json": "94141d81290666c98e5b6499508908f8e62254a39188acf3184a8fe2cd8d468a"
+  },
+  "workspace_files": {
+    "host.sqlite": "9546d11092503e6a81a2ab071bc930292af5c9acdf435b4bc84de80c4fb7d1ea",
+    "systems/system-bc9153a1a1da4406a1e2b74f1afceb73.sqlite": "7ebf2164f27359a0a3844bba48237fa2706a49237fd8ee690a9f4065612fdc8d"
+  }
+}

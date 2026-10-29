@@ -1,0 +1,27 @@
+{
+  "task": "T071",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_safety_workers.py::test_cleanup_deletes_only_bounded_owned_dead_jobs"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______________ test_cleanup_deletes_only_bounded_owned_dead_jobs _______________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-62/test_cleanup_deletes_only_boun0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x755605d71480>\n\n    def test_cleanup_deletes_only_bounded_owned_dead_jobs(tmp_path,monkeypatch):\n        import json,os\n        from behavior_mcp.safety import cleanup_staging\n        staging=tmp_path/'.proof-staging';staging.mkdir()\n        for index in range(70):\n            directory=staging/f'job-{index:03}';directory.mkdir()\n            (directory/'owner.json').write_text(json.dumps({'format':'behavior-mcp.proof-job.v1','pid':1073741824}))\n            (directory/'bundle.json').write_text('{\"claimed_certificate\":true}')\n        live=staging/'job-live';live.mkdir();(live/'owner.json').write_text(json.dumps({'format':'behavior-mcp.proof-job.v1','pid':os.getpid()}))\n        outside=tmp_path/'outside';outside.mkdir();(outside/'authoritative').write_text('preserve')\n        (staging/'job-symlink').symlink_to(outside,target_is_directory=True)\n        from pathlib import Path\n        original=Path.iterdir;visited=[]\n        def counted(path):\n            for entry in original(path):\n                if path==staging:visited.append(entry)\n                yield entry\n        monkeypatch.setattr(Path,'iterdir',counted)\n        cleanup_staging(tmp_path)\n>       assert len(visited)<=64\nE       AssertionError: assert 72 <= 64\nE        +  where 72 = len([PosixPath('/tmp/pytest-of-kalle/pytest-62/test_cleanup_deletes_only_boun0/.proof-staging/job-015'), PosixPath('/tmp/p...ing/job-008'), PosixPath('/tmp/pytest-of-kalle/pytest-62/test_cleanup_deletes_only_boun0/.proof-staging/job-055'), ...])\n\ntests/integration/test_safety_workers.py:68: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_workers.py::test_cleanup_deletes_only_bounded_owned_dead_jobs\n1 failed in 0.37s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_safety_workers.py"
+    ],
+    "exit_code": 0,
+    "stdout": ".........                                                                [100%]\n9 passed in 11.15s\n",
+    "stderr": ""
+  }
+}

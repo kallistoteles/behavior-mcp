@@ -1,0 +1,30 @@
+{
+  "task": "T075",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_expanded_compatibility.py::test_explicit_legacy_fork_preserves_original_operation_evidence"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n_______ test_explicit_legacy_fork_preserves_original_operation_evidence ________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-68/test_explicit_legacy_fork_pres0')\ncontext = TrustedContext(principal_id='agent-session', workspace_id='workspace-1', actor_id='actor-1', clock=<function fixed_clock.<locals>.<lambda> at 0x7221ad7d45e0>, semantic_clock=None)\n\n    def test_explicit_legacy_fork_preserves_original_operation_evidence(tmp_path,context):\n        import copy\n        from behavior_mcp.policy import Delegation\n        from tests.fixtures.expanded import example\n        from tests.fixtures.runtime import authored,evaluate_commit\n        manifest=json.loads((FIXTURE/'manifest.json').read_text());root=tmp_path/'workspace'\n        shutil.copytree(FIXTURE/'workspace',root)\n        app=Application(root,context,'local-delegation');original=manifest['definition']\n        source=app.artifacts.proposal(original['source']['proposal_id'],original['source']['proposal_revision'])['proposal']\n        legacy_policy=app.artifacts.policy('local-delegation')\n        fork=copy.deepcopy(source);fork.update(format='behavior-mcp.authoring.v2',adapter_profile='structured-models.v2',adapter_version='2.3.0',actions=[],safety=[])\n        fork['declarations']['nominals']=[]\n        for model in fork['models']:\n            model['actor']='Actor';model['payload']={name:{'kind':'string'} for name in model['payload']}\n            for creation in model['creations']:\n                creation['inputs']={name:{'kind':'string'} for name in creation['inputs']}\n                creation['requires']=[];creation['values']={}\n                for name,value in creation.pop('initializer').items():\n                    creation['values'][name]={'op':'literal','value':value['value']} if value['source']=='literal' else {'op':'param','name':'actor' if value['source']=='host_actor' else value['name']}\n            for transition in model['transitions']:\n                transition['inputs']={name:{'kind':'string'} for name in transition['inputs']};transition['requires']=[]\n                transition['assignments']=[{'target':{'op':'field','value':{'op':'param','name':model['model_id']},'name':a['target_field']},'value':{'op':'param','name':a['input']}} for a in transition['assignments']]\n        policy=example('host-policy-v2');policy.update(policy_id='local-delegation',version=2)\n        grant=policy['allowed_adapters'][0];grant.update(adapter_version='2.3.0',allowed_model_kinds=['request_flow'],allowed_model_ids=['record'],allowed_entity_declarations=[],allowed_enum_declarations=fork['declarations']['enums'],allowed_action_names=['record__new','record__finish'],allowed_read_names=[],allowed_action_descriptors=[],model_parameter_bounds=[],allowed_derived_functions=[])\n        grant['allowed_field_refs']=[{'entity':{'model_id':'record','output':'request'},'fields':['outcome']}]\n        grant['state_fields']=[{'entity':{'model_id':'record','output':'request'},'field':'status','values':['Open','Done'],'edges':[{'from':'Open','to':'Done'}]}]\n        policy['allowed_adapters'].append({'adapter_profile':'scalar-models.v1','adapter_version':'1',**{k:legacy_policy[k] for k in ('construction','effects','state')}})\n        policy['runtime_actions']=['record__new','record__finish'];policy['runtime_reads']=[]\n        app.artifacts.install_policy(Delegation.from_document(policy,'local-operator').document)\n        old=copy.deepcopy(source);old['metadata']={'title':'Still editable v1'}\n        assert authored(app,old)['release']['adapter_profile']=='scalar-models.v1'\n        definition=authored(app,fork)\n        assert definition['schema_hash']==original['schema_hash']\n        assert app.execute('system_inspect',{'system_id':manifest['system_id']})['result']['active']['definition_id']==original['definition_id']\n        response=app.execute('definition_activate',{'system_id':manifest['system_id'],'definition_id':definition['definition_id'],'expected_activation_revision':1,'expected_history':manifest['history'],'operation_id':'explicit-upgrade'})\n        assert response['outcome']=='activated',response\n        evaluate_commit(app,manifest['system_id'],'record__finish','finish-after-upgrade',bindings={'record':'r1'},input={'outcome':'Done'})\n        original_operation=app.execute('operation_get',{'system_id':manifest['system_id'],'operation_id':'baseline-new'})\n>       assert original_operation['request_status']=='completed',original_operation\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'recovery', 'outcome': 'infrastructure_failure', ...}\nE       assert 'failed' == 'completed'\nE         \nE         - completed\nE         + failed\n\ntests/integration/test_expanded_compatibility.py:99: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_expanded_compatibility.py::test_explicit_legacy_fork_preserves_original_operation_evidence\n1 failed in 6.30s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_expanded_compatibility.py",
+      "tests/integration/test_incremental_adapter_retention.py",
+      "tests/contract/test_host_policy_v2.py",
+      "tests/integration/test_expanded_history.py"
+    ],
+    "exit_code": 0,
+    "stdout": ".....................                                                    [100%]\n21 passed in 25.55s\n",
+    "stderr": ""
+  }
+}

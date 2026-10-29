@@ -1,0 +1,67 @@
+{
+  "format": "behavior-mcp.adapter-checkpoint.v1",
+  "version": "2.3.0",
+  "system_id": "system-cae1eccf12b94e8fa8a2e68cbbe48d50",
+  "definition_id": "definition-037544cbd711419eb7cf179c69040b35",
+  "behavior_hash": "sha256:d6c73e43bc8d9b7b36a478efc78982a4a2ecb3dd97d6a4e7f9f254a1896fe047",
+  "schema_hash": "sha256:49c7c330bac17dd051328ce7879a5c76c67841bc42c8a7d48cfcc5ec1a3c6152",
+  "policy_id": "local-lifecycle",
+  "construction_context": {
+    "adapter_profile": "structured-models.v2",
+    "adapter_version": "2.3.0",
+    "adapter_code_identity": "bytes-sha256:7b6ee73f0471e88a2c42e680215629ef466340d7b8ea6ed6707af4aa1e094bdf",
+    "adapter_files": {
+      "adapter_versions/v2_3_0.py": "bytes-sha256:246ff78b225b87877549675f12bfecd4bf79f801d7ba8c135bce05a18c31638c",
+      "adapter_versions/fragments_2_0_0.py": "bytes-sha256:c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+      "contracts/authoring-v2-2.3.0.schema.json": "bytes-sha256:904d7aae1396f103c4715d689112c6ac7fdb0be558295f6b09de85b6d085f2a2"
+    },
+    "release": {
+      "behavior_version": "0.14.0",
+      "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+      "core_version": "0.15.0",
+      "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+      "verifier_version": "0.10.0",
+      "adapter_profile": "structured-models.v2",
+      "adapter_version": "2.3.0"
+    },
+    "fixed_entities": [
+      {
+        "name": "Actor",
+        "fields": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    ],
+    "trusted_context": {
+      "actor": "trusted_host",
+      "worker": "trusted_host",
+      "now": "utc-unix-milliseconds.v1"
+    },
+    "composition_order": [],
+    "action_order": [
+      "new_parent",
+      "new_child",
+      "stop_parent",
+      "activate_child",
+      "finish_child",
+      "remove_parent",
+      "remove_child"
+    ],
+    "policy_order": [
+      "parent_control",
+      "child_control",
+      "parent_child"
+    ]
+  },
+  "closure": {
+    "adapter_versions/v2_3_0.py": "246ff78b225b87877549675f12bfecd4bf79f801d7ba8c135bce05a18c31638c",
+    "adapter_versions/fragments_2_0_0.py": "c408132966b6f319c6acbef0f3952553b5c959ccfe4e124f1cc93d57b502a823",
+    "contracts/authoring-v2-2.3.0.schema.json": "904d7aae1396f103c4715d689112c6ac7fdb0be558295f6b09de85b6d085f2a2"
+  },
+  "workspace_files": {
+    "host.sqlite": "a24a47449db14f4d2b7ce791384b6a8f07092e92e37122f1d57b29051fed3ad4",
+    "systems/system-cae1eccf12b94e8fa8a2e68cbbe48d50.sqlite": "b1d54077e708cbdda9400b02a1e0ad7fd0878dfa85fb527b3cea20379a213476"
+  }
+}

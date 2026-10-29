@@ -1,0 +1,28 @@
+{
+  "task": "T051",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_safety_delegation.py"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n______________ test_ownership_version_is_not_inherited_from_queue ______________\n\n    def test_ownership_version_is_not_inherited_from_queue():\n>       assert '2.2.0' in HANDLERS,'FieldOwnership has not been delivered through its own immutable checkpoint'\nE       AssertionError: FieldOwnership has not been delivered through its own immutable checkpoint\nE       assert '2.2.0' in {'2.0.0': <module 'behavior_mcp.adapter_versions.v2_0_0' from '/home/kalle/repos/behavior-mcp/src/behavior_mcp/adapter_versions/v2_0_0.py'>}\n\ntests/unit/test_safety_delegation.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED tests/unit/test_safety_delegation.py::test_ownership_version_is_not_inherited_from_queue\n1 failed in 1.65s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_safety_delegation.py",
+      "tests/integration/test_field_ownership.py"
+    ],
+    "exit_code": 0,
+    "stdout": "...........                                                              [100%]\n11 passed in 2.34s\n",
+    "stderr": ""
+  }
+}

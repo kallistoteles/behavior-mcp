@@ -11,8 +11,8 @@ from typing import Any
 
 from behavior import BehaviorModule, Store
 
+from .adapters import inventory, reconstruct, release_identity
 from .artifacts import ArtifactStore, encode
-from .authoring import capabilities, reconstruct, release_identity
 from .limits import HostLimits
 from .policy import Delegation, TrustedContext
 from .schemas import JSON, OperationError, completed
@@ -175,6 +175,7 @@ class SystemManager:
                     "activation_revision",
                     "definition_id",
                     "behavior_hash",
+                    *(("policy_set_hash",) if "policy_set_hash" in active else ()),
                 )
             }
             if active
@@ -199,6 +200,8 @@ class SystemManager:
         }
         if operation_id is not None:
             subject["operation_id"] = operation_id
+        if "policy_set_hash" in definition:
+            subject["policy_set_hash"] = definition["policy_set_hash"]
         return subject
 
     def response(
@@ -219,7 +222,7 @@ class SystemManager:
                     "report": evidence_report
                     if evidence_report is not None
                     else result,
-                    "release": release_identity(),
+                    "release": subject.get("release", release_identity()),
                 },
             )
             evidence = [
@@ -228,7 +231,7 @@ class SystemManager:
                     "kind": evidence_kind,
                     "report_ref": ref,
                     "subject": subject,
-                    "release": release_identity(),
+                    "release": subject.get("release", release_identity()),
                 }
             ]
         return completed(stage, outcome, subject, result, evidence)
@@ -307,11 +310,19 @@ class SystemManager:
             return self.recover_creation(sid, args, subject)
         with file_lock(self.root / "locks" / (sid + ".lock")):
             if name == "system_inspect":
-                return self.response("read", "read", subject, self.inspect(sid))
+                view = self.inspect(sid)
+                if view["active"] and "policy_set_hash" in view["active"]:
+                    definition = self.artifacts.definition(
+                        view["active"]["definition_id"]
+                    )
+                    subject.update(
+                        self.subject(sid, definition, view["history_anchor"])
+                    )
+                return self.response("read", "read", subject, view)
             if name == "definition_activate":
                 return self.activate(args, subject)
             if name == "capabilities_list":
-                definition, module, _ = self.active(sid)
+                definition, module, snapshot = self.active(sid)
                 history = Store.open(self.backend(sid)).current_history().as_dict()
                 subject.update(self.subject(sid, definition, history))
                 return self.response(
@@ -324,12 +335,25 @@ class SystemManager:
                         "definition_id": definition["definition_id"],
                         "behavior_hash": definition["behavior_hash"],
                         "schema_hash": definition["schema_hash"],
-                        "capabilities": capabilities(module),
+                        "capabilities": inventory(
+                            module,
+                            expanded=definition["release"]["adapter_profile"]
+                            == "structured-models.v2",
+                            proposal=snapshot["proposal"],
+                        ),
                         "release": definition["release"],
                     },
                 )
             if name == "state_read":
                 return self.read(args, subject)
+            if name == "capability_read":
+                from .reads import Reads
+
+                return Reads(self).invoke(args, subject)
+            if name == "state_validate_safety":
+                from .safety import state_validation
+
+                return state_validation(self, args, subject)
             from .operations import Operations
 
             operations = Operations(self)
@@ -604,7 +628,13 @@ class SystemManager:
             subject,
         )
 
-    def _approval(self, sid: str, definition: JSON, args: JSON) -> JSON | None:
+    def _approval(
+        self,
+        sid: str,
+        definition: JSON,
+        args: JSON,
+        evidence_refs: list[str] | None = None,
+    ) -> JSON | None:
         p = self.policy.document
         expected = {
             "grantee_principal_id": self.context.principal_id,
@@ -618,6 +648,12 @@ class SystemManager:
             "expected_activation_revision": args["expected_activation_revision"],
             "history_anchor": args["expected_history"],
         }
+        if "policy_set_hash" in definition:
+            expected.update(
+                format="behavior-mcp.activation-approval.v2",
+                policy_set_hash=definition["policy_set_hash"],
+                required_evidence_refs=sorted(set(evidence_refs or [])),
+            )
         return next(
             (
                 a
@@ -742,14 +778,33 @@ class SystemManager:
                 "SCHEMA_MIGRATION_UNSUPPORTED",
                 "Schema-changing activation requires an unsupported migration boundary",
             )
-        approval = self._approval(sid, definition, args)
+        from .safety import acquire_validation, required_safety
+
+        verification_refs = self.required_evidence(definition)
+        safety_refs = required_safety(self, definition, module, snapshot["proposal"])
+        approval = self._approval(
+            sid, definition, args, verification_refs + safety_refs
+        )
         self.policy.check_candidate(
             snapshot["proposal"],
             module,
             existing=True,
             exceptions=approval["exceptions"] if approval else [],
         )
-        verification_refs = self.required_evidence(definition)
+        state_validation_ref = None
+        if safety_refs or any(
+            p["policy_kind"] == "lifecycle_dependency"
+            for p in snapshot["proposal"].get("safety", [])
+        ):
+            report, state_validation_ref, matches = acquire_validation(
+                self, sid, definition, module, history
+            )
+            if report["status"] != "Valid" or not matches:
+                raise OperationError(
+                    "unauthorized",
+                    "SAFETY_STATE_INVALID",
+                    "Required incoming-policy state validity is not established",
+                )
         store.export_seed_at(module, history)
         self.bind(sid, opid, "activation", args)
         subject.update(self.subject(sid, definition, history, opid))
@@ -766,6 +821,19 @@ class SystemManager:
                 "policy_version": p["version"],
                 "approval_id": approval["approval_id"] if approval else None,
                 "history_anchor": history,
+                **(
+                    {
+                        "schema_hash": definition["schema_hash"],
+                        "policy_set_hash": definition["policy_set_hash"],
+                        "required_evidence_refs": sorted(
+                            set(verification_refs + safety_refs)
+                        ),
+                        "state_validation_ref": state_validation_ref,
+                        "release": definition["release"],
+                    }
+                    if "policy_set_hash" in definition
+                    else {}
+                ),
             },
         )
         validation_ref = self.artifacts.put(
@@ -807,6 +875,12 @@ class SystemManager:
             "release": definition["release"],
             "request_binding_ref": request_ref,
         }
+        if "policy_set_hash" in definition:
+            receipt.update(
+                policy_set_hash=definition["policy_set_hash"],
+                safety_evidence_refs=safety_refs,
+                state_validation_ref=state_validation_ref,
+            )
         result = {
             "kind": "activation",
             "receipt": receipt,
@@ -915,7 +989,7 @@ class SystemManager:
                         "Original committed definition binding is unavailable",
                     )
                 historical_definition_id = historical["definition_id"]
-            from .authoring import historical_module
+            from .adapters import historical_module
 
             definition, module = historical_module(
                 self.artifacts, historical_definition_id
@@ -969,7 +1043,19 @@ class SystemManager:
 
         from behavior import replay_behavior, replay_data
 
-        from .authoring import historical_module
+        from .adapters import historical_module
+
+        def retained_artifact(reference: str) -> JSON:
+            try:
+                return self.artifacts.get(reference)
+            except OperationError as error:
+                if error.code != "ARTIFACT_NOT_FOUND":
+                    raise
+                raise OperationError(
+                    "infrastructure",
+                    "HISTORICAL_ARTIFACT_MISSING",
+                    "Required historical evidence is unavailable",
+                ) from None
 
         self.policy.authorize(self.context, "system_recover", system_id)
         descriptor = self.metadata(system_id, "descriptor")
@@ -1012,13 +1098,77 @@ class SystemManager:
                 activation["policy"]["policy_id"],
                 activation["policy"]["policy_version"],
             )
-            self.artifacts.get(activation["authorization_ref"])
-            self.artifacts.get(activation["request_binding_ref"])
+            retained_artifact(activation["authorization_ref"])
+            retained_artifact(activation["request_binding_ref"])
             for ref in (
                 activation["validation_evidence_refs"]
                 + activation["verification_evidence_refs"]
             ):
-                self.artifacts.get(ref)
+                retained_artifact(ref)
+            if "policy_set_hash" in activation:
+                from .safety import validate_assessment
+
+                definition = self.artifacts.definition(activation["definition_id"])
+                for ref in activation["safety_evidence_refs"]:
+                    evidence = retained_artifact(ref)
+                    if (
+                        any(
+                            evidence["subject"].get(k) != definition[k]
+                            for k in (
+                                "definition_id",
+                                "behavior_hash",
+                                "schema_hash",
+                                "policy_set_hash",
+                                "release",
+                            )
+                        )
+                        or evidence["subject"].get("workspace_id")
+                        != self.context.workspace_id
+                    ):
+                        raise OperationError(
+                            "infrastructure",
+                            "HISTORICAL_SAFETY_MISMATCH",
+                            "Retained Safety evidence differs from its activation subject",
+                        )
+                    projection = evidence["report"]
+                    validate_assessment(
+                        {
+                            "assessment": retained_artifact(
+                                projection["assessment_ref"]
+                            ),
+                            "certificate": retained_artifact(
+                                projection["certificate_ref"]
+                            ),
+                        },
+                        definition,
+                        retained_artifact(definition["safety_analysis_ref"]),
+                    )
+                    for key in ("bundle_ref", "import_ref"):
+                        if evidence.get(key):
+                            retained_artifact(evidence[key])
+                if activation["state_validation_ref"]:
+                    evidence = retained_artifact(activation["state_validation_ref"])
+                    expected = {
+                        k: activation[k]
+                        for k in (
+                            "workspace_id",
+                            "system_id",
+                            "definition_id",
+                            "behavior_hash",
+                            "schema_hash",
+                            "policy_set_hash",
+                            "release",
+                            "history_anchor",
+                        )
+                    }
+                    if any(
+                        evidence["subject"].get(k) != v for k, v in expected.items()
+                    ):
+                        raise OperationError(
+                            "infrastructure",
+                            "HISTORICAL_SAFETY_MISMATCH",
+                            "Retained state validation differs from its activation anchor",
+                        )
         store = Store.open(self.backend(system_id))
         data = replay_data(store)
         behavior = replay_behavior(store, list(modules.values()))
@@ -1028,10 +1178,44 @@ class SystemManager:
                 "HISTORICAL_REPLAY_FAILED",
                 "Core replay did not establish historical equivalence",
             )
+        read_records = []
+        with connect(self.artifacts.system_path(system_id)) as db:
+            operations = [
+                json.loads(row["document"])
+                for row in db.execute(
+                    "SELECT document FROM host_operations ORDER BY id"
+                )
+            ]
+        for operation in operations:
+            if operation["kind"] != "read" or not operation.get("read_record_ref"):
+                continue
+            original = retained_artifact(operation["read_record_ref"])
+            _, read_module = historical_module(
+                self.artifacts, operation["definition_id"]
+            )
+            if not store.replay_read(read_module, original["record_json"]).matches:
+                raise OperationError(
+                    "infrastructure",
+                    "HISTORICAL_READ_REPLAY_FAILED",
+                    "Core read replay did not match retained evidence",
+                )
+            read_records.append(
+                {
+                    "operation_id": operation["operation_id"],
+                    "definition_id": operation["definition_id"],
+                    "read_record_ref": operation["read_record_ref"],
+                    "matches": True,
+                }
+            )
         return {
             "data": asdict(data),
             "behavior": asdict(behavior),
             "definitions": definitions,
-            "release": release_identity(),
+            "release": {
+                k: v
+                for k, v in release_identity().items()
+                if not k.startswith("adapter_")
+            },
+            "read_records": read_records,
             "model_provenance": "retained original lowering receipts; Wire replay validates admitted Core behavior identities",
         }

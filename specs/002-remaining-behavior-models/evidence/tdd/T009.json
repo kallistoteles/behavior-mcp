@@ -1,0 +1,27 @@
+{
+  "task": "T009",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_expanded_compatibility.py"
+    ],
+    "exit_code": 1,
+    "stdout": ".F                                                                       [100%]\n=================================== FAILURES ===================================\n_______________________ test_explicit_dispatch_boundary ________________________\n\n    def test_explicit_dispatch_boundary():\n        import behavior_mcp\n        from importlib import import_module\n        from importlib.util import find_spec\n>       assert find_spec('behavior_mcp.adapters'), 'Exact profile/version dispatcher is missing'\nE       AssertionError: Exact profile/version dispatcher is missing\nE       assert None\nE        +  where None = <function find_spec at 0x707cfa603ce0>('behavior_mcp.adapters')\n\ntests/integration/test_expanded_compatibility.py:31: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_expanded_compatibility.py::test_explicit_dispatch_boundary\n1 failed, 1 passed in 3.89s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_expanded_compatibility.py"
+    ],
+    "exit_code": 0,
+    "stdout": "..                                                                       [100%]\n2 passed in 2.94s\n",
+    "stderr": ""
+  }
+}

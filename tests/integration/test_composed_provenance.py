@@ -35,4 +35,10 @@ def test_imported_wire_has_no_receipts_but_original_provenance_survives(
         app.execute("definition_propose", {"proposal": canonical})["outcome"]
         == "invalid_input"
     )
-    assert len(app.execute("gaps_list", {})["result"]["gaps"]) == 4
+    assert {g["gap_id"] for g in app.execute("gaps_list", {})["result"]["gaps"]} == {
+        "GAP-001",
+        "GAP-002",
+        "GAP-003",
+        "GAP-004",
+        "GAP-005",
+    }

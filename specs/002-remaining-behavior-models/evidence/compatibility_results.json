@@ -1,0 +1,35 @@
+{
+  "adapter_sha256": "32289a08c99625eb489f67ac0c50bcf8f5692cd80e12a2660ce5837c19533b7c",
+  "released_behavior": {
+    "behavior_version": "0.14.0",
+    "behavior_commit": "1cba9e16ff73f927ae08e70a7bc74a6ca52355e4",
+    "core_version": "0.15.0",
+    "core_commit": "6b93898a9375113f7a8946f23ab5535319b6f5d6",
+    "verifier_version": "0.10.0",
+    "adapter_profile": "scalar-models.v1",
+    "adapter_version": "1"
+  },
+  "with_only_source_byte_identity_changed": {
+    "read_retained_definition": {
+      "request_status": "completed",
+      "outcome": "definition_loaded",
+      "error_code": null
+    },
+    "revalidate_retained_source": {
+      "request_status": "refused",
+      "outcome": "unsupported",
+      "error_code": "ADAPTER_CONTEXT_MISMATCH"
+    },
+    "discover_active_capabilities": {
+      "request_status": "refused",
+      "outcome": "unsupported",
+      "error_code": "RECONSTRUCTION_CONTEXT_UNAVAILABLE"
+    },
+    "recover_active_system": {
+      "request_status": "refused",
+      "outcome": "unsupported",
+      "error_code": "RECONSTRUCTION_CONTEXT_UNAVAILABLE"
+    }
+  },
+  "restoring_original_context_restores_runtime": true
+}

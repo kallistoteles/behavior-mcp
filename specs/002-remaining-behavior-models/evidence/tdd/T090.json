@@ -1,0 +1,27 @@
+{
+  "task": "T090",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/contract/test_expanded_catalog.py"
+    ],
+    "exit_code": 1,
+    "stdout": ".F                                                                       [100%]\n=================================== FAILURES ===================================\n__________________ test_all_retained_and_new_gaps_are_visible __________________\n\n    def test_all_retained_and_new_gaps_are_visible():\n>       assert {'GAP-001','GAP-002','GAP-003','GAP-004','GAP-005'}<={row['gap_id'] for row in gaps()}\nE       AssertionError: assert {'GAP-001', '...4', 'GAP-005'} <= {'GAP-001', '...3', 'GAP-004'}\nE         \nE         Extra items in the left set:\nE         'GAP-005'\n\ntests/contract/test_expanded_catalog.py:18: AssertionError\n=========================== short test summary info ============================\nFAILED tests/contract/test_expanded_catalog.py::test_all_retained_and_new_gaps_are_visible\n1 failed, 1 passed in 1.53s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/contract/test_expanded_catalog.py"
+    ],
+    "exit_code": 0,
+    "stdout": "..                                                                       [100%]\n2 passed in 1.45s\n",
+    "stderr": ""
+  }
+}

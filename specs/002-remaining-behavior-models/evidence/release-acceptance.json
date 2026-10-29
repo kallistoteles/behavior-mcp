@@ -1,0 +1,1325 @@
+{
+  "status": "passed",
+  "gate_command": "nix develop --command ./scripts/check",
+  "requirements": {
+    "FR-001": {
+      "status": "accepted",
+      "tasks": [
+        "T024",
+        "T035",
+        "T049",
+        "T058",
+        "T083",
+        "T087",
+        "T092"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_approval",
+        "tests/acceptance/test_remaining_models.py::test_lifecycle_dependency",
+        "tests/acceptance/test_remaining_models.py::test_support_and_authority",
+        "tests/acceptance/test_remaining_models.py::test_work_queue",
+        "tests/contract/test_approval_authoring.py",
+        "tests/contract/test_expanded_catalog.py",
+        "tests/contract/test_field_ownership_authoring.py",
+        "tests/contract/test_work_queue_authoring.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_lifecycle_dependency.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T024.json",
+        "evidence/tdd/T035.json",
+        "evidence/tdd/T049.json",
+        "evidence/tdd/T058.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-002": {
+      "status": "accepted",
+      "tasks": [
+        "T024",
+        "T027",
+        "T028",
+        "T029",
+        "T033",
+        "T034"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_approval",
+        "tests/contract/test_approval_authoring.py",
+        "tests/integration/test_incremental_adapter_retention.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T024.json",
+        "evidence/tdd/T034.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-003": {
+      "status": "accepted",
+      "tasks": [
+        "T025",
+        "T026",
+        "T030",
+        "T031",
+        "T032",
+        "T033",
+        "T034"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_approval",
+        "tests/integration/test_approval_recovery.py",
+        "tests/integration/test_approval_runtime.py",
+        "tests/integration/test_incremental_adapter_retention.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T025.json",
+        "evidence/tdd/T026.json",
+        "evidence/tdd/T034.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-004": {
+      "status": "accepted",
+      "tasks": [
+        "T035",
+        "T036",
+        "T039",
+        "T040",
+        "T041",
+        "T042",
+        "T047",
+        "T048"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py",
+        "tests/acceptance/test_remaining_models.py::test_work_queue",
+        "tests/contract/test_work_queue_authoring.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_work_queue_runtime.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T035.json",
+        "evidence/tdd/T036.json",
+        "evidence/tdd/T048.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-005": {
+      "status": "accepted",
+      "tasks": [
+        "T015",
+        "T022",
+        "T030",
+        "T036",
+        "T042",
+        "T043",
+        "T047"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_work_queue",
+        "tests/integration/test_core_reads.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_work_queue_runtime.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T015.json",
+        "evidence/tdd/T036.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-006": {
+      "status": "accepted",
+      "tasks": [
+        "T014",
+        "T021",
+        "T036",
+        "T037",
+        "T038",
+        "T039",
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T044",
+        "T047",
+        "T048"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py",
+        "tests/acceptance/test_remaining_models.py::test_work_queue",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_work_queue_context.py",
+        "tests/integration/test_work_queue_recovery.py",
+        "tests/integration/test_work_queue_runtime.py",
+        "tests/unit/test_semantic_time.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T014.json",
+        "evidence/tdd/T036.json",
+        "evidence/tdd/T037.json",
+        "evidence/tdd/T038.json",
+        "evidence/tdd/T044.json",
+        "evidence/tdd/T048.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-007": {
+      "status": "accepted",
+      "tasks": [
+        "T049",
+        "T050",
+        "T051",
+        "T052",
+        "T053",
+        "T054",
+        "T055",
+        "T056",
+        "T057"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_field_ownership",
+        "tests/contract/test_field_ownership_authoring.py",
+        "tests/integration/test_field_ownership.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/unit/test_safety_delegation.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T049.json",
+        "evidence/tdd/T050.json",
+        "evidence/tdd/T051.json",
+        "evidence/tdd/T057.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-008": {
+      "status": "accepted",
+      "tasks": [
+        "T058",
+        "T062",
+        "T066",
+        "T067",
+        "T070",
+        "T071",
+        "T072"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py",
+        "tests/acceptance/test_remaining_models.py::test_lifecycle_dependency",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_lifecycle_dependency.py",
+        "tests/integration/test_safety_workers.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T058.json",
+        "evidence/tdd/T071.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-009": {
+      "status": "accepted",
+      "tasks": [
+        "T008",
+        "T010",
+        "T016",
+        "T017",
+        "T027",
+        "T039",
+        "T052",
+        "T062",
+        "T078"
+      ],
+      "tests": [
+        "tests/contract/test_expanded_authoring.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/unit/test_fragments_v2.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T008.json",
+        "evidence/tdd/T010.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-010": {
+      "status": "accepted",
+      "tasks": [
+        "T012",
+        "T023",
+        "T045",
+        "T053",
+        "T054",
+        "T055",
+        "T059",
+        "T069",
+        "T085",
+        "T086",
+        "T091"
+      ],
+      "tests": [
+        "tests/contract/test_expanded_results.py",
+        "tests/contract/test_tool_schema_bounds.py",
+        "tests/integration/test_expanded_artifacts.py",
+        "tests/integration/test_expanded_isolation.py",
+        "tests/integration/test_safety_evidence.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T012.json",
+        "evidence/tdd/T023.json",
+        "evidence/tdd/T059.json",
+        "evidence/tdd/T086.json",
+        "evidence/tdd/T091.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-011": {
+      "status": "accepted",
+      "tasks": [
+        "T005",
+        "T006",
+        "T059",
+        "T061",
+        "T063",
+        "T064",
+        "T065",
+        "T069",
+        "T070",
+        "T071",
+        "T072"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py",
+        "tests/acceptance/test_remaining_models.py::test_lifecycle_dependency",
+        "tests/integration/test_safety_evidence.py",
+        "tests/integration/test_safety_tampering.py",
+        "tests/integration/test_safety_workers.py",
+        "tests/unit/test_proof_dependencies.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T005.json",
+        "evidence/tdd/T059.json",
+        "evidence/tdd/T061.json",
+        "evidence/tdd/T071.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-012": {
+      "status": "accepted",
+      "tasks": [
+        "T012",
+        "T018",
+        "T049",
+        "T053",
+        "T059",
+        "T065",
+        "T068",
+        "T073",
+        "T076",
+        "T079"
+      ],
+      "tests": [
+        "tests/contract/test_field_ownership_authoring.py",
+        "tests/integration/test_expanded_artifacts.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_roundtrip.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_safety_evidence.py",
+        "tests/integration/test_safety_tampering.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T012.json",
+        "evidence/tdd/T049.json",
+        "evidence/tdd/T059.json",
+        "evidence/tdd/T068.json",
+        "evidence/tdd/T073.json",
+        "evidence/tdd/T076.json",
+        "evidence/tdd/T079.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-013": {
+      "status": "accepted",
+      "tasks": [
+        "T011",
+        "T019",
+        "T024",
+        "T028",
+        "T041",
+        "T051",
+        "T054",
+        "T060",
+        "T067",
+        "T068",
+        "T084",
+        "T088"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_approval",
+        "tests/contract/test_approval_authoring.py",
+        "tests/contract/test_host_policy_v2.py",
+        "tests/integration/test_expanded_isolation.py",
+        "tests/integration/test_safety_deployment.py",
+        "tests/unit/test_safety_delegation.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T011.json",
+        "evidence/tdd/T019.json",
+        "evidence/tdd/T024.json",
+        "evidence/tdd/T051.json",
+        "evidence/tdd/T060.json",
+        "evidence/tdd/T068.json",
+        "evidence/tdd/T084.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-014": {
+      "status": "accepted",
+      "tasks": [
+        "T060",
+        "T066",
+        "T067",
+        "T068",
+        "T070",
+        "T072",
+        "T076",
+        "T079",
+        "T084"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py",
+        "tests/acceptance/test_remaining_models.py::test_lifecycle_dependency",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_isolation.py",
+        "tests/integration/test_safety_deployment.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T060.json",
+        "evidence/tdd/T068.json",
+        "evidence/tdd/T076.json",
+        "evidence/tdd/T079.json",
+        "evidence/tdd/T084.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-015": {
+      "status": "accepted",
+      "tasks": [
+        "T001",
+        "T009",
+        "T012",
+        "T018",
+        "T029",
+        "T033",
+        "T043",
+        "T053",
+        "T065",
+        "T073",
+        "T077",
+        "T081"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_approval",
+        "tests/integration/test_expanded_artifacts.py",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/integration/test_expanded_composition.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_roundtrip.py",
+        "tests/integration/test_incremental_adapter_retention.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T009.json",
+        "evidence/tdd/T012.json",
+        "evidence/tdd/T073.json",
+        "evidence/tdd/T081.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-016": {
+      "status": "accepted",
+      "tasks": [
+        "T004",
+        "T010",
+        "T017",
+        "T050",
+        "T074",
+        "T078",
+        "T081",
+        "T082"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_field_ownership",
+        "tests/acceptance/test_remaining_models.py::test_revision_and_composition",
+        "tests/fixtures/remaining_models.py",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/integration/test_expanded_composition.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_roundtrip.py",
+        "tests/integration/test_field_ownership.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/unit/test_fragments_v2.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T010.json",
+        "evidence/tdd/T050.json",
+        "evidence/tdd/T074.json",
+        "evidence/tdd/T081.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-017": {
+      "status": "accepted",
+      "tasks": [
+        "T008",
+        "T012",
+        "T018",
+        "T029",
+        "T053",
+        "T065",
+        "T073",
+        "T077",
+        "T080",
+        "T081",
+        "T082"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_revision_and_composition",
+        "tests/contract/test_expanded_authoring.py",
+        "tests/integration/test_expanded_artifacts.py",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/integration/test_expanded_composition.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_roundtrip.py",
+        "tests/integration/test_incremental_adapter_retention.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T008.json",
+        "evidence/tdd/T012.json",
+        "evidence/tdd/T073.json",
+        "evidence/tdd/T081.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-018": {
+      "status": "accepted",
+      "tasks": [
+        "T001",
+        "T009",
+        "T016",
+        "T018",
+        "T019",
+        "T023",
+        "T033",
+        "T034",
+        "T035",
+        "T047",
+        "T049",
+        "T056",
+        "T058",
+        "T070",
+        "T073",
+        "T075",
+        "T077",
+        "T079",
+        "T081",
+        "T095"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_approval",
+        "tests/acceptance/test_remaining_models.py::test_lifecycle_dependency",
+        "tests/acceptance/test_remaining_models.py::test_work_queue",
+        "tests/contract/test_field_ownership_authoring.py",
+        "tests/contract/test_work_queue_authoring.py",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/integration/test_expanded_composition.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_roundtrip.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_lifecycle_dependency.py",
+        "tests/integration/test_package_installation.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T009.json",
+        "evidence/tdd/T019.json",
+        "evidence/tdd/T023.json",
+        "evidence/tdd/T034.json",
+        "evidence/tdd/T035.json",
+        "evidence/tdd/T049.json",
+        "evidence/tdd/T058.json",
+        "evidence/tdd/T073.json",
+        "evidence/tdd/T075.json",
+        "evidence/tdd/T079.json",
+        "evidence/tdd/T081.json",
+        "evidence/tdd/T095.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-019": {
+      "status": "accepted",
+      "tasks": [
+        "T026",
+        "T031",
+        "T032",
+        "T034",
+        "T038",
+        "T043",
+        "T044",
+        "T046",
+        "T047",
+        "T048",
+        "T084",
+        "T088",
+        "T089"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py",
+        "tests/acceptance/test_remaining_models.py::test_work_queue",
+        "tests/integration/test_approval_recovery.py",
+        "tests/integration/test_expanded_isolation.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_work_queue_recovery.py",
+        "tests/integration/test_work_queue_runtime.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T026.json",
+        "evidence/tdd/T034.json",
+        "evidence/tdd/T038.json",
+        "evidence/tdd/T044.json",
+        "evidence/tdd/T048.json",
+        "evidence/tdd/T084.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-020": {
+      "status": "accepted",
+      "tasks": [
+        "T011",
+        "T015",
+        "T019",
+        "T022",
+        "T051",
+        "T060",
+        "T061",
+        "T065",
+        "T066",
+        "T067",
+        "T068",
+        "T084",
+        "T088",
+        "T089",
+        "T090",
+        "T091",
+        "T092"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_support_and_authority",
+        "tests/contract/test_expanded_results.py",
+        "tests/contract/test_host_policy_v2.py",
+        "tests/integration/test_core_reads.py",
+        "tests/integration/test_expanded_isolation.py",
+        "tests/integration/test_safety_deployment.py",
+        "tests/integration/test_safety_workers.py",
+        "tests/unit/test_safety_delegation.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T011.json",
+        "evidence/tdd/T015.json",
+        "evidence/tdd/T019.json",
+        "evidence/tdd/T051.json",
+        "evidence/tdd/T060.json",
+        "evidence/tdd/T061.json",
+        "evidence/tdd/T068.json",
+        "evidence/tdd/T084.json",
+        "evidence/tdd/T090.json",
+        "evidence/tdd/T091.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-021": {
+      "status": "accepted",
+      "tasks": [
+        "T008",
+        "T013",
+        "T016",
+        "T017",
+        "T020",
+        "T038",
+        "T045",
+        "T046",
+        "T061",
+        "T063",
+        "T064",
+        "T065",
+        "T071",
+        "T085",
+        "T086",
+        "T091"
+      ],
+      "tests": [
+        "tests/contract/test_expanded_authoring.py",
+        "tests/contract/test_expanded_results.py",
+        "tests/contract/test_schema_audit.py",
+        "tests/contract/test_tool_schema_bounds.py",
+        "tests/integration/test_expanded_isolation.py",
+        "tests/integration/test_safety_workers.py",
+        "tests/integration/test_work_queue_recovery.py",
+        "tests/integration/test_work_queue_runtime.py",
+        "tests/unit/test_worker_limits.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T008.json",
+        "evidence/tdd/T013.json",
+        "evidence/tdd/T020.json",
+        "evidence/tdd/T038.json",
+        "evidence/tdd/T061.json",
+        "evidence/tdd/T071.json",
+        "evidence/tdd/T086.json",
+        "evidence/tdd/T091.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-022": {
+      "status": "accepted",
+      "tasks": [
+        "T002",
+        "T003",
+        "T004",
+        "T007",
+        "T094",
+        "T095",
+        "T096",
+        "T097",
+        "T098",
+        "T099",
+        "T100"
+      ],
+      "tests": [
+        "tests/conformance/test_sqlite_backend.py",
+        "tests/fixtures/remaining_models.py",
+        "tests/integration/test_package_installation.py",
+        "tests/integration/test_safety_tampering.py",
+        "tests/unit/test_dependencies.py",
+        "tests/unit/test_tdd_evidence_paths.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T002.json",
+        "evidence/tdd/T094.json",
+        "evidence/tdd/T095.json",
+        "evidence/tdd/T096.json",
+        "evidence/tdd/T097.json",
+        "evidence/tdd/T099.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "FR-023": {
+      "status": "accepted",
+      "tasks": [
+        "T005",
+        "T006",
+        "T007",
+        "T009",
+        "T010",
+        "T018",
+        "T059",
+        "T063",
+        "T090",
+        "T093",
+        "T094",
+        "T095",
+        "T096",
+        "T097",
+        "T098",
+        "T099",
+        "T100"
+      ],
+      "tests": [
+        "tests/conformance/test_sqlite_backend.py",
+        "tests/contract/test_schema_audit.py",
+        "tests/contract/test_tool_schema_bounds.py",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_package_installation.py",
+        "tests/integration/test_safety_evidence.py",
+        "tests/unit/test_dependencies.py",
+        "tests/unit/test_fragments_v2.py",
+        "tests/unit/test_proof_dependencies.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T005.json",
+        "evidence/tdd/T009.json",
+        "evidence/tdd/T010.json",
+        "evidence/tdd/T059.json",
+        "evidence/tdd/T090.json",
+        "evidence/tdd/T094.json",
+        "evidence/tdd/T095.json",
+        "evidence/tdd/T096.json",
+        "evidence/tdd/T097.json",
+        "evidence/tdd/T099.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    }
+  },
+  "success_criteria": {
+    "SC-001": {
+      "status": "accepted",
+      "tasks": [
+        "T083",
+        "T087",
+        "T090",
+        "T092"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_support_and_authority",
+        "tests/contract/test_expanded_catalog.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T090.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-002": {
+      "status": "accepted",
+      "tasks": [
+        "T024",
+        "T025",
+        "T026",
+        "T033",
+        "T034"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_approval",
+        "tests/contract/test_approval_authoring.py",
+        "tests/integration/test_approval_recovery.py",
+        "tests/integration/test_approval_runtime.py",
+        "tests/integration/test_incremental_adapter_retention.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T024.json",
+        "evidence/tdd/T025.json",
+        "evidence/tdd/T026.json",
+        "evidence/tdd/T034.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-003": {
+      "status": "accepted",
+      "tasks": [
+        "T035",
+        "T036",
+        "T037",
+        "T038",
+        "T046",
+        "T047",
+        "T048"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py",
+        "tests/acceptance/test_remaining_models.py::test_work_queue",
+        "tests/contract/test_work_queue_authoring.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_work_queue_context.py",
+        "tests/integration/test_work_queue_recovery.py",
+        "tests/integration/test_work_queue_runtime.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T035.json",
+        "evidence/tdd/T036.json",
+        "evidence/tdd/T037.json",
+        "evidence/tdd/T038.json",
+        "evidence/tdd/T048.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-004": {
+      "status": "accepted",
+      "tasks": [
+        "T049",
+        "T050",
+        "T051",
+        "T056",
+        "T057"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_field_ownership",
+        "tests/contract/test_field_ownership_authoring.py",
+        "tests/integration/test_field_ownership.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/unit/test_safety_delegation.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T049.json",
+        "evidence/tdd/T050.json",
+        "evidence/tdd/T051.json",
+        "evidence/tdd/T057.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-005": {
+      "status": "accepted",
+      "tasks": [
+        "T058",
+        "T059",
+        "T060",
+        "T061",
+        "T070",
+        "T071",
+        "T072"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py",
+        "tests/acceptance/test_remaining_models.py::test_lifecycle_dependency",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_lifecycle_dependency.py",
+        "tests/integration/test_safety_deployment.py",
+        "tests/integration/test_safety_evidence.py",
+        "tests/integration/test_safety_tampering.py",
+        "tests/integration/test_safety_workers.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T058.json",
+        "evidence/tdd/T059.json",
+        "evidence/tdd/T060.json",
+        "evidence/tdd/T061.json",
+        "evidence/tdd/T071.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-006": {
+      "status": "accepted",
+      "tasks": [
+        "T073",
+        "T075",
+        "T076",
+        "T077",
+        "T081",
+        "T082"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_revision_and_composition",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/integration/test_expanded_composition.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_roundtrip.py",
+        "tests/integration/test_incremental_adapter_retention.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T073.json",
+        "evidence/tdd/T075.json",
+        "evidence/tdd/T076.json",
+        "evidence/tdd/T081.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-007": {
+      "status": "accepted",
+      "tasks": [
+        "T074",
+        "T078",
+        "T081",
+        "T082"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_revision_and_composition",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/integration/test_expanded_composition.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_roundtrip.py",
+        "tests/integration/test_incremental_adapter_retention.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T074.json",
+        "evidence/tdd/T081.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-008": {
+      "status": "accepted",
+      "tasks": [
+        "T011",
+        "T060",
+        "T066",
+        "T067",
+        "T068",
+        "T069",
+        "T070",
+        "T076",
+        "T084",
+        "T088"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_lifecycle_dependency",
+        "tests/contract/test_host_policy_v2.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_isolation.py",
+        "tests/integration/test_safety_deployment.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T011.json",
+        "evidence/tdd/T060.json",
+        "evidence/tdd/T068.json",
+        "evidence/tdd/T076.json",
+        "evidence/tdd/T084.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-009": {
+      "status": "accepted",
+      "tasks": [
+        "T026",
+        "T032",
+        "T034",
+        "T038",
+        "T043",
+        "T044",
+        "T046",
+        "T047",
+        "T048"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py",
+        "tests/acceptance/test_remaining_models.py::test_work_queue",
+        "tests/integration/test_approval_recovery.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_work_queue_recovery.py",
+        "tests/integration/test_work_queue_runtime.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T026.json",
+        "evidence/tdd/T034.json",
+        "evidence/tdd/T038.json",
+        "evidence/tdd/T044.json",
+        "evidence/tdd/T048.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-010": {
+      "status": "accepted",
+      "tasks": [
+        "T084",
+        "T089",
+        "T091",
+        "T092"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_support_and_authority",
+        "tests/contract/test_expanded_results.py",
+        "tests/integration/test_expanded_isolation.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T084.json",
+        "evidence/tdd/T091.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-011": {
+      "status": "accepted",
+      "tasks": [
+        "T001",
+        "T009",
+        "T023",
+        "T075",
+        "T077",
+        "T079",
+        "T081",
+        "T094",
+        "T095",
+        "T096",
+        "T097",
+        "T098",
+        "T099"
+      ],
+      "tests": [
+        "tests/conformance/test_sqlite_backend.py",
+        "tests/contract/test_schema_audit.py",
+        "tests/contract/test_tool_schema_bounds.py",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/integration/test_expanded_composition.py",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_expanded_roundtrip.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_package_installation.py",
+        "tests/unit/test_dependencies.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T009.json",
+        "evidence/tdd/T023.json",
+        "evidence/tdd/T075.json",
+        "evidence/tdd/T079.json",
+        "evidence/tdd/T081.json",
+        "evidence/tdd/T094.json",
+        "evidence/tdd/T095.json",
+        "evidence/tdd/T096.json",
+        "evidence/tdd/T097.json",
+        "evidence/tdd/T099.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    },
+    "SC-012": {
+      "status": "accepted",
+      "tasks": [
+        "T008",
+        "T009",
+        "T010",
+        "T011",
+        "T012",
+        "T013",
+        "T014",
+        "T015",
+        "T061",
+        "T071",
+        "T085",
+        "T086",
+        "T090",
+        "T091",
+        "T092",
+        "T093",
+        "T094",
+        "T095",
+        "T096",
+        "T097",
+        "T098",
+        "T099",
+        "T100"
+      ],
+      "tests": [
+        "tests/acceptance/test_remaining_models.py::test_support_and_authority",
+        "tests/conformance/test_sqlite_backend.py",
+        "tests/contract/test_expanded_authoring.py",
+        "tests/contract/test_expanded_results.py",
+        "tests/contract/test_host_policy_v2.py",
+        "tests/contract/test_schema_audit.py",
+        "tests/contract/test_tool_schema_bounds.py",
+        "tests/integration/test_core_reads.py",
+        "tests/integration/test_expanded_artifacts.py",
+        "tests/integration/test_expanded_compatibility.py",
+        "tests/integration/test_expanded_isolation.py",
+        "tests/integration/test_incremental_adapter_retention.py",
+        "tests/integration/test_package_installation.py",
+        "tests/integration/test_safety_tampering.py",
+        "tests/integration/test_safety_workers.py",
+        "tests/unit/test_dependencies.py",
+        "tests/unit/test_fragments_v2.py",
+        "tests/unit/test_semantic_time.py",
+        "tests/unit/test_worker_limits.py"
+      ],
+      "evidence": [
+        "evidence/tdd/T008.json",
+        "evidence/tdd/T009.json",
+        "evidence/tdd/T010.json",
+        "evidence/tdd/T011.json",
+        "evidence/tdd/T012.json",
+        "evidence/tdd/T013.json",
+        "evidence/tdd/T014.json",
+        "evidence/tdd/T015.json",
+        "evidence/tdd/T061.json",
+        "evidence/tdd/T071.json",
+        "evidence/tdd/T086.json",
+        "evidence/tdd/T090.json",
+        "evidence/tdd/T091.json",
+        "evidence/tdd/T094.json",
+        "evidence/tdd/T095.json",
+        "evidence/tdd/T096.json",
+        "evidence/tdd/T097.json",
+        "evidence/tdd/T099.json"
+      ],
+      "release_evidence": [
+        "tdd/T099.json",
+        "package.json"
+      ]
+    }
+  },
+  "remaining_capability_limits": [
+    "GAP-001 canonical-only re-authoring is unsupported; original complete proposal/context retained.",
+    "GAP-002 discovery schemas are bounded host metadata with authoritative model descriptions.",
+    "GAP-003 Core Wire retains behavior but not model receipts; original provenance remains separate.",
+    "GAP-004 schema-changing/governed prepared migrations remain unsupported and block activation.",
+    "GAP-005 literal/Enum-left and entity-object equality are explicitly unsupported, with no Python folding or Wire fallback."
+  ],
+  "formal_scope": "Only actual public Certified under assumptions / OrdinaryTransitions evidence under pinned tooling; initial validity, deployment authority and migrations remain separate.",
+  "review": "constitution-check.json",
+  "additional_evidence": [
+    "safety-tampering.json",
+    "schema-validation-performance.json"
+  ],
+  "gate": {
+    "command": [
+      "bash",
+      "-c",
+      "set -o pipefail; nix develop --command ./scripts/check 2>&1 | tee /tmp/behavior-mcp-quality.log"
+    ],
+    "exit_code": 0,
+    "stdout": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\nResolved 49 packages in 354ms\nUninstalled 1 package in 11ms\n - behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nResolved 49 packages in 3ms\n   Building behavior-mcp @ file:///home/kalle/repos/behavior-mcp\n      Built behavior-mcp @ file:///home/kalle/repos/behavior-mcp\nPrepared 1 package in 290ms\nInstalled 1 package in 4ms\n + behavior-mcp==0.1.0 (from file:///home/kalle/repos/behavior-mcp)\nReleased dependency identities and public API boundary: PASS\nPackaged contract meta-validation: 14 PASS\nReleased Safety proof tooling: PASS\n117 files already formatted\nAll checks passed!\nSuccess: no issues found in 29 source files\n{\n  \"schemas\": 9,\n  \"policy_fixtures\": 3,\n  \"result_fixtures\": 10,\n  \"negative_cases\": 10,\n  \"versioned_proposals\": 4,\n  \"tasks\": 100,\n  \"legacy_adapter_preserved\": true\n}\n============================= test session starts ==============================\nplatform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /home/kalle/repos/behavior-mcp\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.1\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 410 items\n\ntests/acceptance/test_authoring.py ....                                  [  0%]\ntests/acceptance/test_composition.py .                                   [  1%]\ntests/acceptance/test_expanded_stdio.py ..                               [  1%]\ntests/acceptance/test_persistent_runtime.py ....                         [  2%]\ntests/acceptance/test_remaining_models.py .......                        [  4%]\ntests/acceptance/test_revision.py .                                      [  4%]\ntests/conformance/test_sqlite_backend.py ..                              [  5%]\ntests/contract/test_approval_authoring.py .....                          [  6%]\ntests/contract/test_authoring_tools.py .......                           [  8%]\ntests/contract/test_expanded_authoring.py .....                          [  9%]\ntests/contract/test_expanded_catalog.py ...                              [ 10%]\ntests/contract/test_expanded_results.py ...                              [ 10%]\ntests/contract/test_field_ownership_authoring.py .                       [ 10%]\ntests/contract/test_host_policy_schema.py .......                        [ 12%]\ntests/contract/test_host_policy_v2.py ..............                     [ 16%]\ntests/contract/test_model_coverage.py .......                            [ 17%]\ntests/contract/test_schema_audit.py ...                                  [ 18%]\ntests/contract/test_schema_envelopes.py ...................              [ 23%]\ntests/contract/test_stdio_boundary.py .......                            [ 24%]\ntests/contract/test_system_tools.py .................                    [ 29%]\ntests/contract/test_tool_schema_bounds.py ....                           [ 30%]\ntests/contract/test_work_queue_authoring.py ..........                   [ 32%]\ntests/integration/test_admin_policy.py .....                             [ 33%]\ntests/integration/test_approval_recovery.py .........                    [ 35%]\ntests/integration/test_approval_runtime.py .                             [ 36%]\ntests/integration/test_authoring_roundtrip.py ....                       [ 37%]\ntests/integration/test_backend_crashes.py ....                           [ 38%]\ntests/integration/test_composed_provenance.py .                          [ 38%]\ntests/integration/test_core_reads.py ..                                  [ 38%]\ntests/integration/test_definition_artifacts.py ..                        [ 39%]\ntests/integration/test_definition_revision.py .                          [ 39%]\ntests/integration/test_evolution_boundaries.py ....                      [ 40%]\ntests/integration/test_expanded_artifacts.py ...                         [ 41%]\ntests/integration/test_expanded_compatibility.py ....                    [ 42%]\ntests/integration/test_expanded_composition.py ........                  [ 44%]\ntests/integration/test_expanded_history.py .....                         [ 45%]\ntests/integration/test_expanded_isolation.py .....                       [ 46%]\ntests/integration/test_expanded_roundtrip.py ........                    [ 48%]\ntests/integration/test_field_ownership.py ........                       [ 50%]\ntests/integration/test_historical_replay.py ..                           [ 50%]\ntests/integration/test_host_limits.py .............                      [ 54%]\ntests/integration/test_host_storage.py ...                               [ 54%]\ntests/integration/test_incremental_adapter_retention.py .                [ 55%]\ntests/integration/test_lifecycle_dependency.py ..                        [ 55%]\ntests/integration/test_model_composition.py ..                           [ 56%]\ntests/integration/test_package_installation.py .                         [ 56%]\ntests/integration/test_runtime_decisions.py ...                          [ 57%]\ntests/integration/test_safety_deployment.py ....                         [ 58%]\ntests/integration/test_safety_evidence.py ...                            [ 58%]\ntests/integration/test_safety_tampering.py ..                            [ 59%]\ntests/integration/test_safety_workers.py ..........                      [ 61%]\ntests/integration/test_server_recovery.py ............                   [ 64%]\ntests/integration/test_system_creation.py ..                             [ 65%]\ntests/integration/test_system_isolation.py ....                          [ 66%]\ntests/integration/test_uncertain_activation.py ...                       [ 66%]\ntests/integration/test_uncertain_commit.py ...............               [ 70%]\ntests/integration/test_work_queue_context.py ..........                  [ 72%]\ntests/integration/test_work_queue_recovery.py .........                  [ 75%]\ntests/integration/test_work_queue_runtime.py .........                   [ 77%]\ntests/unit/test_delegated_activation.py ............                     [ 80%]\ntests/unit/test_dependencies.py ...............                          [ 83%]\ntests/unit/test_diagnostics.py ............                              [ 86%]\ntests/unit/test_fragments_v2.py ..........                               [ 89%]\ntests/unit/test_proof_dependencies.py ......                             [ 90%]\ntests/unit/test_quality_gate.py .                                        [ 90%]\ntests/unit/test_request_flow_adapter.py .......                          [ 92%]\ntests/unit/test_safety_delegation.py ...                                 [ 93%]\ntests/unit/test_semantic_time.py ........                                [ 95%]\ntests/unit/test_tdd_evidence_paths.py ..                                 [ 95%]\ntests/unit/test_trusted_context.py ...                                   [ 96%]\ntests/unit/test_verification.py ......                                   [ 98%]\ntests/unit/test_worker_limits.py ........                                [100%]\n\n======================= 410 passed in 1723.02s (0:28:43) =======================\n",
+    "stderr": "",
+    "source_tests_passed": 410,
+    "source_suite_seconds": 1723.02,
+    "installed_tests_passed": 409,
+    "installed_suite_seconds": 845.47,
+    "installed_suite_budget_seconds": 900,
+    "public_backend_cases": 45,
+    "skipped": 0
+  },
+  "tasks_completed": 100,
+  "blocking_gaps_in_declared_scope": [],
+  "distributions": {
+    "scope": "reproducible source/wheel and clean installed consumer environment",
+    "wheel": "behavior_mcp-0.1.0-py3-none-any.whl",
+    "wheel_sha256": "ca52c0de18c1dc88c4bb0216f6240df5075cf930d239638801a626c7447c4639",
+    "source_sha256": "4175c323e25bca3d3cc89c574905c3786b0be298ecb0cc9296e4b7e0380d940c",
+    "source_rebuild_identical": true,
+    "installed_tests_passed": 409,
+    "uv_lock_sha256": "5ba548320de9b61e1b5daf1bccf4b9617ca12ea6c7aaf506fee765160d5db918",
+    "flake_lock_sha256": "ddbda36308775a021945796dbcd4d6e0020068696954764eefdd1ae1177cefac",
+    "wheel_artifact": "dist/behavior_mcp-0.1.0-py3-none-any.whl",
+    "source_artifact": "dist/behavior_mcp-0.1.0.tar.gz",
+    "post_gate_tracking_repack": {
+      "reason": "Final completed task markers only; source, tests, dependencies and tested wheel unchanged.",
+      "quality_gate_source_sha256": "dd79181ae67cf0725dd50bd33b41050477222d7296b3146ca746785407067e10",
+      "tested_wheel_unchanged": true,
+      "source_rebuild_identical": true,
+      "commands": [
+        {
+          "command": [
+            "uv",
+            "build",
+            "--no-build-isolation",
+            "--python",
+            "/home/kalle/repos/behavior-mcp/.venv/bin/python3",
+            "--out-dir",
+            "/tmp/nix-shell.3X4b2g/behavior-mcp-final-artifacts-4xieg4em/dist"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "Building source distribution...\nBuilding wheel from source distribution...\nSuccessfully built /tmp/nix-shell.3X4b2g/behavior-mcp-final-artifacts-4xieg4em/dist/behavior_mcp-0.1.0.tar.gz\nSuccessfully built /tmp/nix-shell.3X4b2g/behavior-mcp-final-artifacts-4xieg4em/dist/behavior_mcp-0.1.0-py3-none-any.whl\n"
+        },
+        {
+          "command": [
+            "uv",
+            "build",
+            "--no-build-isolation",
+            "--python",
+            "/home/kalle/repos/behavior-mcp/.venv/bin/python3",
+            "--wheel",
+            "/tmp/nix-shell.3X4b2g/behavior-mcp-final-artifacts-4xieg4em/source/behavior_mcp-0.1.0",
+            "--out-dir",
+            "/tmp/nix-shell.3X4b2g/behavior-mcp-final-artifacts-4xieg4em/rebuilt"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "Building wheel...\nSuccessfully built rebuilt/behavior_mcp-0.1.0-py3-none-any.whl\n"
+        }
+      ]
+    }
+  },
+  "checkpoint_manifests_sha256": {
+    "tests/fixtures/adapter_versions/v2_0_0/manifest.json": "800f3389dc325b2a8cab29731bcf14692d901420b9f06e1457b9b00c340b3a84",
+    "tests/fixtures/adapter_versions/v2_1_0/manifest.json": "6f4cdb5fdc49b1959e993b28f0999233c38d4f15610a0cfe1ec3757c80fa69f7",
+    "tests/fixtures/adapter_versions/v2_2_0/manifest.json": "211d8d8325e226b77663284a3866007b768cbd62eb899662c6b5f0cb0845e83a",
+    "tests/fixtures/adapter_versions/v2_3_0/manifest.json": "595e0dc42568907cf0d35178e468851ab7b8225787b86aa1a2c764013dd66939",
+    "tests/fixtures/legacy_v1/manifest.json": "bf74a9620be5b87b7f505f898cf15656a3ab85aa30f3912dda3b2e8c40232078"
+  },
+  "source_identity_evidence": "constitution-check.json",
+  "verification_claim": "Actual pinned public certification and fresh bundle checking pass under the recorded assumptions and OrdinaryTransitions scope; admission, identity, state validation, authorization and activation remain separate.",
+  "hooks": {
+    "before_implement": "No .specify/extensions.yml present.",
+    "after_implement": "No .specify/extensions.yml present."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "format": "behavior-mcp.activation-approval.v2",
+  "approval_id": "example-exact",
+  "issuer_id": "local-operator",
+  "grantee_principal_id": "agent-session",
+  "workspace_id": "workspace-1",
+  "system_id": "system-example",
+  "definition_id": "definition-example",
+  "behavior_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "schema_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "policy_id": "local-expanded",
+  "policy_version": 1,
+  "expected_activation_revision": 0,
+  "history_anchor": {
+    "format": "behavior.history_ref.v1",
+    "store": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "state": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "position": 0,
+    "record": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "exceptions": [
+    "model_parameters"
+  ],
+  "policy_set_hash": null,
+  "required_evidence_refs": []
+}

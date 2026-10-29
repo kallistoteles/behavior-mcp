@@ -8,6 +8,7 @@ import subprocess
 import sys
 import threading
 import time
+from contextvars import ContextVar
 
 from behavior import BehaviorModule, Profile, verify
 
@@ -19,10 +20,19 @@ PROFILES = DEFAULT_PROFILES
 WORKERS = threading.BoundedSemaphore(2)
 STDOUT_LIMIT = 8 * 1024 * 1024
 STDERR_LIMIT = 1024 * 1024
+CANCELLATION: ContextVar[threading.Event | None] = ContextVar(
+    "behavior_mcp.worker_cancellation", default=None
+)
 
 
 def bounded_worker_output(
-    process: subprocess.Popen[bytes], request: bytes, timeout: float
+    process: subprocess.Popen[bytes],
+    request: bytes,
+    timeout: float,
+    *,
+    stdout_limit: int = STDOUT_LIMIT,
+    stderr_limit: int = STDERR_LIMIT,
+    cancellation: threading.Event | None = None,
 ) -> bytes:
     """Multiplex bounded pipe reads and request writes, then kill/reap on any failure."""
     assert (
@@ -33,8 +43,9 @@ def bounded_worker_output(
     deadline = time.monotonic() + timeout
     output = bytearray()
     counts = {"stdout": 0, "stderr": 0}
-    limits = {"stdout": STDOUT_LIMIT, "stderr": STDERR_LIMIT}
+    limits = {"stdout": stdout_limit, "stderr": stderr_limit}
     pending = memoryview(request)
+    cancelled = cancellation if cancellation is not None else CANCELLATION.get()
     with selectors.DefaultSelector() as selector:
         for stream, name, events in (
             (process.stdin, "stdin", selectors.EVENT_WRITE),
@@ -45,10 +56,19 @@ def bounded_worker_output(
             selector.register(stream, events, name)
         try:
             while selector.get_map():
+                if cancelled is not None and cancelled.is_set():
+                    raise OperationError(
+                        "infrastructure",
+                        "WORKER_CANCELLED",
+                        "Worker request was cancelled",
+                        retryable=True,
+                    )
                 remaining = deadline - time.monotonic()
                 if remaining <= 0:
                     raise subprocess.TimeoutExpired(process.args, timeout)
-                for key, _ in selector.select(remaining):
+                for key, _ in selector.select(
+                    min(remaining, 0.05) if cancelled is not None else remaining
+                ):
                     name = key.data
                     if name == "stdin":
                         try:

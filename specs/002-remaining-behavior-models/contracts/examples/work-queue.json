@@ -1,0 +1,83 @@
+{
+  "format": "behavior-mcp.authoring.v2",
+  "adapter_profile": "structured-models.v2",
+  "declarations": {
+    "enums": [],
+    "entities": [],
+    "nominals": [
+      {
+        "name": "Time",
+        "base": "int",
+        "operations": [
+          "order"
+        ]
+      }
+    ]
+  },
+  "models": [
+    {
+      "model_kind": "work_queue",
+      "model_id": "jobs",
+      "worker": "Actor",
+      "time": "Time",
+      "max_attempts": 3,
+      "payload": {
+        "label": {
+          "kind": "string"
+        }
+      },
+      "capabilities": {
+        "enqueue": {
+          "authorization": {
+            "op": "literal",
+            "value": true
+          },
+          "requires": []
+        },
+        "claim": {
+          "authorization": {
+            "op": "literal",
+            "value": true
+          },
+          "requires": []
+        },
+        "renew": {
+          "requires": []
+        },
+        "complete": {
+          "requires": []
+        },
+        "retry": {
+          "requires": []
+        },
+        "fail": {
+          "requires": []
+        },
+        "recover": {
+          "authorization": {
+            "op": "literal",
+            "value": true
+          },
+          "requires": []
+        },
+        "exhaust": {
+          "authorization": {
+            "op": "literal",
+            "value": true
+          },
+          "requires": []
+        },
+        "cancel": {
+          "authorization": {
+            "op": "literal",
+            "value": true
+          },
+          "requires": []
+        }
+      }
+    }
+  ],
+  "actions": [],
+  "safety": [],
+  "adapter_version": "2.1.0"
+}

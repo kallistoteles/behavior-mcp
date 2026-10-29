@@ -1,0 +1,18 @@
+{
+  "task": "T020",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_verification.py",
+      "-k",
+      "worker_output"
+    ],
+    "exit_code": 0,
+    "stdout": "..                                                                       [100%]\n2 passed, 4 deselected in 1.67s\n",
+    "stderr": ""
+  },
+  "environment_note": "Verifier tests outside nix develop lacked Z3. The unchanged overflow tests passed in the declared Nix environment; that passing diagnostic run is not an observed-red feature claim."
+}

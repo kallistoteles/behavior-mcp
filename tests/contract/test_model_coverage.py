@@ -4,7 +4,7 @@ from behavior_mcp.server import Application
 from tests.fixtures.runtime import composed_proposal
 
 
-def test_discovery_labels_two_bounded_host_adapters(trusted_setup):
+def test_discovery_labels_six_bounded_host_adapters(trusted_setup):
     root, ctx, _, _ = trusted_setup
     models = Application(root, ctx, "local-delegation").execute("models_list", {})[
         "result"
@@ -13,16 +13,21 @@ def test_discovery_labels_two_bounded_host_adapters(trusted_setup):
     assert {k for k, m in by_kind.items() if m["authoring_supported"]} == {
         "request_flow",
         "state_machine",
+        "approval",
+        "work_queue",
+        "field_ownership",
+        "lifecycle_dependency",
     }
     for kind in ["request_flow", "state_machine"]:
         assert by_kind[kind]["schema_origin"].startswith("behavior-mcp")
         assert (
-            by_kind[kind]["authoring_schema"]["$id"] == "urn:behavior-mcp:authoring:v1"
+            by_kind[kind]["authoring_schema"]["properties"]["adapter_version"]["const"]
+            == "2.3.0"
         )
         assert "v0.14.0" in by_kind[kind]["provenance"]
     assert (
-        not by_kind["approval"]["authoring_supported"]
-        and not by_kind["work_queue"]["authoring_supported"]
+        by_kind["approval"]["authoring_supported"]
+        and by_kind["work_queue"]["authoring_supported"]
     )
 
 
@@ -62,7 +67,14 @@ def test_invalid_enum_is_a_model_diagnostic_not_infrastructure(trusted_setup, pr
 def test_model_problem_descriptions_come_from_public_upstream_classes(trusted_setup):
     import inspect
 
-    from behavior import Approval, RequestFlow, StateMachine, WorkQueue
+    from behavior import (
+        Approval,
+        FieldOwnership,
+        LifecycleDependency,
+        RequestFlow,
+        StateMachine,
+        WorkQueue,
+    )
 
     root, ctx, _, _ = trusted_setup
     models = Application(root, ctx, "local-delegation").execute("models_list", {})[
@@ -73,6 +85,8 @@ def test_model_problem_descriptions_come_from_public_upstream_classes(trusted_se
         "state_machine": StateMachine,
         "approval": Approval,
         "work_queue": WorkQueue,
+        "field_ownership": FieldOwnership,
+        "lifecycle_dependency": LifecycleDependency,
     }
     for model in models:
         assert model["description"] == inspect.getdoc(classes[model["model_kind"]])

@@ -1,0 +1,103 @@
+{
+  "format": "behavior-mcp.authoring.v2",
+  "adapter_profile": "structured-models.v2",
+  "declarations": {
+    "enums": [
+      {
+        "name": "ParentPhase",
+        "cases": [
+          {
+            "name": "OPEN",
+            "value": "Open"
+          },
+          {
+            "name": "STOPPED",
+            "value": "Stopped"
+          }
+        ]
+      }
+    ],
+    "entities": [
+      {
+        "name": "Parent",
+        "fields": {
+          "phase": {
+            "kind": "enum",
+            "name": "ParentPhase"
+          }
+        }
+      }
+    ],
+    "nominals": []
+  },
+  "models": [
+    {
+      "model_kind": "state_machine",
+      "model_id": "parent",
+      "subject": "Parent",
+      "state_field": "phase",
+      "entry_states": [
+        "Open"
+      ],
+      "transitions": [
+        {
+          "id": "stop",
+          "from": [
+            "Open"
+          ],
+          "to": "Stopped",
+          "inputs": {},
+          "requires": [],
+          "assignments": []
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "kind": "create_entity",
+      "name": "new_parent",
+      "entity": "Parent",
+      "values": {
+        "phase": {
+          "op": "enum",
+          "enum": "ParentPhase",
+          "case": "OPEN"
+        }
+      },
+      "requires": []
+    },
+    {
+      "kind": "remove_entity",
+      "name": "remove_parent",
+      "entity": "Parent",
+      "requires": []
+    }
+  ],
+  "safety": [
+    {
+      "policy_kind": "field_ownership",
+      "id": "parent_control",
+      "entity": "Parent",
+      "writers": {
+        "phase": [
+          {
+            "model_id": "parent",
+            "local_action_id": "stop"
+          }
+        ]
+      },
+      "creators": [
+        {
+          "action": "new_parent"
+        }
+      ],
+      "removers": [
+        {
+          "action": "remove_parent"
+        }
+      ]
+    }
+  ],
+  "adapter_version": "2.2.0"
+}

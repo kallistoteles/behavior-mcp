@@ -1,0 +1,38 @@
+{
+  "task": "T050",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_field_ownership.py",
+      "tests/acceptance/test_remaining_models.py::test_field_ownership"
+    ],
+    "exit_code": 1,
+    "stdout": "...FF                                                                    [100%]\n=================================== FAILURES ===================================\n________________ test_policy_only_change_has_separate_identity _________________\n\n    def test_policy_only_change_has_separate_identity():\n        proposal=example('field-ownership')\n>       module=build(proposal)\n               ^^^^^^^^^^^^^^^\n\ntests/integration/test_field_ownership.py:28: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/behavior_mcp/adapters.py:95: in build\n    validate_proposal(proposal)\nsrc/behavior_mcp/adapters.py:50: in validate_proposal\n    selected = handler(proposal)\n               ^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nproposal = {'format': 'behavior-mcp.authoring.v2', 'adapter_profile': 'structured-models.v2', 'declarations': {'enums': [{'name':...odels': [{'model_kind': 'state_machine', 'model_id': 'parent', 'subject': 'Parent', 'state_field': 'phase', ...}], ...}\n\n    def handler(proposal: JSON) -> Any:\n        if (\n            proposal.get(\"format\") == \"behavior-mcp.authoring.v1\"\n            and proposal.get(\"adapter_profile\") == \"scalar-models.v1\"\n        ):\n            return legacy\n        if (\n            proposal.get(\"format\") == \"behavior-mcp.authoring.v2\"\n            and proposal.get(\"adapter_profile\") == \"structured-models.v2\"\n        ):\n            selected = HANDLERS.get(proposal.get(\"adapter_version\", \"\"))\n            if selected is not None:\n                return selected\n>       raise OperationError(\n            \"unsupported\",\n            \"ADAPTER_UNAVAILABLE\",\n            \"The exact authoring implementation is unavailable\",\n        )\nE       behavior_mcp.schemas.OperationError: The exact authoring implementation is unavailable\n\nsrc/behavior_mcp/adapters.py:32: OperationError\n_____________________________ test_field_ownership _____________________________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-38/test_field_ownership0')\n\n    def test_field_ownership(tmp_path):\n        from behavior_mcp.adapters import build\n        from tests.fixtures.expanded import example\n        proposal=example('field-ownership')\n>       module=build(proposal)\n               ^^^^^^^^^^^^^^^\n\ntests/acceptance/test_remaining_models.py:57: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/behavior_mcp/adapters.py:95: in build\n    validate_proposal(proposal)\nsrc/behavior_mcp/adapters.py:50: in validate_proposal\n    selected = handler(proposal)\n               ^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nproposal = {'format': 'behavior-mcp.authoring.v2', 'adapter_profile': 'structured-models.v2', 'declarations': {'enums': [{'name':...odels': [{'model_kind': 'state_machine', 'model_id': 'parent', 'subject': 'Parent', 'state_field': 'phase', ...}], ...}\n\n    def handler(proposal: JSON) -> Any:\n        if (\n            proposal.get(\"format\") == \"behavior-mcp.authoring.v1\"\n            and proposal.get(\"adapter_profile\") == \"scalar-models.v1\"\n        ):\n            return legacy\n        if (\n            proposal.get(\"format\") == \"behavior-mcp.authoring.v2\"\n            and proposal.get(\"adapter_profile\") == \"structured-models.v2\"\n        ):\n            selected = HANDLERS.get(proposal.get(\"adapter_version\", \"\"))\n            if selected is not None:\n                return selected\n>       raise OperationError(\n            \"unsupported\",\n            \"ADAPTER_UNAVAILABLE\",\n            \"The exact authoring implementation is unavailable\",\n        )\nE       behavior_mcp.schemas.OperationError: The exact authoring implementation is unavailable\n\nsrc/behavior_mcp/adapters.py:32: OperationError\n=========================== short test summary info ============================\nFAILED tests/integration/test_field_ownership.py::test_policy_only_change_has_separate_identity\nFAILED tests/acceptance/test_remaining_models.py::test_field_ownership - beha...\n2 failed, 3 passed in 1.55s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-c",
+      "import pytest; from behavior_mcp import adapters, authoring_v2; authoring_v2.CLOSURE=[\"authoring_v2.py\",\"fragments_v2.py\"]; authoring_v2.KINDS=[\"request_flow\",\"state_machine\",\"approval\",\"work_queue\",\"field_ownership\"]; adapters.HANDLERS[\"2.2.0\"]=authoring_v2; raise SystemExit(pytest.main([\"-q\",\"tests/acceptance/test_remaining_models.py::test_field_ownership_persists_and_recovers\",\"tests/contract/test_field_ownership_authoring.py\",\"tests/integration/test_field_ownership.py\"]))"
+    ],
+    "exit_code": 0,
+    "stdout": ".......                                                                  [100%]\n7 passed in 7.01s\n",
+    "stderr": ""
+  },
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-c",
+        "import pytest; from behavior_mcp import adapters, authoring_v2; authoring_v2.CLOSURE=[\"authoring_v2.py\",\"fragments_v2.py\"]; authoring_v2.KINDS=[\"request_flow\",\"state_machine\",\"approval\",\"work_queue\",\"field_ownership\"]; adapters.HANDLERS[\"2.2.0\"]=authoring_v2; raise SystemExit(pytest.main([\"-q\",\"tests/contract/test_field_ownership_authoring.py\",\"tests/integration/test_field_ownership.py\",\"tests/unit/test_safety_delegation.py\",\"tests/acceptance/test_remaining_models.py::test_field_ownership\"]))"
+      ],
+      "exit_code": 1,
+      "stdout": "....F..                                                                  [100%]\n=================================== FAILURES ===================================\n________________ test_policy_only_change_has_separate_identity _________________\n\n    def test_policy_only_change_has_separate_identity():\n        proposal=example('field-ownership')\n        module=build(proposal)\n        changed=copy.deepcopy(proposal);changed['safety'][0]['id']='other_control'\n        next_module=build(changed)\n        assert module.behavior_version==next_module.behavior_version\n>       assert module.safety_analysis.to_dict()['policy_set_hash']!=next_module.safety_analysis.to_dict()['policy_set_hash']\nE       AssertionError: assert 'sha256:5564e32e05aef923f4285aefe22db85464dca4f56fa01781ea43c0d27cb77e13' != 'sha256:5564e32e05aef923f4285aefe22db85464dca4f56fa01781ea43c0d27cb77e13'\n\ntests/integration/test_field_ownership.py:32: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_field_ownership.py::test_policy_only_change_has_separate_identity\n1 failed, 6 passed in 2.24s\n",
+      "stderr": ""
+    }
+  ]
+}

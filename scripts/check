@@ -4,7 +4,10 @@ cd "$(dirname "$0")/.."
 uv sync --locked --no-install-project
 uv sync --locked --no-build-isolation --reinstall-package behavior-mcp
 uv run --locked python -m behavior_mcp.dependencies
-ruff format --check src tests specs/001-agent-native-systems/evidence/public_api_probe.py scripts/record-test
-ruff check src tests specs/001-agent-native-systems/evidence/public_api_probe.py scripts/record-test
+uv run --locked python -m behavior_mcp.schemas
+uv run --locked python -c "from behavior_mcp.dependencies import check_proof_dependencies; check_proof_dependencies(); print('Released Safety proof tooling: PASS')"
+ruff format --check src tests specs/001-agent-native-systems/evidence/public_api_probe.py specs/002-remaining-behavior-models/evidence/*.py scripts/record-test
+ruff check src tests specs/001-agent-native-systems/evidence/public_api_probe.py specs/002-remaining-behavior-models/evidence/*.py scripts/record-test
 uv run --locked mypy
+uv run --locked python specs/002-remaining-behavior-models/evidence/validate_remediation.py
 uv run --locked pytest

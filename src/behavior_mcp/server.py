@@ -201,6 +201,10 @@ class Application:
         "transition_commit": "commit",
         "operation_get": "recovery",
         "system_recover": "recovery",
+        "capability_read": "read",
+        "definition_safety_certify": "safety_certification",
+        "definition_safety_verify_evidence": "safety_checking",
+        "state_validate_safety": "safety_state_validation",
     }
 
     def __init__(
@@ -231,6 +235,9 @@ class Application:
     def startup(self) -> None:
         # Recovery runs only after serve_stdio has acquired the workspace owner lock.
         # Failed recovery remains scoped to its system; normal operations still fail closed.
+        from .safety import cleanup_staging
+
+        cleanup_staging(self.workspace)
         self.startup_results = []
         for system_id in self.artifacts.system_ids():
             self.startup_results.append(
@@ -238,20 +245,30 @@ class Application:
             )
 
     def tools(self) -> list[types.Tool]:
-        from .schemas import load_schema
+        from .schemas import load_schema, prune_schema, stage_result_schema
 
         inputs = load_schema("tool-request")
-        output = load_schema("result")
+        additions = {
+            v["properties"]["name"]["const"]: v["properties"]["arguments"]
+            for v in load_schema("tool-additions")["oneOf"]
+        }
+
+        def tool_input(name: str) -> dict[str, Any]:
+            old = inputs["$defs"].get(name)
+            new = additions.get(name)
+            variants = ([old] if old else []) + ([new] if new else [])
+            return prune_schema(
+                {"type": "object", "oneOf": variants, "$defs": inputs["$defs"]}
+                if len(variants) > 1
+                else {**variants[0], "$defs": inputs["$defs"]}
+            )
+
         return [
             types.Tool(
                 name=name,
                 description=f"{name}: explicit {stage} boundary under host authority; never implies another stage.",
-                input_schema={
-                    "type": "object",
-                    **inputs["$defs"][name],
-                    "$defs": inputs["$defs"],
-                },
-                output_schema=output,
+                input_schema=tool_input(name),
+                output_schema=stage_result_schema(stage),
             )
             for name, stage in self.STAGES.items()
         ]
@@ -259,11 +276,27 @@ class Application:
     async def call_tool(
         self, name: str, arguments: dict[str, Any]
     ) -> types.CallToolResult:
+        import threading
+
         import anyio
+
+        from .verification import CANCELLATION
 
         if name not in self.STAGES:
             raise MCPError(code=-32601, message="Unknown tool")
-        envelope = await anyio.to_thread.run_sync(self.execute, name, arguments)
+        cancelled = threading.Event()
+
+        def execute() -> dict[str, Any]:
+            token = CANCELLATION.set(cancelled)
+            try:
+                return self.execute(name, arguments)
+            finally:
+                CANCELLATION.reset(token)
+
+        try:
+            envelope = await anyio.to_thread.run_sync(execute, abandon_on_cancel=True)
+        finally:
+            cancelled.set()
         return types.CallToolResult(
             content=[
                 types.TextContent(
@@ -277,11 +310,15 @@ class Application:
     def evidence(
         self, kind: str, subject: dict[str, Any], report: dict[str, Any]
     ) -> list[dict[str, Any]]:
-        from .authoring import release_identity
+        from .adapters import release_identity
 
         ref = self.artifacts.put(
             kind + "_evidence",
-            {"subject": subject, "report": report, "release": release_identity()},
+            {
+                "subject": subject,
+                "report": report,
+                "release": subject.get("release", release_identity()),
+            },
         )
         return [
             {
@@ -289,7 +326,7 @@ class Application:
                 "kind": kind,
                 "report_ref": ref,
                 "subject": subject,
-                "release": release_identity(),
+                "release": subject.get("release", release_identity()),
             }
         ]
 
@@ -302,7 +339,24 @@ class Application:
         subject: dict[str, Any] = {"workspace_id": self.context.workspace_id}
         manager = None
         try:
+            encoded = json.dumps(
+                arguments, ensure_ascii=False, allow_nan=False
+            ).encode()
+            if len(encoded) > self.limits.frame_bytes:
+                raise OperationError(
+                    "invalid_input",
+                    "FRAME_TOO_LARGE",
+                    "Request exceeds host byte limit",
+                )
+            decode_frame(encoded, limits=self.limits)
             validate_input(name, arguments)
+            if name in {
+                "definition_safety_certify",
+                "definition_safety_verify_evidence",
+            }:
+                from .safety import Safety
+
+                return Safety(self).run(name, arguments, subject)
             with file_lock(self.workspace / "policy.lock", shared=True):
                 policy_document = self.artifacts.policy(self.policy_id)
                 policy = Delegation.from_document(
@@ -344,11 +398,12 @@ class Application:
     def _authoring(
         self, name: str, args: dict[str, Any], subject: dict[str, Any], policy: Any
     ) -> dict[str, Any]:
-        from .authoring import (
+        from .adapters import (
             admit_proposal,
-            capabilities,
             discovery,
+            ecosystem_release,
             gaps,
+            inventory,
             reconstruct,
             release_identity,
         )
@@ -365,7 +420,9 @@ class Application:
                 {
                     "kind": kind,
                     kind: discovery() if kind == "models" else gaps(),
-                    "release": release_identity(),
+                    "release": ecosystem_release()
+                    if kind == "models"
+                    else release_identity(),
                 },
             )
         if name == "definition_propose":
@@ -402,7 +459,20 @@ class Application:
             schema_hash=definition["schema_hash"],
             release=definition["release"],
         )
+        if "policy_set_hash" in definition:
+            subject["policy_set_hash"] = definition["policy_set_hash"]
         if name == "definition_get":
+            if "evidence_ref" in args:
+                from .safety import evidence_chunk
+
+                return completed(
+                    stage,
+                    "evidence_chunk",
+                    subject,
+                    evidence_chunk(
+                        self.artifacts, definition, self.context.workspace_id, args
+                    ),
+                )
             return completed(
                 stage,
                 "definition_loaded",
@@ -411,7 +481,9 @@ class Application:
                     definition["definition_id"], self.context.workspace_id
                 ),
             )
-        definition, module, _ = reconstruct(self.artifacts, definition["definition_id"])
+        definition, module, snapshot = reconstruct(
+            self.artifacts, definition["definition_id"]
+        )
         if name == "definition_validate":
             result = {
                 "kind": "validation",
@@ -420,7 +492,12 @@ class Application:
                     for s in ("structural", "model", "lowering", "admission")
                 },
                 "definition": definition,
-                "generated_capabilities": capabilities(module),
+                "generated_capabilities": inventory(
+                    module,
+                    expanded=definition["release"]["adapter_profile"]
+                    == "structured-models.v2",
+                    proposal=snapshot["proposal"],
+                ),
                 "diagnostics": module.model_diagnostics,
             }
             return completed(
@@ -436,6 +513,7 @@ class Application:
             limits=self.limits,
             workers=self.verification_workers,
         )
+        result["release"] = definition["release"]
         return completed(
             stage,
             "verification_" + result["verification_status"],
@@ -475,6 +553,7 @@ def main() -> None:
         config["workspace_id"],
         config["actor_id"],
         lambda: datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        semantic_clock=lambda: int(datetime.now(UTC).timestamp() * 1000),
     )
     application = Application(
         args.workspace, context, config["policy_id"], limits=config.get("limits")

@@ -15,6 +15,23 @@ class TrustedContext:
     workspace_id: str
     actor_id: str
     clock: Callable[[], str]
+    semantic_clock: Callable[[], int] | None = None
+
+    def snapshot(self) -> JSON:
+        now = self.semantic_clock() if self.semantic_clock is not None else None
+        if type(now) is not int or not 0 <= now <= 9007199254740991:
+            raise OperationError(
+                "infrastructure",
+                "TRUSTED_TIME_INVALID",
+                "Trusted semantic time is unavailable or invalid",
+            )
+        return {
+            "now": now,
+            "audit_time": self.clock(),
+            "profile": "utc-unix-milliseconds.v1",
+            "actor": self.actor_id,
+            "worker": self.actor_id,
+        }
 
 
 @dataclass(frozen=True)
@@ -23,7 +40,12 @@ class Delegation:
 
     @staticmethod
     def from_document(document: JSON, issuer_id: str) -> "Delegation":
-        validate("host-policy", document)
+        expanded = document.get("format") == "behavior-mcp.host-policy.v2"
+        validate("host-policy-v2" if expanded else "host-policy", document)
+        if expanded:
+            from .policy_v2 import validate_policy
+
+            validate_policy(document)
         if document["issuer_id"] != issuer_id:
             raise OperationError(
                 "unauthorized",
@@ -60,6 +82,20 @@ class Delegation:
                 "unauthorized", "SYSTEM_DENIED", "System is outside trusted delegation"
             )
 
+    def authorize_capability(self, capability: str, *, read: bool = False) -> None:
+        document = self.document
+        allowed = (
+            document["runtime_reads" if read else "runtime_actions"]
+            if document["format"] == "behavior-mcp.host-policy.v2"
+            else ([] if read else document["construction"]["allowed_capability_names"])
+        )
+        if capability not in allowed:
+            raise OperationError(
+                "unauthorized",
+                "CAPABILITY_DENIED",
+                "Capability is outside current runtime authority",
+            )
+
     def check_candidate(
         self,
         proposal: JSON,
@@ -68,6 +104,34 @@ class Delegation:
         existing: bool,
         exceptions: list[str] | None = None,
     ) -> None:
+        if self.document["format"] == "behavior-mcp.host-policy.v2":
+            from .policy_v2 import check_candidate, select_grant
+
+            if proposal["format"] == "behavior-mcp.authoring.v1":
+                grant = select_grant(self.document, proposal)
+                legacy = {
+                    k: v
+                    for k, v in self.document.items()
+                    if k not in {"allowed_adapters", "runtime_actions", "runtime_reads"}
+                }
+                legacy.update(
+                    format="behavior-mcp.host-policy.v1",
+                    construction=grant["construction"],
+                    effects=grant["effects"],
+                    state=grant["state"],
+                )
+                Delegation(json.dumps(legacy)).check_candidate(
+                    proposal, module, existing=existing, exceptions=exceptions
+                )
+            else:
+                check_candidate(
+                    self.document,
+                    proposal,
+                    module,
+                    existing=existing,
+                    exceptions=exceptions or [],
+                )
+            return
         from .authoring import capabilities, release_identity
 
         p = self.document

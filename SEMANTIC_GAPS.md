@@ -106,3 +106,22 @@ The implementation also established that enum declaration order must be explicit
 authoring data. Ordered case arrays prevent JSON object-member sorting from changing the public
 Enum declaration. This was a host representation defect, corrected through a failing independent
 identity/runtime comparison; it is not an upstream semantic gap.
+
+## GAP-005 — Scalar literal equality has no top-level symbolic constructor
+
+- **Release/interface:** Behavior 0.14.0 / Core 0.15.0; public top-level scalar and
+  Enum authoring, overloaded symbolic equality and `and_`/`or_`/`not_`.
+- **Required capability / attempt:** Preserve an explicit typed equality with a scalar
+  literal on the left without evaluating it in Python. The release does not export a
+  general scalar expression/literal constructor at the declared top-level boundary.
+  Python `True == 1` returns `True` before Core can type-check either operand.
+- **Classification / severity:** Authoring, bounded nonblocking limitation. Symbolic-left
+  comparisons used by the supported operational and lifecycle journeys remain available.
+- **Reproduction:** `tests/unit/test_fragments_v2.py::test_literal_equality_is_never_evaluated_by_python`;
+  its recorded failing case is in feature 002 evidence T010. The negative fixture previously
+  admitted a Python-folded Boolean instead of preserving the requested typed comparison.
+- **Interim behavior:** Explicit `UNSUPPORTED` for scalar/Enum-left equality. No folding,
+  operand swapping, private `lift`, hidden nominal declaration or handwritten Wire fallback.
+- **Proposed upstream resolution:** Public typed literal/equality constructors, with
+  preserved operand order and public admission/type checking.
+- **Status:** Open; this restriction is included in expanded authoring support diagnostics.

@@ -25,3 +25,9 @@ Thumbs.db
 *.swp
 .vscode/
 .idea/
+
+# Isolated compatibility workspaces are intentional public-operation fixtures.
+!tests/fixtures/legacy_v1/workspace/*.sqlite
+!tests/fixtures/legacy_v1/workspace/systems/*.sqlite
+!tests/fixtures/adapter_versions/**/workspace/*.sqlite
+!tests/fixtures/adapter_versions/**/workspace/systems/*.sqlite

@@ -1,0 +1,15 @@
+{
+  "task": "T068",
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/contract/test_host_policy_v2.py::test_exact_approval_binds_policy_set_even_with_same_behavior"
+    ],
+    "exit_code": 0,
+    "stdout": ".                                                                        [100%]\n1 passed in 6.88s\n",
+    "stderr": ""
+  }
+}

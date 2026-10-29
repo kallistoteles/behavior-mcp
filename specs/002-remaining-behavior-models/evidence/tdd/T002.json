@@ -1,0 +1,27 @@
+{
+  "task": "T002",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_tdd_evidence_paths.py"
+    ],
+    "exit_code": 1,
+    "stdout": ".F                                                                       [100%]\n=================================== FAILURES ===================================\n____________________ test_recorder_paths_and_history[True] _____________________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-0/test_recorder_paths_and_histor1')\nexplicit = True\n\n    @pytest.mark.parametrize(\"explicit\", [False, True])\n    def test_recorder_paths_and_history(tmp_path, explicit):\n        feature = \"specs/002-remaining-behavior-models\"\n        other = tmp_path / \"specs/001-agent-native-systems/evidence/tdd/T001.json\"\n        other.parent.mkdir(parents=True)\n        other.write_text('{\"sentinel\": true}\\n')\n        prefix = [sys.executable, str(RECORDER)]\n        if explicit:\n            prefix += [\"--feature-dir\", feature]\n        for phase, code in [(\"red\", 7), (\"red\", 8), (\"green\", 0), (\"green\", 0)]:\n            run = subprocess.run(\n                [*prefix, \"T001\", phase, sys.executable, \"-c\", f\"raise SystemExit({code})\"],\n                cwd=tmp_path, capture_output=True, text=True,\n            )\n>           assert run.returncode == 0, run.stderr\nE           AssertionError: Traceback (most recent call last):\nE               File \"/home/kalle/repos/behavior-mcp/scripts/record-test\", line 10, in <module>\nE                 assert phase in {\"red\", \"green\"}\nE                        ^^^^^^^^^^^^^^^^^^^^^^^^^\nE             AssertionError\nE             \nE           assert 1 == 0\nE            +  where 1 = CompletedProcess(args=['/home/kalle/repos/behavior-mcp/.venv/bin/python', '/home/kalle/repos/behavior-mcp/scripts/reco...\", line 10, in <module>\\n    assert phase in {\"red\", \"green\"}\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError\\n').returncode\n\ntests/unit/test_tdd_evidence_paths.py:27: AssertionError\n=========================== short test summary info ============================\nFAILED tests/unit/test_tdd_evidence_paths.py::test_recorder_paths_and_history[True]\n1 failed, 1 passed in 0.62s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_tdd_evidence_paths.py"
+    ],
+    "exit_code": 0,
+    "stdout": "..                                                                       [100%]\n2 passed in 1.02s\n",
+    "stderr": ""
+  }
+}

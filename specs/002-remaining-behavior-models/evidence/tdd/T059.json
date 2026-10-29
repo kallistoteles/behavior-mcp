@@ -1,0 +1,84 @@
+{
+  "task": "T059",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_safety_evidence.py"
+    ],
+    "exit_code": 1,
+    "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n___________________ test_real_certification_and_fresh_import ___________________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-48/test_real_certification_and_fr0')\n\n    def test_real_certification_and_fresh_import(tmp_path):\n>       app,proposal,_=setup(tmp_path,'lifecycle')\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_safety_evidence.py:37: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/tmp/pytest-of-kalle/pytest-48/test_real_certification_and_fr0')\nname = 'lifecycle', clock = None, actor = 'actor-1', two_actors = False\n\n    def setup(root, name=\"approval\", *, clock=None, actor=\"actor-1\", two_actors=False):\n        proposal = example(name)\n>       assert proposal[\"adapter_version\"] in HANDLERS, (\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n            \"Exact model checkpoint is not yet supported\"\n        )\nE       AssertionError: Exact model checkpoint is not yet supported\n\ntests/fixtures/expanded.py:23: AssertionError\n___________________ test_missing_tools_are_not_an_assessment ___________________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-48/test_missing_tools_are_not_an_0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x78dd3b8b5940>\n\n    def test_missing_tools_are_not_an_assessment(tmp_path,monkeypatch):\n>       app,proposal,_=setup(tmp_path,'lifecycle');definition=authored(app,proposal)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_safety_evidence.py:51: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/tmp/pytest-of-kalle/pytest-48/test_missing_tools_are_not_an_0')\nname = 'lifecycle', clock = None, actor = 'actor-1', two_actors = False\n\n    def setup(root, name=\"approval\", *, clock=None, actor=\"actor-1\", two_actors=False):\n        proposal = example(name)\n>       assert proposal[\"adapter_version\"] in HANDLERS, (\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n            \"Exact model checkpoint is not yet supported\"\n        )\nE       AssertionError: Exact model checkpoint is not yet supported\n\ntests/fixtures/expanded.py:23: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_evidence.py::test_real_certification_and_fresh_import\nFAILED tests/integration/test_safety_evidence.py::test_missing_tools_are_not_an_assessment\n2 failed in 1.59s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_safety_tampering.py"
+    ],
+    "exit_code": 0,
+    "stdout": "..                                                                       [100%]\n2 passed in 11.18s\n",
+    "stderr": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\n"
+  },
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_evidence.py",
+        "-x"
+      ],
+      "exit_code": 1,
+      "stdout": "F\n=================================== FAILURES ===================================\n___________________ test_real_certification_and_fresh_import ___________________\n\ntmp_path = PosixPath('/tmp/nix-shell.PUcWzv/pytest-of-kalle/pytest-0/test_real_certification_and_fr0')\n\n    def test_real_certification_and_fresh_import(tmp_path):\n        app,proposal,_=setup(tmp_path,'lifecycle')\n        definition=authored(app,proposal)\n>       first=certify(app,definition)\n              ^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_safety_evidence.py:39: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\napp = <behavior_mcp.server.Application object at 0x7ffff1da0d70>\ndefinition = {'behavior_hash': 'sha256:d6c73e43bc8d9b7b36a478efc78982a4a2ecb3dd97d6a4e7f9f254a1896fe047', 'construction_context_ref...202bb62f', 'definition_id': 'definition-e8412dac667d4963ad09a58a25b77a04', 'format': 'behavior-mcp.definition.v2', ...}\n\n    def certify(app,definition):\n        result=app.execute('definition_safety_certify',{'definition_id':definition['definition_id'],'profile_id':'safety-default'})\n>       assert result['outcome']=='safety_certified',result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'completed', 'stage': 'safety_certification', 'outcome': 'safety_inconclusive', ...}\nE       assert 'safety_inconclusive' == 'safety_certified'\nE         \nE         - safety_certified\nE         + safety_inconclusive\n\ntests/integration/test_safety_evidence.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_evidence.py::test_real_certification_and_fresh_import\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 9.13s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_evidence.py",
+        "-x"
+      ],
+      "exit_code": 1,
+      "stdout": "F\n=================================== FAILURES ===================================\n___________________ test_real_certification_and_fresh_import ___________________\n\ntmp_path = PosixPath('/tmp/nix-shell.YNBKsB/pytest-of-kalle/pytest-0/test_real_certification_and_fr0')\n\n    def test_real_certification_and_fresh_import(tmp_path):\n        app,proposal,_=setup(tmp_path,'lifecycle')\n        definition=authored(app,proposal)\n        first=certify(app,definition)\n>       bundle=bundle_for(app,definition)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/integration/test_safety_evidence.py:40: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\napp = <behavior_mcp.server.Application object at 0x7ffff1d98ec0>\ndefinition = {'behavior_hash': 'sha256:d6c73e43bc8d9b7b36a478efc78982a4a2ecb3dd97d6a4e7f9f254a1896fe047', 'construction_context_ref...277ef7c3', 'definition_id': 'definition-037544cbd711419eb7cf179c69040b35', 'format': 'behavior-mcp.definition.v2', ...}\n\n    def bundle_for(app,definition):\n        inspected=app.execute('definition_get',{'definition_id':definition['definition_id']})\n>       assert inspected['request_status']=='completed',inspected\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'authoring', 'outcome': 'infrastructure_failure', ...}\nE       assert 'failed' == 'completed'\nE         \nE         - completed\nE         + failed\n\ntests/integration/test_safety_evidence.py:23: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_safety_evidence.py::test_real_certification_and_fresh_import\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed in 82.50s (0:01:22)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_evidence.py",
+        "-x"
+      ],
+      "exit_code": 0,
+      "stdout": "..                                                                       [100%]\n2 passed in 169.38s (0:02:49)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_safety_evidence.py::test_matching_behavior_does_not_accept_foreign_policy_evidence"
+      ],
+      "exit_code": 0,
+      "stdout": ".                                                                        [100%]\n1 passed in 8.84s\n",
+      "stderr": ""
+    }
+  ]
+}

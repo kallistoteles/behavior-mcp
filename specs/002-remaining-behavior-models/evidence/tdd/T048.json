@@ -1,0 +1,21 @@
+{
+  "task": "T048",
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/contract/test_work_queue_authoring.py",
+      "tests/integration/test_work_queue_runtime.py",
+      "tests/integration/test_work_queue_context.py",
+      "tests/integration/test_work_queue_recovery.py",
+      "tests/integration/test_incremental_adapter_retention.py",
+      "tests/integration/test_core_reads.py",
+      "tests/acceptance/test_remaining_models.py::test_work_queue"
+    ],
+    "exit_code": 0,
+    "stdout": "..........................................                               [100%]\n42 passed in 126.51s (0:02:06)\n",
+    "stderr": ""
+  }
+}

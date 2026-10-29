@@ -1,0 +1,23 @@
+{
+  "command": "nix develop --command uv run --locked pytest -q tests/unit/test_dependencies.py tests/conformance/test_sqlite_backend.py tests/integration/test_uncertain_commit.py",
+  "result": "32 passed; exit 0",
+  "public_backend_cases": 45,
+  "evidence": "tdd/T094.json",
+  "behavior_wheel_sha256": "794d2dd5ddf8613c52f524a1b4b74c0246d86a5ea52414424ab89ef104e86513",
+  "behavior_version": "0.14.0",
+  "core_version": "0.15.0",
+  "proof_toolchain": {
+    "drvPath": "/nix/store/6wy0z2zc7gl2i6vxzcw59i9pdhk2g6b8-lean4-4.30.0.drv",
+    "outPath": "/nix/store/7m5ds60a41w276hsx3rybv76x3609l6k-lean4-4.30.0",
+    "version": "4.30.0"
+  },
+  "graph_sha256": {
+    "uv.lock": "5ba548320de9b61e1b5daf1bccf4b9617ca12ea6c7aaf506fee765160d5db918",
+    "flake.lock": "ddbda36308775a021945796dbcd4d6e0020068696954764eefdd1ae1177cefac"
+  },
+  "boundaries": [
+    "Declared top-level imports only; release bytes and origin checked.",
+    "Publication-disabled backend refuses both publication callbacks with BACKEND_ERROR, without fabricating StateConflict.",
+    "Core already/conflict reconciliation, lost acknowledgments and current-policy changes tested."
+  ]
+}

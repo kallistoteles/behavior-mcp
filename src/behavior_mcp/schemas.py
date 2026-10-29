@@ -46,15 +46,27 @@ def resource(name: str) -> Path:
     return base / name
 
 
-@lru_cache(maxsize=5)
+_SCHEMA_NAMES = (
+    "activation-approval",
+    "activation-approval-v2",
+    "authoring",
+    "authoring-v2",
+    "authoring-v2-2.0.0",
+    "authoring-v2-2.1.0",
+    "authoring-v2-2.2.0",
+    "authoring-v2-2.3.0",
+    "expanded-result",
+    "host-policy",
+    "host-policy-v2",
+    "result",
+    "tool-additions",
+    "tool-request",
+)
+
+
+@lru_cache(maxsize=32)
 def _schema(name: str) -> JSON:
-    if name not in {
-        "authoring",
-        "tool-request",
-        "host-policy",
-        "activation-approval",
-        "result",
-    }:
+    if name not in _SCHEMA_NAMES:
         raise ValueError("Unknown schema")
     document: JSON = json.loads(resource(name + ".schema.json").read_text())
 
@@ -69,12 +81,94 @@ def _schema(name: str) -> JSON:
                 check(v)
 
     check(document)
-    Draft202012Validator.check_schema(document)
     return document
 
 
 def load_schema(name: str) -> JSON:
     return copy.deepcopy(_schema(name))
+
+
+def audit_schemas() -> tuple[str, ...]:
+    """Meta-validate every fixed packaged contract in the shared quality gate.
+
+    Runtime validates untrusted data against these trusted constants. Repeating
+    the schema-as-data audit in every crash/read/proof worker adds no input
+    validation and can exhaust the installed acceptance deadline.
+    """
+    for name in _SCHEMA_NAMES:
+        Draft202012Validator.check_schema(_schema(name))
+    return _SCHEMA_NAMES
+
+
+def prune_schema(document: JSON) -> JSON:
+    """Keep the complete transitive closure of local definitions in a host schema."""
+    root = copy.deepcopy(document)
+    definitions = root.pop("$defs", {})
+
+    def references(value: Any) -> set[str]:
+        if isinstance(value, list):
+            return set().union(*(references(v) for v in value))
+        if not isinstance(value, dict):
+            return set()
+        result = set()
+        if "$ref" in value:
+            ref = value["$ref"]
+            if not ref.startswith("#/$defs/"):
+                raise ValueError("Only fixed local contract references are supported")
+            result.add(ref.split("/")[2])
+        return result.union(*(references(v) for v in value.values()))
+
+    pending = references(root)
+    retained = set()
+    while pending:
+        name = pending.pop()
+        if name in retained:
+            continue
+        retained.add(name)
+        pending.update(references(definitions[name]) - retained)
+    if retained:
+        root["$defs"] = {k: v for k, v in definitions.items() if k in retained}
+    return root
+
+
+@lru_cache(maxsize=32)
+def _stage_result_schema(stage: str) -> JSON:
+    variants = []
+    for name in ("result", "expanded-result"):
+        schema = load_schema(name)
+        if not Draft202012Validator(schema["properties"]["stage"]).is_valid(stage):
+            continue
+        schema["$id"] += ":stage:" + stage
+        schema["properties"]["stage"] = {"const": stage}
+        conditions = []
+        for condition in schema["allOf"]:
+            predicate = condition.get("if", {}).get("properties", {}).get("stage")
+            if predicate is not None and not Draft202012Validator(predicate).is_valid(
+                stage
+            ):
+                continue
+            choices = condition.get("then", {}).get("oneOf")
+            if choices and all("stage" in v.get("properties", {}) for v in choices):
+                selected = [
+                    v
+                    for v in choices
+                    if Draft202012Validator(v["properties"]["stage"]).is_valid(stage)
+                ]
+                if selected:
+                    condition["then"]["oneOf"] = selected
+                else:
+                    condition["then"] = False
+            conditions.append(condition)
+        schema["allOf"] = conditions
+        variants.append(prune_schema(schema))
+    if not variants:
+        raise ValueError("Unknown fixed tool stage")
+    return {"type": "object", "anyOf": variants}
+
+
+def stage_result_schema(stage: str) -> JSON:
+    """Advertise the unchanged versioned contracts restricted to a fixed tool stage."""
+    return copy.deepcopy(_stage_result_schema(stage))
 
 
 def validate(name: str, value: Any) -> None:
@@ -89,14 +183,48 @@ def validate(name: str, value: Any) -> None:
 
 
 def validate_input(name: str, arguments: JSON) -> None:
-    validate("tool-request", {"name": name, "arguments": arguments})
+    if (
+        name
+        in {
+            "capability_read",
+            "definition_safety_certify",
+            "definition_safety_verify_evidence",
+            "state_validate_safety",
+        }
+        or (name == "transition_evaluate" and "context_proposals" in arguments)
+        or (name == "definition_get" and "evidence_ref" in arguments)
+    ):
+        validate("tool-additions", {"name": name, "arguments": arguments})
+    else:
+        validate("tool-request", {"name": name, "arguments": arguments})
     if name == "definition_propose":
-        validate("authoring", arguments["proposal"])
+        from .adapters import validate_proposal
+
+        validate_proposal(arguments["proposal"])
 
 
-def validate_output(value: JSON) -> None:
+def validate_output(value: JSON, *, expanded: bool | None = None) -> None:
+    if expanded is None:
+        # These are server-created subjects and retained snapshots, never a fallback on failure.
+        result = value["result"]
+        expanded = (
+            value["stage"]
+            in {"safety_certification", "safety_checking", "safety_state_validation"}
+            or value["subject"].get("release", {}).get("adapter_profile")
+            == "structured-models.v2"
+            or result.get("proposal", {}).get("format") == "behavior-mcp.authoring.v2"
+            or (
+                result.get("kind") == "models"
+                and any("category" in m for m in result["models"])
+            )
+            or "policy_set_hash" in (result.get("observed_current_deployment") or {})
+            or any(
+                "policy_set_hash" in (item.get("active") or {})
+                for item in result.get("systems", [])
+            )
+        )
     try:
-        validate("result", value)
+        validate("expanded-result" if expanded else "result", value)
     except OperationError:
         raise OperationError(
             "infrastructure",
@@ -116,6 +244,8 @@ def validate_output(value: JSON) -> None:
             "definition_id",
             "behavior_hash",
             "schema_hash",
+            "policy_set_hash",
+            "history_anchor",
             "release",
         ):
             if key in obj and key in subject and obj[key] != subject[key]:
@@ -304,3 +434,7 @@ def failure(
     }
     validate_output(envelope)
     return envelope
+
+
+if __name__ == "__main__":
+    print(f"Packaged contract meta-validation: {len(audit_schemas())} PASS")

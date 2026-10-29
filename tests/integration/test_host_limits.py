@@ -45,6 +45,22 @@ def test_limits_apply_to_frames_depth_pages_and_public_profile(trusted_setup, pr
         list(bounded_frames([b"x" * 65 + b"\n"], limits=restricted.limits))
     with pytest.raises(OperationError, match="depth"):
         decode_frame(b"[[[]]]", limits=restricted.limits)
+    refused = restricted.execute("definition_propose", {"proposal": proposal})
+    assert refused["error"]["code"] == "FRAME_TOO_LARGE", refused
+    # The tiny frame/depth host cannot admit a complete model. Exercise independent
+    # page/proof restrictions with a host whose input envelope can hold that model.
+    restricted = Application(
+        root,
+        ctx,
+        "local-delegation",
+        limits={
+            "page_max": 1,
+            "verification_workers": 1,
+            "verification_profiles": {
+                "bounded": {"rlimit": 1, "wall_clock_guard_ms": 1000}
+            },
+        },
+    )
     sid, definition, _, _ = create_active(restricted, proposal)
     for i in range(2):
         evaluate_commit(

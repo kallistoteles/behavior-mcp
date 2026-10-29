@@ -80,7 +80,10 @@ authorization/evidence retains its original policy and release labels.
 Use the [fixed tools](../specs/001-agent-native-systems/contracts/mcp.md), with an explicit SystemId
 for every runtime operation. Two supported SDK modes are modern `2026-07-28` and legacy
 `2025-11-25`. The SDK owns negotiation and JSON-RPC dispatch. Stdout carries protocol messages;
-operational diagnostics belong on stderr.
+operational diagnostics belong on stderr. The fixed tool catalog advertises each stage using
+the unchanged versioned result contracts restricted to that stage, retaining all referenced
+definitions. Unused definitions and unrelated stages are omitted; the complete schema catalog
+fits within 1 MiB. Runtime result validation still uses the complete authoritative contracts.
 
 Authoring enum cases are ordered arrays of `{name, value}`. Their order is explicit public Enum
 declaration input. JSON object-member ordering cannot change admitted identities. Proposal edits
@@ -114,7 +117,9 @@ The trusted launcher configuration may include an optional `limits` object:
 }
 ```
 
-Only these keys and the existing `default`/`bounded` profile names are accepted. All values
+The additional v2 limits `proof_workers` (1), `proof_timeout_seconds` (120),
+`proof_bundle_bytes` (8388608), `read_timeout_seconds` (5), and `read_output_bytes` (1048576)
+may also be tightened. Only these keys and the existing `default`/`bounded` profile names are accepted. All values
 are positive integers; booleans, unknown keys and increases beyond the published defaults/maxima
 are rejected. Defaults remain 1048576 bytes, depth 32, pages 50/100 and two workers. A lower
 `page_max` also lowers the implicit default page size when `page_default` is omitted. The default
@@ -135,6 +140,45 @@ and source snapshot, separately identified module/context/lowering-receipt conte
 definition-specific validation/verification evidence. Inspection checks artifact references and
 preserves original report labels; it does not run a new proof or expose another system's policy
 and activation evidence through shared artifacts.
+
+## Expanded Models, Reads and Safety
+
+The [v2 policy grammar](../specs/002-remaining-behavior-models/contracts/host-policy.md) uses
+separate exact-version adapter grants and runtime action/read lists. Approval decisions and Safety
+policies cannot grant host powers. The twenty fixed tools include `capability_read`,
+`definition_safety_certify`, `definition_safety_verify_evidence` and `state_validate_safety`.
+Use the [v2 examples](../specs/002-remaining-behavior-models/contracts/examples/) as bounded templates;
+installing a model never installs a host policy.
+
+Trusted semantic time is UTC Unix milliseconds, an integer from 0 through 9007199254740991. The launcher
+supplies actor/worker and current time; clients can propose only permitted queue deadlines within
+the policy's per-capability bounds. Evaluation records the original time and Core bundle. A delayed
+commit or retry does not sample a replacement clock. WorkQueue is neither a scheduler nor an executor.
+
+A public read records its exact definition, original trusted context, history and state before
+worker execution. It uses a publication-disabled backend, public Core read/replay and one bounded
+complete result; no truncation can become a successful read. OperationId remains bound to its
+original workspace/system/principal/request, including across restart. Failed reads cannot imply
+that a domain mutation might have committed. Current read authority governs disclosure of retries.
+
+Pure proof compilation holds neither policy nor system writer locks and rechecks current authority
+before publishing or disclosing evidence. One proof worker has a 120-second deadline, 120-second CPU
+ceiling, 8 GiB virtual address-space ceiling, 128 descriptors and 16 MiB per-file limit. Read workers
+use 4 GiB virtual address space and a five-second deadline. Stdout/stderr maxima remain 8 MiB/1 MiB;
+reads additionally limit complete output to 1 MiB. Cancellation, timeout and overflow terminate and
+reap the entire worker process group. Startup examines at most 64 owned staging entries, removes only
+dead owned jobs and never promotes an incomplete proof. These limits are host restrictions.
+
+Imported bundles are unverified JSON data until the public checker establishes a fresh result.
+Missing, unsupported, inconclusive or timed-out proof never satisfies a required certificate.
+`definition_get` permits definition-bound evidence chunks of 1–65536 bytes with nonnegative offsets;
+shared immutable definitions do not expose system-specific deployment/state evidence.
+
+Activation independently checks the exact definition, BehaviorHash, SchemaHash, complete policy hash,
+required evidence and fresh incoming-state validity under the writer boundary. V2 exact approvals
+bind all those identities, the full history and policy version. An unchanged BehaviorHash cannot
+authorize a changed Safety policy. Historical recovery checks original proof artifacts and
+state-validation anchors without relabeling them under current policy or tools.
 
 ## Storage and Recovery
 
@@ -214,7 +258,10 @@ best-effort repair tool. Search/Markdown projections are derived views and canno
 
 Run `nix develop --command ./scripts/check` for CI and release verification. It uses the declared
 Python/Nix graph, including the pinned build backend and native Z3/Ruff. New behavior and bug fixes
-begin with observed failing assertions. All tests work without an AI model or note application.
+begin with observed failing assertions. All tests work without an AI model or note application. The gate meta-validates all fixed packaged
+JSON schemas once through `python -m behavior_mcp.schemas`; runtime still validates every client
+request and server result against those contracts. It does not repeat the schema-as-data audit in
+each short-lived crash, read or proof worker.
 
 A complete result requires application/contract, authorization, public 45-case backend conformance,
 physical crash, retry, isolation, revision and historical replay tests. Formal verification reports

@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:behavior-mcp:tool-additions:v2",
+  "title": "Design-only new and extended MCP requests; old variants remain supported",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "capability_read"
+        },
+        "arguments": {
+          "type": "object",
+          "properties": {
+            "system_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "capability_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "bindings": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "maxProperties": 32
+            },
+            "input": {
+              "type": "object",
+              "maxProperties": 32
+            },
+            "expected_activation_revision": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "system_id",
+            "capability_id",
+            "operation_id",
+            "bindings",
+            "input",
+            "expected_activation_revision"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "definition_safety_certify"
+        },
+        "arguments": {
+          "type": "object",
+          "properties": {
+            "definition_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "profile_id": {
+              "const": "safety-default"
+            }
+          },
+          "required": [
+            "definition_id",
+            "profile_id"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "definition_safety_verify_evidence"
+        },
+        "arguments": {
+          "type": "object",
+          "properties": {
+            "definition_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "profile_id": {
+              "const": "safety-default"
+            },
+            "bundle": {
+              "type": "object",
+              "description": "Unverified public safety-bundle JSON, admitted and freshly checked by Behavior; never a path."
+            }
+          },
+          "required": [
+            "definition_id",
+            "profile_id",
+            "bundle"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "state_validate_safety"
+        },
+        "arguments": {
+          "type": "object",
+          "properties": {
+            "system_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "definition_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "expected_history": {
+              "type": "object",
+              "properties": {
+                "format": {
+                  "const": "behavior.history_ref.v1"
+                },
+                "store": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "state": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "position": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "record": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "required": [
+                "format",
+                "store",
+                "state",
+                "position",
+                "record"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "system_id",
+            "definition_id",
+            "expected_history"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "transition_evaluate"
+        },
+        "arguments": {
+          "type": "object",
+          "properties": {
+            "system_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "capability_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "bindings": {
+              "type": "object"
+            },
+            "input": {
+              "type": "object"
+            },
+            "expected_activation_revision": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "context_proposals": {
+              "type": "object",
+              "properties": {
+                "lease_until": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "available_at": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "system_id",
+            "capability_id",
+            "bindings",
+            "input",
+            "expected_activation_revision",
+            "operation_id",
+            "context_proposals"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "name": {
+          "const": "definition_get"
+        },
+        "arguments": {
+          "type": "object",
+          "properties": {
+            "definition_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "evidence_ref": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65536
+            }
+          },
+          "required": [
+            "definition_id",
+            "evidence_ref",
+            "offset",
+            "limit"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

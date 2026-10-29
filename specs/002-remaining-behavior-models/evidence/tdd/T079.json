@@ -1,0 +1,87 @@
+{
+  "task": "T079",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/integration/test_expanded_history.py::test_historical_replay_does_not_require_fresh_model_authoring"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n________ test_historical_replay_does_not_require_fresh_model_authoring _________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-79/test_historical_replay_does_no0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ec888f95e00>\n\n    def test_historical_replay_does_not_require_fresh_model_authoring(tmp_path, monkeypatch):\n        import behavior_mcp.operations as operations\n        app, sid, _, _, _ = active(tmp_path, 'field-ownership')\n        from tests.fixtures.runtime import evaluate_commit\n        evaluate_commit(app, sid, 'new_parent', 'parent', input={'new_id': 'p1'})\n        def unavailable(*_, **__):\n            raise RuntimeError('Fresh model authoring deliberately unavailable')\n        monkeypatch.setattr(operations, 'reconstruct', unavailable)\n        recovered = app.execute('system_recover', {'system_id': sid})\n>       assert recovered['request_status'] == 'completed', recovered\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'failed', 'stage': 'recovery', 'outcome': 'infrastructure_failure', ...}\nE       assert 'failed' == 'completed'\nE         \nE         - completed\nE         + failed\n\ntests/integration/test_expanded_history.py:105: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_expanded_history.py::test_historical_replay_does_not_require_fresh_model_authoring\n1 failed in 8.91s\n",
+    "stderr": ""
+  },
+  "red_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_expanded_history.py::test_recovery_requires_original_activation_safety_artifacts"
+      ],
+      "exit_code": 1,
+      "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n_ test_recovery_requires_original_activation_safety_artifacts[safety_evidence_refs] _\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-70/test_recovery_requires_origina0')\nfield = 'safety_evidence_refs'\n\n    @pytest.mark.parametrize('field',['safety_evidence_refs','state_validation_ref'])\n    def test_recovery_requires_original_activation_safety_artifacts(tmp_path,field):\n        from behavior_mcp.storage import connect,transaction\n        from tests.fixtures.expanded import retained_lifecycle\n        app,sid,_,_,_=retained_lifecycle(tmp_path)\n>       activation=app.systems.active(sid)\n                   ^^^^^^^^^^^\nE       AttributeError: 'Application' object has no attribute 'systems'\n\ntests/integration/test_expanded_history.py:49: AttributeError\n_ test_recovery_requires_original_activation_safety_artifacts[state_validation_ref] _\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-70/test_recovery_requires_origina1')\nfield = 'state_validation_ref'\n\n    @pytest.mark.parametrize('field',['safety_evidence_refs','state_validation_ref'])\n    def test_recovery_requires_original_activation_safety_artifacts(tmp_path,field):\n        from behavior_mcp.storage import connect,transaction\n        from tests.fixtures.expanded import retained_lifecycle\n        app,sid,_,_,_=retained_lifecycle(tmp_path)\n>       activation=app.systems.active(sid)\n                   ^^^^^^^^^^^\nE       AttributeError: 'Application' object has no attribute 'systems'\n\ntests/integration/test_expanded_history.py:49: AttributeError\n=========================== short test summary info ============================\nFAILED tests/integration/test_expanded_history.py::test_recovery_requires_original_activation_safety_artifacts[safety_evidence_refs]\nFAILED tests/integration/test_expanded_history.py::test_recovery_requires_original_activation_safety_artifacts[state_validation_ref]\n2 failed in 2.35s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_expanded_history.py::test_recovery_requires_original_activation_safety_artifacts"
+      ],
+      "exit_code": 1,
+      "stdout": "FF                                                                       [100%]\n=================================== FAILURES ===================================\n_ test_recovery_requires_original_activation_safety_artifacts[safety_evidence_refs] _\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-71/test_recovery_requires_origina0')\nfield = 'safety_evidence_refs'\n\n    @pytest.mark.parametrize('field',['safety_evidence_refs','state_validation_ref'])\n    def test_recovery_requires_original_activation_safety_artifacts(tmp_path,field):\n        from behavior_mcp.storage import connect,transaction\n        from tests.fixtures.expanded import retained_lifecycle\n        app,sid,_,_,_=retained_lifecycle(tmp_path)\n        import json\n        with connect(app.artifacts.system_path(sid)) as db:\n            activation=json.loads(db.execute(\"SELECT document FROM activations ORDER BY revision LIMIT 1\").fetchone()[0])\n        reference=activation[field][0] if field.endswith('refs') else activation[field]\n        assert reference\n        with connect(app.artifacts.path) as db,transaction(db):\n            db.execute('DELETE FROM blobs WHERE id=?',(reference,))\n        result=app.execute('system_recover',{'system_id':sid})\n>       assert result['request_status']=='failed',result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'completed', 'stage': 'recovery', 'outcome': 'system_recovered', ...}\nE       assert 'completed' == 'failed'\nE         \nE         - failed\nE         + completed\n\ntests/integration/test_expanded_history.py:57: AssertionError\n_ test_recovery_requires_original_activation_safety_artifacts[state_validation_ref] _\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-71/test_recovery_requires_origina1')\nfield = 'state_validation_ref'\n\n    @pytest.mark.parametrize('field',['safety_evidence_refs','state_validation_ref'])\n    def test_recovery_requires_original_activation_safety_artifacts(tmp_path,field):\n        from behavior_mcp.storage import connect,transaction\n        from tests.fixtures.expanded import retained_lifecycle\n        app,sid,_,_,_=retained_lifecycle(tmp_path)\n        import json\n        with connect(app.artifacts.system_path(sid)) as db:\n            activation=json.loads(db.execute(\"SELECT document FROM activations ORDER BY revision LIMIT 1\").fetchone()[0])\n        reference=activation[field][0] if field.endswith('refs') else activation[field]\n        assert reference\n        with connect(app.artifacts.path) as db,transaction(db):\n            db.execute('DELETE FROM blobs WHERE id=?',(reference,))\n        result=app.execute('system_recover',{'system_id':sid})\n>       assert result['request_status']=='failed',result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'completed', 'stage': 'recovery', 'outcome': 'system_recovered', ...}\nE       assert 'completed' == 'failed'\nE         \nE         - failed\nE         + completed\n\ntests/integration/test_expanded_history.py:57: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_expanded_history.py::test_recovery_requires_original_activation_safety_artifacts[safety_evidence_refs]\nFAILED tests/integration/test_expanded_history.py::test_recovery_requires_original_activation_safety_artifacts[state_validation_ref]\n2 failed in 7.38s\n",
+      "stderr": ""
+    }
+  ],
+  "green": {
+    "command": [
+      "nix",
+      "develop",
+      "--command",
+      "uv",
+      "run",
+      "--locked",
+      "pytest",
+      "-q",
+      "tests/integration/test_expanded_history.py",
+      "tests/integration/test_incremental_adapter_retention.py",
+      "tests/integration/test_server_recovery.py"
+    ],
+    "exit_code": 0,
+    "stdout": "..................                                                       [100%]\n18 passed in 77.22s (0:01:17)\n",
+    "stderr": "warning: Git tree '/home/kalle/repos/behavior-mcp' is dirty\n"
+  },
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_incremental_adapter_retention.py"
+      ],
+      "exit_code": 1,
+      "stdout": "..FF.                                                                    [100%]\n=================================== FAILURES ===================================\n_ test_recovery_requires_original_activation_safety_artifacts[safety_evidence_refs] _\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-72/test_recovery_requires_origina0')\nfield = 'safety_evidence_refs'\n\n    @pytest.mark.parametrize('field',['safety_evidence_refs','state_validation_ref'])\n    def test_recovery_requires_original_activation_safety_artifacts(tmp_path,field):\n        from behavior_mcp.storage import connect,transaction\n        from tests.fixtures.expanded import retained_lifecycle\n        app,sid,_,_,_=retained_lifecycle(tmp_path)\n        import json\n        with connect(app.artifacts.system_path(sid)) as db:\n            activation=json.loads(db.execute(\"SELECT document FROM activations ORDER BY revision LIMIT 1\").fetchone()[0])\n        reference=activation[field][0] if field.endswith('refs') else activation[field]\n        assert reference\n        with connect(app.artifacts.path) as db,transaction(db):\n            db.execute('DELETE FROM blobs WHERE id=?',(reference,))\n        result=app.execute('system_recover',{'system_id':sid})\n>       assert result['request_status']=='failed',result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'refused', 'stage': 'recovery', 'outcome': 'invalid_input', ...}\nE       assert 'refused' == 'failed'\nE         \nE         - failed\nE         + refused\n\ntests/integration/test_expanded_history.py:57: AssertionError\n_ test_recovery_requires_original_activation_safety_artifacts[state_validation_ref] _\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-72/test_recovery_requires_origina1')\nfield = 'state_validation_ref'\n\n    @pytest.mark.parametrize('field',['safety_evidence_refs','state_validation_ref'])\n    def test_recovery_requires_original_activation_safety_artifacts(tmp_path,field):\n        from behavior_mcp.storage import connect,transaction\n        from tests.fixtures.expanded import retained_lifecycle\n        app,sid,_,_,_=retained_lifecycle(tmp_path)\n        import json\n        with connect(app.artifacts.system_path(sid)) as db:\n            activation=json.loads(db.execute(\"SELECT document FROM activations ORDER BY revision LIMIT 1\").fetchone()[0])\n        reference=activation[field][0] if field.endswith('refs') else activation[field]\n        assert reference\n        with connect(app.artifacts.path) as db,transaction(db):\n            db.execute('DELETE FROM blobs WHERE id=?',(reference,))\n        result=app.execute('system_recover',{'system_id':sid})\n>       assert result['request_status']=='failed',result\nE       AssertionError: {'format': 'behavior-mcp.result.v1', 'request_status': 'refused', 'stage': 'recovery', 'outcome': 'invalid_input', ...}\nE       assert 'refused' == 'failed'\nE         \nE         - failed\nE         + refused\n\ntests/integration/test_expanded_history.py:57: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_expanded_history.py::test_recovery_requires_original_activation_safety_artifacts[safety_evidence_refs]\nFAILED tests/integration/test_expanded_history.py::test_recovery_requires_original_activation_safety_artifacts[state_validation_ref]\n2 failed, 3 passed in 22.83s\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_expanded_history.py",
+        "tests/integration/test_incremental_adapter_retention.py"
+      ],
+      "exit_code": 0,
+      "stdout": ".....                                                                    [100%]\n5 passed in 28.19s\n",
+      "stderr": ""
+    }
+  ]
+}

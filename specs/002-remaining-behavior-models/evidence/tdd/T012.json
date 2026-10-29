@@ -1,0 +1,51 @@
+{
+  "task": "T012",
+  "red": {
+    "command": [
+      ".venv/bin/python",
+      "-c",
+      "import pytest; from behavior_mcp import adapters, authoring_v2; authoring_v2.CLOSURE=[\"authoring_v2.py\",\"fragments_v2.py\"]; adapters.HANDLERS[\"2.2.0\"]=authoring_v2; raise SystemExit(pytest.main([\"-q\",\"tests/integration/test_expanded_artifacts.py\"]))"
+    ],
+    "exit_code": 1,
+    "stdout": ".FF                                                                      [100%]\n=================================== FAILURES ===================================\n____ test_safety_analysis_and_inventory_are_separate_inspectable_artifacts _____\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-42/test_safety_analysis_and_inven0')\n\n    def test_safety_analysis_and_inventory_are_separate_inspectable_artifacts(tmp_path):\n        from tests.fixtures.expanded import setup\n        from tests.fixtures.runtime import authored\n        app,proposal,_=setup(tmp_path,'field-ownership')\n        definition=authored(app,proposal)\n        result=app.execute('definition_get',{'definition_id':definition['definition_id']})\n        assert result['request_status']=='completed',result\n        kinds={a['kind'] for a in result['result']['artifacts']}\n>       assert {'safety_analysis','capability_inventory'}<=kinds\nE       AssertionError: assert {'capability_...ety_analysis'} <= {'constructio...pt', 'module'}\nE         \nE         Extra items in the left set:\nE         'safety_analysis'\nE         'capability_inventory'\n\ntests/integration/test_expanded_artifacts.py:37: AssertionError\n___________________ test_repeated_policy_identity_must_match ___________________\n\ntmp_path = PosixPath('/tmp/pytest-of-kalle/pytest-42/test_repeated_policy_identity_0')\n\n    def test_repeated_policy_identity_must_match(tmp_path):\n        import copy\n        from behavior_mcp.schemas import validate_output\n        from tests.fixtures.expanded import setup\n        from tests.fixtures.runtime import authored\n        app,proposal,_=setup(tmp_path,'field-ownership')\n        definition=authored(app,proposal)\n        result=app.execute('definition_get',{'definition_id':definition['definition_id']})\n        assert result['request_status']=='completed',result\n        result=copy.deepcopy(result)\n        result['subject']['policy_set_hash']=definition['policy_set_hash']\n        result['result']['definition']['policy_set_hash']='sha256:'+'1'*64\n>       with pytest.raises(OperationError):validate_output(result,expanded=True)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE OperationError\n\ntests/integration/test_expanded_artifacts.py:55: Failed\n=========================== short test summary info ============================\nFAILED tests/integration/test_expanded_artifacts.py::test_safety_analysis_and_inventory_are_separate_inspectable_artifacts\nFAILED tests/integration/test_expanded_artifacts.py::test_repeated_policy_identity_must_match\n2 failed, 1 passed in 5.52s\n",
+    "stderr": ""
+  },
+  "green": {
+    "command": [
+      ".venv/bin/python",
+      "-c",
+      "import pytest; from behavior_mcp import adapters, authoring_v2; authoring_v2.CLOSURE=[\"authoring_v2.py\",\"fragments_v2.py\"]; adapters.HANDLERS[\"2.2.0\"]=authoring_v2; raise SystemExit(pytest.main([\"-q\",\"tests/integration/test_expanded_artifacts.py\",\"tests/integration/test_field_ownership.py\"]))"
+    ],
+    "exit_code": 0,
+    "stdout": "........                                                                 [100%]\n8 passed in 5.01s\n",
+    "stderr": ""
+  },
+  "red_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_expanded_artifacts.py"
+      ],
+      "exit_code": 1,
+      "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n_________________ test_unpublished_versions_cannot_be_proposed _________________\n\ntrusted_setup = (PosixPath('/tmp/pytest-of-kalle/pytest-4/test_unpublished_versions_cann0'), TrustedContext(principal_id='agent-sessio...rkspace\"},\"version\":1,\"workspace_id\":\"workspace-1\"}'), <behavior_mcp.artifacts.ArtifactStore object at 0x7b7a60d32e40>)\n\n    def test_unpublished_versions_cannot_be_proposed(trusted_setup):\n>       assert importlib.util.find_spec('behavior_mcp.adapters'), 'Versioned artifact boundary is absent'\nE       AssertionError: Versioned artifact boundary is absent\nE       assert None\nE        +  where None = <function find_spec at 0x7b7a63607ce0>('behavior_mcp.adapters')\nE        +    where <function find_spec at 0x7b7a63607ce0> = <module 'importlib.util' (frozen)>.find_spec\nE        +      where <module 'importlib.util' (frozen)> = importlib.util\n\ntests/integration/test_expanded_artifacts.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED tests/integration/test_expanded_artifacts.py::test_unpublished_versions_cannot_be_proposed\n1 failed in 0.48s\n",
+      "stderr": ""
+    }
+  ],
+  "green_history": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/integration/test_expanded_artifacts.py"
+      ],
+      "exit_code": 0,
+      "stdout": ".                                                                        [100%]\n1 passed in 0.38s\n",
+      "stderr": ""
+    }
+  ]
+}
