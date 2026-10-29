@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:behavior-mcp:package.v1",
+  "title": "Package information record",
+  "description": "Schema for each JSONL row in packages.jsonl. Fixture values are synthetic. Behavior state is stored by Behavior MCP and is not duplicated here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "package_id",
+    "order_number",
+    "tracking_number",
+    "carrier",
+    "service_level",
+    "sender",
+    "recipient",
+    "pickup_location",
+    "received_at",
+    "pickup_deadline",
+    "weight_grams",
+    "dimensions_mm",
+    "special_handling",
+    "behavior_ref"
+  ],
+  "properties": {
+    "schema_version": { "const": "package.v1" },
+    "package_id": { "type": "string", "pattern": "^PKG-[A-Z0-9-]+$" },
+    "order_number": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "tracking_number": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "carrier": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "service_level": {
+      "enum": ["economy", "standard", "express"]
+    },
+    "sender": { "$ref": "#/$defs/party" },
+    "recipient": {
+      "allOf": [
+        { "$ref": "#/$defs/party" },
+        {
+          "type": "object",
+          "required": ["email"],
+          "properties": {
+            "email": { "type": "string", "format": "email" }
+          }
+        }
+      ]
+    },
+    "pickup_location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["location_id", "name", "address"],
+      "properties": {
+        "location_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "address": { "$ref": "#/$defs/address" }
+      }
+    },
+    "received_at": { "type": "string", "format": "date-time" },
+    "pickup_deadline": { "type": "string", "format": "date-time" },
+    "weight_grams": { "type": "integer", "minimum": 1 },
+    "dimensions_mm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["length", "width", "height"],
+      "properties": {
+        "length": { "type": "integer", "minimum": 1 },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "special_handling": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["fragile", "keep_upright", "temperature_controlled"] }
+    },
+    "behavior_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system_id", "request_id"],
+      "properties": {
+        "system_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "request_id": { "type": "string", "minLength": 1, "maxLength": 256 }
+      }
+    }
+  },
+  "$defs": {
+    "party": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "city", "country_code"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "city": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "country_code": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "email": { "type": "string", "format": "email" }
+      }
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["line1", "city", "postal_code", "country_code"],
+      "properties": {
+        "line1": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "city": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "postal_code": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "country_code": { "type": "string", "pattern": "^[A-Z]{2}$" }
+      }
+    }
+  }
+}

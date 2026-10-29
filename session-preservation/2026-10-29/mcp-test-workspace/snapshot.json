@@ -1,0 +1,22 @@
+{
+  "format": "session-preservation.v1",
+  "original_branch": "feat/agent-native-declarative-systems",
+  "original_head": "bb1deb8f9aacb8df261e92bb64e644a6a990ddaa",
+  "archive_branch": "archive/session-20261029/mcp-test-workspace",
+  "snapshot_only": true,
+  "validated_as_release": false,
+  "encrypted_local_files": 42,
+  "encryption_recipient": "age1ql6jw72evaef03u6crhfx89fz867qzu6m25y5d38ku0xhgzrasks6aaqj4",
+  "excluded": [
+    "rebuildable build/tool caches",
+    "machine private keys",
+    "nested Git repositories, preserved independently"
+  ],
+  "encrypted_archive": {
+    "path": "local-state.tar.gz.age",
+    "sha256": "faebe6825f506aa0b4ed500656bae611b9ec1f4c8fcc47a44fa269e9f645f140",
+    "bytes": 110979,
+    "sqlite_consistency": "SQLite backup API, individually consistent database snapshots; no multi-database atomic snapshot claimed",
+    "roundtrip_validated": true
+  }
+}
